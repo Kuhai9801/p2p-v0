@@ -13,13 +13,13 @@ export const PaymentAmountRecipientCard = ({
   recipientLabel,
   recipientValue,
 }: PaymentAmountRecipientCardProps) => (
-  <div className="rounded-2xl border border-grayscale-200 bg-slate-75">
-    <div className="p-4">
+  <div className="flex items-stretch rounded-2xl border border-grayscale-200 bg-slate-75">
+    <div className="flex-1 p-4">
       <p className="text-xs text-grayscale-text-muted">{amountLabel}</p>
       <p className="text-base font-bold text-slate-1200">{amountValue}</p>
     </div>
-    <Divider className="bg-slate-300" />
-    <div className="p-4">
+    <Divider orientation="vertical" className="bg-slate-300" />
+    <div className="flex-1 p-4">
       <p className="text-xs text-grayscale-text-muted">{recipientLabel}</p>
       <p className="text-base font-bold text-slate-1200">{recipientValue}</p>
     </div>

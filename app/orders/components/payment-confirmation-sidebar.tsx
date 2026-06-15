@@ -305,7 +305,7 @@ export const PaymentConfirmationSidebar = ({
               {fileError && <p className="mt-1 text-xs text-error">{fileError}</p>}
             </div>
 
-            {/* Confirmation checkbox */}
+            {/* Confirmation checkbox + submit on same row */}
             <div className="flex items-start gap-3">
               <Checkbox
                 id="confirm-payment"
@@ -315,31 +315,29 @@ export const PaymentConfirmationSidebar = ({
               />
               <label
                 htmlFor="confirm-payment"
-                className="cursor-pointer text-sm leading-relaxed text-slate-1200"
+                className="flex-1 cursor-pointer text-sm leading-relaxed text-slate-1200"
               >
                 {t("orders.confirmGenuineCheckbox")}
               </label>
+              <Button
+                variant="default"
+                onClick={handleSubmit}
+                disabled={!selectedFile || !confirmed || isLoading || isUploadLoading}
+                className="shrink-0"
+              >
+                {isLoading || isUploadLoading ? (
+                  <Image
+                    src="/icons/spinner.png"
+                    alt="Loading"
+                    width={20}
+                    height={20}
+                    className="animate-spin"
+                  />
+                ) : (
+                  t("orders.submit")
+                )}
+              </Button>
             </div>
-
-            {/* Submit */}
-            <Button
-              variant="default"
-              onClick={handleSubmit}
-              disabled={!selectedFile || !confirmed || isLoading || isUploadLoading}
-              className="w-full"
-            >
-              {isLoading || isUploadLoading ? (
-                <Image
-                  src="/icons/spinner.png"
-                  alt="Loading"
-                  width={20}
-                  height={20}
-                  className="animate-spin"
-                />
-              ) : (
-                t("orders.submit")
-              )}
-            </Button>
           </div>
         </div>
       </div>
