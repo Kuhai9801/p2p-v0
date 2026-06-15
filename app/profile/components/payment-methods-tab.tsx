@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { maskAccountNumber } from "@/lib/utils"
 import Image from "next/image"
 import { useState, useMemo, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { CustomShimmer } from "./ui/custom-shimmer"
 import EditPaymentMethodPanel from "./edit-payment-method-panel"
@@ -12,8 +13,16 @@ import { useToast } from "@/hooks/use-toast"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import EmptyState from "@/components/empty-state"
 import { useUserDataStore } from "@/stores/user-data-store"
+import { isRtlLocale } from "@/lib/i18n/config"
 import { useTranslations } from "@/lib/i18n/use-translations"
-import { useUserPaymentMethods, useUpdatePaymentMethod, useDeletePaymentMethod } from "@/hooks/use-api-queries"
+import {
+  PAYMENT_METHOD_INFO,
+  PAYMENT_METHOD_ROW,
+  PAYMENT_METHOD_SECTION_TITLE,
+  PAYMENT_METHOD_TEXT,
+} from "@/lib/rtl"
+import { useUserPaymentMethods, useUpdatePaymentMethod, useDeletePaymentMethod, type PaymentMethodError } from "@/hooks/use-api-queries"
+import { createPaymentMethodDuplicateAlertConfig } from "@/lib/payment-methods/create-payment-method-duplicate-alert-config"
 
 interface PaymentMethod {
   id: string
@@ -31,10 +40,13 @@ interface PaymentMethodsTabProps {
 }
 
 export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethodsCountChange }: PaymentMethodsTabProps) {
-  const { t } = useTranslations()
+  const { t, locale } = useTranslations()
+  const router = useRouter()
+  const dir = isRtlLocale(locale) ? "rtl" : "ltr"
+  const menuSide = isRtlLocale(locale) ? "right" : "left"
   const userId = useUserDataStore((state) => state.userId)
   const { toast } = useToast()
-  const { showDeleteDialog, showAlert } = useAlertDialog()
+  const { showDeleteDialog, showAlert, hideAlert } = useAlertDialog()
 
   const [editPanel, setEditPanel] = useState({
     show: false,
@@ -125,7 +137,7 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
       toast({
         description: (
           <div className="flex items-center gap-2">
-            <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
+            <Image src="/icons/tick.svg" alt={t("common.success")} width={24} height={24} className="text-white" />
             <span>{t("profile.paymentMethodUpdated")}</span>
           </div>
         ),
@@ -137,24 +149,40 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
         show: false,
         paymentMethod: null,
       })
-    } catch (error: any) {
-      let errorMessage = t("profile.unableToUpdatePaymentMethod")
+    } catch (err) {
+      const error = err as PaymentMethodError
+      const errorMessages: Record<string, { title: string; description: string }> = {
+        PaymentMethodInvalid: { title: t("paymentMethod.invalidMethod"), description: t("paymentMethod.invalidMethodDescription") },
+        PaymentMethodInvalidField: { title: t("paymentMethod.invalidField"), description: t("paymentMethod.invalidFieldDescription") },
+        PaymentMethodNotFound: { title: t("paymentMethod.notFound"), description: t("paymentMethod.notFoundDescription") },
+        PaymentMethodRequiredField: { title: t("paymentMethod.requiredField"), description: t("paymentMethod.requiredFieldDescription") },
+        PaymentMethodInUseByOrder: { title: t("profile.cannotUpdatePaymentMethod"), description: t("profile.paymentMethodInUseByOrder") },
+      }
 
-      if (error.errors && error.errors.length > 0) {
-        const errorCode = error.errors[0].code
+      const errorCode = error?.errors?.[0]?.code
 
-        if (errorCode === "PaymentMethodInUseByOrder") {
-          errorMessage = t("profile.paymentMethodInUseByOrder")
-        } else if (error.errors[0].message) {
-          errorMessage = error.errors[0].message
-        }
+      if (errorCode === "PaymentMethodDuplicate") {
+        showAlert(
+          createPaymentMethodDuplicateAlertConfig(t, {
+            onManage: () => {
+              hideAlert()
+              setEditPanel({ show: false, paymentMethod: null })
+            },
+          }),
+        )
+        return
+      }
+
+      const { title, description } = (typeof errorCode === 'string' ? errorMessages[errorCode] : undefined) ?? {
+        title: t("profile.cannotUpdatePaymentMethod"),
+        description: t("profile.unableToUpdatePaymentMethod"),
       }
 
       showAlert({
-        title: t("profile.cannotUpdatePaymentMethod"),
-        description: errorMessage,
-        confirmText: t("orderDetails.gotIt"),
-        type: "error",
+        title,
+        description,
+        confirmText: t("common.ok"),
+        type: "warning",
       })
     }
   }
@@ -178,7 +206,7 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
       toast({
         description: (
           <div className="flex items-center gap-2">
-            <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
+            <Image src="/icons/tick.svg" alt={t("common.success")} width={24} height={24} className="text-white" />
             <span>{t("profile.paymentMethodDeleted")}</span>
           </div>
         ),
@@ -214,13 +242,13 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
 
   const getBankIcon = () => (
     <div className="w-10 h-10 flex items-center justify-center">
-      <Image src="/icons/bank-transfer-icon.png" alt="Bank" width={24} height={24} />
+      <Image src="/icons/bank-transfer-icon.png" alt={t("common.bank")} width={24} height={24} />
     </div>
   )
 
   const getEWalletIcon = () => (
     <div className="w-10 h-10 flex items-center justify-center">
-      <Image src="/icons/ewallet-icon-new.png" alt="E-wallet" width={24} height={24} />
+      <Image src="/icons/ewallet-icon-new.png" alt={t("common.eWallet")} width={24} height={24} />
     </div>
   )
 
@@ -258,7 +286,7 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
     )
   }
 
-  const errorMessage = error instanceof Error ? error.message : "Failed to load payment methods"
+  const errorMessage = error instanceof Error ? error.message : t("paymentMethod.failedToLoadPaymentMethods")
   if (error) {
     return (
       <div className="flex flex-col items-center justify-center py-8">
@@ -286,10 +314,10 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
   }
 
   return (
-    <div>
+    <div dir={dir}>
       {bankTransfers.length > 0 && (
         <div className="mb-4">
-          <h3 className="text-base font-bold mb-4">{t("paymentMethod.bankTransfers")}</h3>
+          <h3 className={PAYMENT_METHOD_SECTION_TITLE}>{t("paymentMethod.bankTransfers")}</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {bankTransfers.map((method) => (
               <Card
@@ -298,10 +326,10 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
                 className="overflow-hidden shadow-none border-0 border-b rounded-none"
               >
                 <CardContent className="p-2">
-                  <div className="flex justify-between items-center">
-                    <div className="flex items-start gap-1 flex-1 min-w-0">
+                  <div className={PAYMENT_METHOD_ROW}>
+                    <div className={PAYMENT_METHOD_INFO}>
                       {getBankIcon()}
-                      <div className="flex-1 min-w-0 text-sm ">
+                      <div className={PAYMENT_METHOD_TEXT}>
                         <div className="text-neutral-10">{method.details.bank_name.value}</div>
                         <div className="text-neutral-7 tracking-wide text-xs">
                           {maskAccountNumber(method.details.account.value)}
@@ -310,23 +338,23 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
                     </div>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="sm" className="p-1 h-auto w-auto flex-shrink-0 ml-2">
-                          <Image src="/icons/vertical.svg" alt="Options" width={24} height={24} />
+                        <Button variant="ghost" size="sm" className="p-1 h-auto w-auto flex-shrink-0">
+                          <Image src="/icons/vertical.svg" alt={t("common.options")} width={24} height={24} />
                         </Button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent side="left" align="center" className="w-[160px]">
+                      <DropdownMenuContent side={menuSide} align="center" className="w-[160px]">
                         <DropdownMenuItem
                           className="flex items-center gap-2 text-gray-700 focus:text-gray-700 px-[16px] py-[8px] cursor-pointer"
                           onSelect={() => handleEditPaymentMethod(method)}
                         >
-                          <Image src="/icons/edit-pencil-icon.png" alt="Edit" width={24} height={24} />
+                          <Image src="/icons/edit-pencil-icon.png" alt={t("common.edit")} width={24} height={24} />
                           {t("profile.edit")}
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           className="flex items-center gap-2 text-destructive focus:text-destructive px-[16px] py-[8px]"
                           onSelect={() => handleDeletePaymentMethod(method.id, method.name)}
                         >
-                          <Image src="/icons/delete-trash-icon.png" alt="Delete" width={24} height={24} />
+                          <Image src="/icons/delete-trash-icon.png" alt={t("common.delete")} width={24} height={24} />
                           {t("profile.delete")}
                         </DropdownMenuItem>
                       </DropdownMenuContent>
@@ -340,7 +368,7 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
       )}
       {eWallets.length > 0 && (
         <div>
-          <h3 className="text-base font-bold mb-4">{t("paymentMethod.eWallets")}</h3>
+          <h3 className={PAYMENT_METHOD_SECTION_TITLE}>{t("paymentMethod.eWallets")}</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {eWallets.map((method) => (
               <Card
@@ -349,10 +377,10 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
                 className="overflow-hidden shadow-none border-0 border-b rounded-none"
               >
                 <CardContent className="p-2">
-                  <div className="flex justify-between items-center">
-                    <div className="flex items-start gap-1 flex-1 min-w-0">
+                  <div className={PAYMENT_METHOD_ROW}>
+                    <div className={PAYMENT_METHOD_INFO}>
                       {getEWalletIcon()}
-                      <div className="flex-1 min-w-0 text-sm">
+                      <div className={PAYMENT_METHOD_TEXT}>
                         <div className="text-neutral-10">{method.name}</div>
                         <div className="text-neutral-7 text-xs">
                           {method.details?.account?.value || `ID: ${method.id}`}
@@ -361,23 +389,23 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
                     </div>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="sm" className="p-1 h-auto w-auto flex-shrink-0 ml-2">
-                          <Image src="/icons/vertical.svg" alt="Options" width={24} height={24} />
+                        <Button variant="ghost" size="sm" className="p-1 h-auto w-auto flex-shrink-0">
+                          <Image src="/icons/vertical.svg" alt={t("common.options")} width={24} height={24} />
                         </Button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent side="left" align="center" className="w-[160px]">
+                      <DropdownMenuContent side={menuSide} align="center" className="w-[160px]">
                         <DropdownMenuItem
                           className="flex items-center gap-2 text-gray-700 focus:text-gray-700 px-[16px] py-[8px]"
                           onSelect={() => handleEditPaymentMethod(method)}
                         >
-                          <Image src="/icons/edit-pencil-icon.png" alt="Edit" width={24} height={24} />
+                          <Image src="/icons/edit-pencil-icon.png" alt={t("common.edit")} width={24} height={24} />
                           {t("profile.edit")}
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           className="flex items-center gap-2 text-destructive focus:text-destructive px-[16px] py-[8px]"
                           onSelect={() => handleDeletePaymentMethod(method.id, method.name)}
                         >
-                          <Image src="/icons/delete-trash-icon.png" alt="Delete" width={24} height={24} />
+                          <Image src="/icons/delete-trash-icon.png" alt={t("common.delete")} width={24} height={24} />
                           {t("profile.delete")}
                         </DropdownMenuItem>
                       </DropdownMenuContent>

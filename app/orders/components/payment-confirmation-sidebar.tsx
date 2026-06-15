@@ -92,6 +92,22 @@ export const PaymentConfirmationSidebar = ({
           type: "warning",
           onCancel: () => onClose(),
         })
+      } else if (errorCode === "OrderChatAttachmentRejected") {
+        showAlert({
+          title: t("orders.attachmentRejectedTitle"),
+          description: t("orders.attachmentRejected"),
+          confirmText: t("common.gotIt"),
+          type: "warning",
+          onConfirm: () => handleRemoveFile(),
+        })
+      } else if (errorCode === "ChatAttachmentLimitReached") {
+        showAlert({
+          title: t("orders.attachmentLimitReachedTitle"),
+          description: t("orders.attachmentLimitReached"),
+          confirmText: t("common.gotIt"),
+          type: "warning",
+          onConfirm: () => handleRemoveFile(),
+        })
       } else {
         console.error("Error uploading file to chat:", error)
       }
@@ -118,7 +134,7 @@ export const PaymentConfirmationSidebar = ({
     <>
       <div className="fixed inset-0 z-40 bg-black/80" onClick={onClose} />
       <div
-        className={`fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col ${
+        className={`fixed inset-y-0 end-0 z-50 bg-white shadow-xl flex flex-col ${
           isMobile ? "inset-0 w-full" : "w-full"
         }`}
       >
