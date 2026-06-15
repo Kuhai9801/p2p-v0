@@ -190,7 +190,7 @@ export const PaymentConfirmationSidebar = ({
                 />
                 <AlertDescription>
                   {t("orders.fraudWarningStart")}
-                  <strong className="text-base font-bold">{t("orders.fraudWarningBold")}</strong>
+                  <strong className="font-bold">{t("orders.fraudWarningBold")}</strong>
                   {t("orders.fraudWarningEnd")}
                 </AlertDescription>
               </Alert>
@@ -305,44 +305,41 @@ export const PaymentConfirmationSidebar = ({
               {fileError && <p className="mt-1 text-xs text-error">{fileError}</p>}
             </div>
 
-          </div>
-
-          {/* Footer: checkbox (left) + submit (right on desktop, below on mobile) */}
-          <div className="p-4 md:border-t md:border-grayscale-200">
-            <div className="flex flex-col gap-3 md:flex-row md:items-start md:gap-4">
-              <div className="flex items-start gap-3 md:flex-1">
-                <Checkbox
-                  id="confirm-payment"
-                  checked={confirmed}
-                  onCheckedChange={(v) => setConfirmed(v === true)}
-                  className="mt-0.5 shrink-0"
-                />
-                <label
-                  htmlFor="confirm-payment"
-                  className="cursor-pointer text-sm leading-relaxed text-slate-1200"
-                >
-                  {t("orders.confirmGenuineCheckbox")}
-                </label>
-              </div>
-              <Button
-                variant="default"
-                onClick={handleSubmit}
-                disabled={!selectedFile || !confirmed || isLoading || isUploadLoading}
-                className="w-full md:w-auto md:shrink-0"
+            {/* Confirmation checkbox */}
+            <div className="flex items-start gap-3">
+              <Checkbox
+                id="confirm-payment"
+                checked={confirmed}
+                onCheckedChange={(v) => setConfirmed(v === true)}
+                className="mt-0.5 shrink-0"
+              />
+              <label
+                htmlFor="confirm-payment"
+                className="cursor-pointer text-sm leading-relaxed text-slate-1200"
               >
-                {isLoading || isUploadLoading ? (
-                  <Image
-                    src="/icons/spinner.png"
-                    alt="Loading"
-                    width={20}
-                    height={20}
-                    className="animate-spin"
-                  />
-                ) : (
-                  t("orders.submit")
-                )}
-              </Button>
+                {t("orders.confirmGenuineCheckbox")}
+              </label>
             </div>
+
+            {/* Submit */}
+            <Button
+              variant="default"
+              onClick={handleSubmit}
+              disabled={!selectedFile || !confirmed || isLoading || isUploadLoading}
+              className="w-full"
+            >
+              {isLoading || isUploadLoading ? (
+                <Image
+                  src="/icons/spinner.png"
+                  alt="Loading"
+                  width={20}
+                  height={20}
+                  className="animate-spin"
+                />
+              ) : (
+                t("orders.submit")
+              )}
+            </Button>
           </div>
         </div>
       </div>
