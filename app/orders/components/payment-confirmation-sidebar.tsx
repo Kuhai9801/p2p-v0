@@ -305,25 +305,27 @@ export const PaymentConfirmationSidebar = ({
               {fileError && <p className="mt-1 text-xs text-error">{fileError}</p>}
             </div>
 
-            {/* Confirmation checkbox + submit on same row */}
-            <div className="flex items-start gap-3">
-              <Checkbox
-                id="confirm-payment"
-                checked={confirmed}
-                onCheckedChange={(v) => setConfirmed(v === true)}
-                className="mt-0.5 shrink-0"
-              />
-              <label
-                htmlFor="confirm-payment"
-                className="flex-1 cursor-pointer text-sm leading-relaxed text-slate-1200"
-              >
-                {t("orders.confirmGenuineCheckbox")}
-              </label>
+            {/* Confirmation checkbox + submit */}
+            <div className="flex flex-col gap-3 md:flex-row md:items-start">
+              <div className="flex items-start gap-3 md:flex-1">
+                <Checkbox
+                  id="confirm-payment"
+                  checked={confirmed}
+                  onCheckedChange={(v) => setConfirmed(v === true)}
+                  className="mt-0.5 shrink-0"
+                />
+                <label
+                  htmlFor="confirm-payment"
+                  className="cursor-pointer text-sm leading-relaxed text-slate-1200"
+                >
+                  {t("orders.confirmGenuineCheckbox")}
+                </label>
+              </div>
               <Button
                 variant="default"
                 onClick={handleSubmit}
                 disabled={!selectedFile || !confirmed || isLoading || isUploadLoading}
-                className="shrink-0"
+                className="w-full md:w-auto md:shrink-0"
               >
                 {isLoading || isUploadLoading ? (
                   <Image
