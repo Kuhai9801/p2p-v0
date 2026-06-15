@@ -16,7 +16,7 @@ export const PaymentAmountRecipientCard = ({
       <p className="text-xs text-grayscale-text-muted">{amountLabel}</p>
       <p className="text-base font-bold text-slate-1200">{amountValue}</p>
     </div>
-    <div className="w-px self-stretch bg-slate-300" />
+    <div className="w-px my-2 bg-slate-300" />
     <div className="flex-1 p-4">
       <p className="text-xs text-grayscale-text-muted">{recipientLabel}</p>
       <p className="text-base font-bold text-slate-1200">{recipientValue}</p>
