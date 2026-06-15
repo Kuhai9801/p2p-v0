@@ -175,10 +175,10 @@ export const PaymentConfirmationSidebar = ({
             </h2>
 
             {/* Warning banner + Amount/Recipient card (overlapping) */}
-            <div>
+            <div className="relative">
               <Alert
                 variant="warning"
-                className="flex items-start gap-2 rounded-b-none border-0 pb-8"
+                className="flex items-start gap-2 rounded-b-none border-0 pb-10"
               >
                 <Image
                   src="/icons/warning-icon-new.png"
@@ -190,12 +190,12 @@ export const PaymentConfirmationSidebar = ({
                 />
                 <AlertDescription>
                   {t("orders.fraudWarningStart")}
-                  <strong className="font-bold">{t("orders.fraudWarningBold")}</strong>
+                  <strong className="text-base font-bold">{t("orders.fraudWarningBold")}</strong>
                   {t("orders.fraudWarningEnd")}
                 </AlertDescription>
               </Alert>
-              {/* Card pulled -16px up to overlap the warning's flat bottom */}
-              <div className="-mt-4">
+              {/* Card elevated above the warning via z-10, pulled up 20px */}
+              <div className="relative -mt-5 z-10">
                 <PaymentAmountRecipientCard
                   amountLabel={t("orders.amountLabel")}
                   amountValue={amountValue}
@@ -205,16 +205,18 @@ export const PaymentConfirmationSidebar = ({
               </div>
             </div>
 
-            {/* Receipt checklist */}
+            {/* Receipt checklist — single column on mobile, 2×2 grid on desktop */}
             <div className="space-y-2">
               <p className="text-sm text-slate-1200">{t("orders.receiptMustShow")}</p>
-              <ProofChecklistRow
-                label={t("orders.checklistRecipient")}
-                value={counterpartyName ?? ""}
-              />
-              <ProofChecklistRow label={t("orders.checklistAmount")} value={amountValue} />
-              <ProofChecklistRow label={t("orders.checklistDate")} />
-              <ProofChecklistRow label={t("orders.checklistSender")} />
+              <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+                <ProofChecklistRow
+                  label={t("orders.checklistRecipient")}
+                  value={counterpartyName ?? ""}
+                />
+                <ProofChecklistRow label={t("orders.checklistAmount")} value={amountValue} />
+                <ProofChecklistRow label={t("orders.checklistDate")} />
+                <ProofChecklistRow label={t("orders.checklistSender")} />
+              </div>
             </div>
 
             {/* Upload box */}
@@ -303,43 +305,44 @@ export const PaymentConfirmationSidebar = ({
               {fileError && <p className="mt-1 text-xs text-error">{fileError}</p>}
             </div>
 
-            {/* Confirmation checkbox */}
-            <div className="flex items-start gap-3">
-              <Checkbox
-                id="confirm-payment"
-                checked={confirmed}
-                onCheckedChange={(v) => setConfirmed(v === true)}
-                className="mt-0.5 shrink-0"
-              />
-              <label
-                htmlFor="confirm-payment"
-                className="cursor-pointer text-sm leading-relaxed text-slate-1200"
-              >
-                {t("orders.confirmGenuineCheckbox")}
-              </label>
-            </div>
           </div>
 
-          {/* Submit button */}
-          <div className="border-t border-grayscale-200 p-4">
-            <Button
-              variant="default"
-              onClick={handleSubmit}
-              disabled={!selectedFile || !confirmed || isLoading || isUploadLoading}
-              className="w-full"
-            >
-              {isLoading || isUploadLoading ? (
-                <Image
-                  src="/icons/spinner.png"
-                  alt="Loading"
-                  width={20}
-                  height={20}
-                  className="animate-spin"
+          {/* Footer: checkbox (left) + submit (right on desktop, below on mobile) */}
+          <div className="p-4 md:border-t md:border-grayscale-200">
+            <div className="flex flex-col gap-3 md:flex-row md:items-start md:gap-4">
+              <div className="flex items-start gap-3 md:flex-1">
+                <Checkbox
+                  id="confirm-payment"
+                  checked={confirmed}
+                  onCheckedChange={(v) => setConfirmed(v === true)}
+                  className="mt-0.5 shrink-0"
                 />
-              ) : (
-                t("orders.submit")
-              )}
-            </Button>
+                <label
+                  htmlFor="confirm-payment"
+                  className="cursor-pointer text-sm leading-relaxed text-slate-1200"
+                >
+                  {t("orders.confirmGenuineCheckbox")}
+                </label>
+              </div>
+              <Button
+                variant="default"
+                onClick={handleSubmit}
+                disabled={!selectedFile || !confirmed || isLoading || isUploadLoading}
+                className="w-full md:w-auto md:shrink-0"
+              >
+                {isLoading || isUploadLoading ? (
+                  <Image
+                    src="/icons/spinner.png"
+                    alt="Loading"
+                    width={20}
+                    height={20}
+                    className="animate-spin"
+                  />
+                ) : (
+                  t("orders.submit")
+                )}
+              </Button>
+            </div>
           </div>
         </div>
       </div>
