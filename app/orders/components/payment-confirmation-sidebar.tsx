@@ -135,6 +135,13 @@ export const PaymentConfirmationSidebar = ({
           type: "warning",
           onConfirm: () => handleRemoveFile(),
         })
+      } else if (errorCode === "BothChatMessageAndAttachmentPresent") {
+        showAlert({
+          title: t("chat.oneItemAtATimeTitle"),
+          description: t("chat.oneItemAtATimeDescription"),
+          confirmText: t("common.gotIt"),
+          type: "warning",
+        })
       } else {
         console.error("Error uploading file to chat:", error)
       }

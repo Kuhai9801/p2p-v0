@@ -217,8 +217,8 @@
     "errorPromotionalContent": "Рекламный контент и реклама не допускаются.",
     "errorSensitiveDataRequests": "Ваше сообщение требует дополнительной проверки. Пожалуйста, подождите, пока мы свяжем вас со специалистом.",
     "fileTooLargeDescription": "Вложения должны быть размером не более 5 МБ. Сожмите файл или отправьте меньший.",
-    "errorAttachmentRejected": "Вложение не отправлено. Пожалуйста, делитесь только сообщениями, относящимися к этому заказу.",
-    "errorAttachmentLimitReached": "Вложение не отправлено: вы достигли максимального количества вложений.",
+    "errorAttachmentRejected": "Этот файл не удалось отправить. Используйте другой файл.",
+    "errorAttachmentLimitReached": "Вы достигли максимального количества вложений.",
     "fileTooLargeTitle": "Файл слишком большой",
     "justNow": "только что",
     "messageNotSent": "Сообщение не отправлено: {error}",
@@ -229,7 +229,9 @@
     "seenHoursAgo": "{hours} час{plural} назад",
     "seenMinutesAgo": "{minutes} минут{plural} назад",
     "send": "Отправить",
-    "typeMessage": "Введите сообщение..."
+    "typeMessage": "Введите сообщение...",
+    "oneItemAtATimeTitle": "Один предмет за раз",
+    "oneItemAtATimeDescription": "Отправляйте сообщение и вложение отдельно, а не в одном запросе."
   },
   "common": {
     "add": "Добавить",

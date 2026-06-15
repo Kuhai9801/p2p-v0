@@ -435,11 +435,13 @@
     "errorSensitiveDataRequests": "Your message requires additional review. Please wait while we connect you with a specialist.",
     "errorMiscellaneous": "Your message doesn't meet our community guidelines. Please try again.",
     "errorMultipleViolations": "It violates our chat guidelines.",
-    "errorAttachmentRejected": "Attachment not sent. Please share only relevant messages to this order.",
-    "errorAttachmentLimitReached": "Attachment not sent: You've reached the maximum number of attachments.",
+    "errorAttachmentRejected": "This file couldn't be sent. Use a different file.",
+    "errorAttachmentLimitReached": "You've reached the maximum number of attachments.",
     "fileTooLargeTitle": "File too large",
     "fileTooLargeDescription": "Attachments must be 5 MB or less. Compress the file or send a smaller one.",
-    "chooseAnotherFile": "Choose another file"
+    "chooseAnotherFile": "Choose another file",
+    "oneItemAtATimeTitle": "One item at a time",
+    "oneItemAtATimeDescription": "Send your message and attachment separately, not in the same request."
   },
   "orderDetails": {
     "title": "Order details",

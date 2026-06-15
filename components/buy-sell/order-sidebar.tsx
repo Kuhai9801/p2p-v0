@@ -29,6 +29,7 @@ import AdUpdatedConfirmation from "./ad-updated-confirmation"
 import { useTrackers } from "@/analytics/useTrackers"
 import { mapOrderError } from "@/lib/orders/order-error-mapper"
 import { createOrderErrorDispatcher } from "@/lib/orders/order-error-dispatcher"
+import { OrderErrorAction } from "@/lib/orders/order-error-actions"
 import { createPaymentMethodDuplicateAlertConfig } from "@/lib/payment-methods/create-payment-method-duplicate-alert-config"
 
 interface OrderSidebarProps {
@@ -500,6 +501,8 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
             confirmText: err.primaryCta,
             cancelText: err.secondaryCta,
             type: "warning",
+            hideCloseButton: err.primaryAction === OrderErrorAction.GoToMarkets,
+            preventOutsideClose: err.primaryAction === OrderErrorAction.GoToMarkets,
             onConfirm: () => dispatch(err.primaryAction, { orderId: existingOrderId }),
             onCancel: err.secondaryAction
               ? () => dispatch(err.secondaryAction!, { orderId: existingOrderId })

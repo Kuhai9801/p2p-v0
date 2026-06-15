@@ -410,10 +410,10 @@ export function mapOrderError(
       return {
         title: t("maintenance.errorTitle"),
         message: t("maintenance.errorMessage"),
-        primaryCta: t("order.openLiveChat"),
-        primaryAction: OrderErrorAction.OpenLiveChat,
-        secondaryCta: t("common.close"),
-        secondaryAction: OrderErrorAction.Dismiss,
+        primaryCta: t("navigation.backToHome"),
+        primaryAction: OrderErrorAction.GoToMarkets,
+        secondaryCta: t("order.openLiveChat"),
+        secondaryAction: OrderErrorAction.OpenLiveChat,
       }
 
     case "DuplicateRequestDetected":

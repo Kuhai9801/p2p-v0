@@ -134,6 +134,13 @@ export default function OrderChat({
             tags: ["miscellaneous"],
           },
         ])
+      } else if (error instanceof Error && error.message === "BothChatMessageAndAttachmentPresent") {
+        showAlert({
+          title: t("chat.oneItemAtATimeTitle"),
+          description: t("chat.oneItemAtATimeDescription"),
+          confirmText: t("common.gotIt"),
+          type: "warning",
+        })
       }
     } finally {
       setIsSending(false)
@@ -207,6 +214,13 @@ export default function OrderChat({
               tags: ["attachment_limit_reached"],
             },
           ])
+        } else if (error instanceof Error && error.message === "BothChatMessageAndAttachmentPresent") {
+          showAlert({
+            title: t("chat.oneItemAtATimeTitle"),
+            description: t("chat.oneItemAtATimeDescription"),
+            confirmText: t("common.gotIt"),
+            type: "warning",
+          })
         }
       } finally {
         setIsSending(false)

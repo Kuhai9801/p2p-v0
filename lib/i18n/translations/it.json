@@ -193,8 +193,8 @@
     "errorPromotionalContent": "I contenuti promozionali e le pubblicità non sono consentiti.",
     "errorSensitiveDataRequests": "Il tuo messaggio richiede una revisione aggiuntiva. Per favore, attendi mentre ti mettiamo in contatto con uno specialista.",
     "fileTooLargeDescription": "Gli allegati devono essere di 5 MB o meno. Comprimi il file o invia uno più piccolo.",
-    "errorAttachmentRejected": "Allegato non inviato. Si prega di condividere solo i messaggi pertinenti a questo ordine.",
-    "errorAttachmentLimitReached": "Allegato non inviato: hai raggiunto il numero massimo di allegati.",
+    "errorAttachmentRejected": "Impossibile inviare questo file. Utilizza un file diverso.",
+    "errorAttachmentLimitReached": "Hai raggiunto il numero massimo di allegati.",
     "fileTooLargeTitle": "File troppo grande",
     "justNow": "proprio ora",
     "messageNotSent": "Messaggio non inviato: {error}",
@@ -205,7 +205,9 @@
     "seenHoursAgo": "{hours} or{plural} fa",
     "seenMinutesAgo": "{minutes} minut{plural} fa",
     "send": "Invia",
-    "typeMessage": "Scrivi un messaggio..."
+    "typeMessage": "Scrivi un messaggio...",
+    "oneItemAtATimeTitle": "Un elemento alla volta",
+    "oneItemAtATimeDescription": "Invia il messaggio e l'allegato separatamente, non nella stessa richiesta."
   },
   "common": {
     "add": "Aggiungi",

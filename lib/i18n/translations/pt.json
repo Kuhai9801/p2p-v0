@@ -197,8 +197,8 @@
     "errorPromotionalContent": "Conteúdo promocional e anúncios não são permitidos.",
     "errorSensitiveDataRequests": "Sua mensagem requer revisão adicional. Por favor, aguarde enquanto conectamos você com um especialista.",
     "fileTooLargeDescription": "Os anexos devem ter 5 MB ou menos. Comprima o arquivo ou envie um menor.",
-    "errorAttachmentRejected": "Anexo não enviado. Por favor, partilhe apenas mensagens relevantes para esta encomenda.",
-    "errorAttachmentLimitReached": "Anexo não enviado: atingiu o número máximo de anexos.",
+    "errorAttachmentRejected": "Não foi possível enviar este arquivo. Use um arquivo diferente.",
+    "errorAttachmentLimitReached": "Você atingiu o número máximo de anexos.",
     "fileTooLargeTitle": "Arquivo muito grande",
     "justNow": "agora mesmo",
     "messageNotSent": "Mensagem não enviada: {error}",
@@ -209,7 +209,9 @@
     "seenHoursAgo": "{hours} hora{plural} atrás",
     "seenMinutesAgo": "{minutes} minuto{plural} atrás",
     "send": "Enviar",
-    "typeMessage": "Digite uma mensagem..."
+    "typeMessage": "Digite uma mensagem...",
+    "oneItemAtATimeTitle": "Um item de cada vez",
+    "oneItemAtATimeDescription": "Envie sua mensagem e anexo separadamente, não na mesma solicitação."
   },
   "common": {
     "add": "Adicionar",

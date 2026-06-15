@@ -228,8 +228,8 @@
     "errorPromotionalContent": "Nội dung quảng cáo và quảng bá không được phép.",
     "errorSensitiveDataRequests": "Tin nhắn của bạn cần được xem xét thêm. Vui lòng đợi trong khi chúng tôi kết nối bạn với chuyên gia.",
     "fileTooLargeDescription": "Tệp đính kèm phải là 5 MB hoặc nhỏ hơn. Nén tệp hoặc gửi tệp nhỏ hơn.",
-    "errorAttachmentRejected": "Tệp đính kèm không được gửi. Vui lòng chỉ chia sẻ các tin nhắn liên quan đến đơn hàng này.",
-    "errorAttachmentLimitReached": "Tệp đính kèm không được gửi: bạn đã đạt đến số lượng tệp đính kèm tối đa.",
+    "errorAttachmentRejected": "Không thể gửi tập tin này. Sử dụng một tập tin khác.",
+    "errorAttachmentLimitReached": "Bạn đã đạt đến số lượng tệp đính kèm tối đa.",
     "fileTooLargeTitle": "Tệp quá lớn",
     "justNow": "vừa xong",
     "messageNotSent": "Tin nhắn chưa được gửi: {error}",
@@ -240,7 +240,9 @@
     "seenHoursAgo": "{hours} giờ{plural} trước",
     "seenMinutesAgo": "{minutes} phút{plural} trước",
     "send": "Gửi",
-    "typeMessage": "Nhập tin nhắn..."
+    "typeMessage": "Nhập tin nhắn...",
+    "oneItemAtATimeTitle": "Một mục tại một thời điểm",
+    "oneItemAtATimeDescription": "Gửi tin nhắn và tệp đính kèm của bạn một cách riêng biệt, không theo cùng một yêu cầu."
   },
   "common": {
     "add": "Thêm",
