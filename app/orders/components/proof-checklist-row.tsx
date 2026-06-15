@@ -12,7 +12,12 @@ export const ProofChecklistRow = ({ label, value }: ProofChecklistRowProps) => (
     </span>
     <p className="text-sm text-slate-1200">
       {label}
-      {value && <strong className="font-bold">{value}</strong>}
+      {value && (
+        <>
+          {" "}
+          <strong className="font-bold">{value}</strong>
+        </>
+      )}
     </p>
   </div>
 )

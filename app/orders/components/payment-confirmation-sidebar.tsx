@@ -144,6 +144,12 @@ export const PaymentConfirmationSidebar = ({
         })
       } else {
         console.error("Error uploading file to chat:", error)
+        showAlert({
+          title: t("common.error"),
+          description: t("common.somethingWentWrong"),
+          confirmText: t("common.gotIt"),
+          type: "warning",
+        })
       }
     } finally {
       setIsUploadLoading(false)
@@ -250,7 +256,7 @@ export const PaymentConfirmationSidebar = ({
                         data={previewUrl}
                         type="application/pdf"
                         className="h-full w-full"
-                        aria-label={selectedFile.name}
+                        aria-label={t("orders.uploadProof")}
                       >
                         {/* Fallback for browsers that won't embed PDFs */}
                         <div className="flex h-full items-center justify-center gap-2 px-4">
@@ -270,7 +276,7 @@ export const PaymentConfirmationSidebar = ({
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={previewUrl}
-                        alt={selectedFile.name}
+                        alt={t("orders.uploadProof")}
                         className="h-full w-full object-cover"
                       />
                     )}
