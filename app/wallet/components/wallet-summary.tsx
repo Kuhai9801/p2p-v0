@@ -535,69 +535,71 @@ export default function WalletSummary({
             </div>
           </div>
         )}
-        {currentStep === "chooseCurrency" && (
-          <div className="fixed inset-0 z-50 bg-white">
-            <ChooseCurrencyStep
-              title={currentOperation === "DEPOSIT" ? t("wallet.deposit") : t("wallet.withdraw")}
-              description={t("wallet.chooseCurrencyDescription", {
-                action: currentOperation === "DEPOSIT" ? "deposit" : "withdraw",
-              })}
-              currencies={currencies}
-              onClose={handleClose}
-              onCurrencySelect={handleCurrencySelect}
-            />
-          </div>
-        )}
-
-        {currentStep === "walletAction" && (
-          <div className="fixed inset-0 z-50 bg-white">
-            <WalletActionStep
-              title={currentOperation === "DEPOSIT" ? t("wallet.depositWith") : t("wallet.withdrawWith")}
-              actionType={currentOperation.toLowerCase() as "deposit" | "withdraw"}
-              onClose={handleClose}
-              onGoBack={handleGoBackToCurrency}
-              onDirectDepositClick={handleDirectDepositClick}
-              onDirectWithdrawClick={handleDirectWithdrawClick}
-              selectedCurrency={selectedCurrency}
-            />
-          </div>
-        )}
-
-        {currentStep === "transactionDetails" && selectedTransaction && (
-          <div className="fixed inset-0 z-50 bg-white overflow-y-auto">
-            <div className="p-6">
-              <div className="flex justify-start items-center mb-6">
-                <button
-                  onClick={handleCloseTransactionDetails}
-                  className="w-8 h-8 flex items-center justify-center"
-                  aria-label="Back to transactions"
-                >
-                  <Image src="/icons/back-circle.png" alt={t("common.back")} width={32} height={32} />
-                </button>
-              </div>
-              <TransactionDetails transaction={selectedTransaction} onClose={handleCloseTransactionDetails} />
-            </div>
-          </div>
-        )}
-        <WalletSidebar
-          currencySelected={selectedCurrency}
-          isOpen={isSidebarOpen}
-          onClose={() => setIsSidebarOpen(false)}
-          onDirectDepositClick={currentOperation === "DEPOSIT" ? handleDirectDepositClick : handleDirectWithdrawClick}
-          operation={currentOperation}
-          onP2PTransferClick={handleSendTransferClick}
-          onAccountTransferClick={handleReceiveTransferClick}
-          currencies={currencies}
-          transferStep={"enterAmount"}
-        />
-
-        <FullScreenIframeModal
-          isOpen={isIframeModalOpen}
-          onClose={() => setIsIframeModalOpen(false)}
-          operation={currentOperation}
-          currency={displayCurrency}
-        />
       </div>
+
+      {currentStep === "chooseCurrency" && (
+        <div className="fixed inset-0 z-50 bg-white">
+          <ChooseCurrencyStep
+            title={currentOperation === "DEPOSIT" ? t("wallet.deposit") : t("wallet.withdraw")}
+            description={t("wallet.chooseCurrencyDescription", {
+              action: currentOperation === "DEPOSIT" ? "deposit" : "withdraw",
+            })}
+            currencies={currencies}
+            onClose={handleClose}
+            onCurrencySelect={handleCurrencySelect}
+          />
+        </div>
+      )}
+
+      {currentStep === "walletAction" && (
+        <div className="fixed inset-0 z-50 bg-white">
+          <WalletActionStep
+            title={currentOperation === "DEPOSIT" ? t("wallet.depositWith") : t("wallet.withdrawWith")}
+            actionType={currentOperation.toLowerCase() as "deposit" | "withdraw"}
+            onClose={handleClose}
+            onGoBack={handleGoBackToCurrency}
+            onDirectDepositClick={handleDirectDepositClick}
+            onDirectWithdrawClick={handleDirectWithdrawClick}
+            selectedCurrency={selectedCurrency}
+          />
+        </div>
+      )}
+
+      {currentStep === "transactionDetails" && selectedTransaction && (
+        <div className="fixed inset-0 z-50 bg-white overflow-y-auto">
+          <div className="p-6">
+            <div className="flex justify-start items-center mb-6">
+              <button
+                onClick={handleCloseTransactionDetails}
+                className="w-8 h-8 flex items-center justify-center"
+                aria-label="Back to transactions"
+              >
+                <Image src="/icons/back-circle.png" alt={t("common.back")} width={32} height={32} />
+              </button>
+            </div>
+            <TransactionDetails transaction={selectedTransaction} onClose={handleCloseTransactionDetails} />
+          </div>
+        </div>
+      )}
+
+      <WalletSidebar
+        currencySelected={selectedCurrency}
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
+        onDirectDepositClick={currentOperation === "DEPOSIT" ? handleDirectDepositClick : handleDirectWithdrawClick}
+        operation={currentOperation}
+        onP2PTransferClick={handleSendTransferClick}
+        onAccountTransferClick={handleReceiveTransferClick}
+        currencies={currencies}
+        transferStep={"enterAmount"}
+      />
+
+      <FullScreenIframeModal
+        isOpen={isIframeModalOpen}
+        onClose={() => setIsIframeModalOpen(false)}
+        operation={currentOperation}
+        currency={displayCurrency}
+      />
     </>
   )
 }
