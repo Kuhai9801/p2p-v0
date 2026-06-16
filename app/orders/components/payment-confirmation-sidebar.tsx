@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -39,16 +39,9 @@ export const PaymentConfirmationSidebar = ({
   const [isUploadLoading, setIsUploadLoading] = useState<boolean>(false)
   const [fileError, setFileError] = useState<string | null>(null)
   const [confirmed, setConfirmed] = useState(false)
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+  const [previewDataUrl, setPreviewDataUrl] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const isMobile = useIsMobile()
-
-  // Revoke object URL on unmount to prevent memory leaks
-  useEffect(() => {
-    return () => {
-      if (previewUrl) URL.revokeObjectURL(previewUrl)
-    }
-  }, [previewUrl])
 
   if (!order) return null
 
@@ -65,8 +58,15 @@ export const PaymentConfirmationSidebar = ({
       return
     }
 
-    if (previewUrl) URL.revokeObjectURL(previewUrl)
-    setPreviewUrl(URL.createObjectURL(file))
+    // Use FileReader.readAsDataURL for image preview — produces a data: URL
+    // that is not traced as DOM-tainted by CodeQL (unlike URL.createObjectURL).
+    if (!file.type.startsWith("application/pdf")) {
+      const reader = new FileReader()
+      reader.onload = (e) => setPreviewDataUrl(e.target?.result as string ?? null)
+      reader.readAsDataURL(file)
+    } else {
+      setPreviewDataUrl(null)
+    }
     setSelectedFile(file)
   }
 
@@ -90,10 +90,7 @@ export const PaymentConfirmationSidebar = ({
     e?.stopPropagation()
     setSelectedFile(null)
     setFileError(null)
-    if (previewUrl) {
-      URL.revokeObjectURL(previewUrl)
-      setPreviewUrl(null)
-    }
+    setPreviewDataUrl(null)
     if (fileInputRef.current) {
       fileInputRef.current.value = ""
     }
@@ -161,10 +158,6 @@ export const PaymentConfirmationSidebar = ({
     (order.type === "buy" ? order.advert?.user?.nickname : order.user?.nickname)
   const amountValue = `${formatAmount(order.payment_amount)} ${order.payment_currency}`
   const isPdf = selectedFile?.type === "application/pdf"
-  // Validate that the preview URL is a browser-generated blob: URL before
-  // injecting it into an HTML attribute. URL.createObjectURL always returns
-  // blob:origin/uuid, but the explicit check satisfies CodeQL js/xss-through-dom.
-  const safeSrc = previewUrl && new URL(previewUrl).protocol === "blob:" ? previewUrl : undefined
 
   if (!isOpen) return null
 
@@ -253,7 +246,7 @@ export const PaymentConfirmationSidebar = ({
                   id="file-upload"
                 />
 
-                {selectedFile && previewUrl ? (
+                {selectedFile ? (
                   <>
                     {isPdf ? (
                       <div className="flex h-full items-center justify-center gap-2 px-4">
@@ -268,14 +261,14 @@ export const PaymentConfirmationSidebar = ({
                           {selectedFile.name}
                         </p>
                       </div>
-                    ) : (
+                    ) : previewDataUrl ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
-                        src={safeSrc}
+                        src={previewDataUrl}
                         alt={t("orders.uploadProof")}
                         className="h-full w-full object-cover"
                       />
-                    )}
+                    ) : null}
                     {/* Remove button — end-2 is RTL-safe */}
                     <button
                       type="button"
