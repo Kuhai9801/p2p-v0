@@ -252,26 +252,18 @@ export const PaymentConfirmationSidebar = ({
                 {selectedFile && previewUrl ? (
                   <>
                     {isPdf ? (
-                      <object
-                        data={previewUrl}
-                        type="application/pdf"
-                        className="h-full w-full"
-                        aria-label={t("orders.uploadProof")}
-                      >
-                        {/* Fallback for browsers that won't embed PDFs */}
-                        <div className="flex h-full items-center justify-center gap-2 px-4">
-                          <Image
-                            src="/icons/upload-icon.png"
-                            alt=""
-                            aria-hidden="true"
-                            width={24}
-                            height={24}
-                          />
-                          <p className="truncate text-sm font-medium text-slate-1200">
-                            {selectedFile.name}
-                          </p>
-                        </div>
-                      </object>
+                      <div className="flex h-full items-center justify-center gap-2 px-4">
+                        <Image
+                          src="/icons/upload-icon.png"
+                          alt=""
+                          aria-hidden="true"
+                          width={24}
+                          height={24}
+                        />
+                        <p className="truncate text-sm font-medium text-slate-1200">
+                          {selectedFile.name}
+                        </p>
+                      </div>
                     ) : (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
