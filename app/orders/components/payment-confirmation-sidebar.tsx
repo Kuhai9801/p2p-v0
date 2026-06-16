@@ -161,10 +161,20 @@ export const PaymentConfirmationSidebar = ({
     (order.type === "buy" ? order.advert?.user?.nickname : order.user?.nickname)
   const amountValue = `${formatAmount(order.payment_amount)} ${order.payment_currency}`
   const isPdf = selectedFile?.type === "application/pdf"
-  // Validate that the preview URL is a browser-generated blob: URL before
-  // injecting it into an HTML attribute. URL.createObjectURL always returns
-  // blob:origin/uuid, but the explicit check satisfies CodeQL js/xss-through-dom.
-  const safeSrc = previewUrl && new URL(previewUrl).protocol === "blob:" ? previewUrl : undefined
+  // Only allow browser-generated blob URLs for image previews.
+  // This ensures user-controlled file input is not directly reinterpreted in the DOM.
+  const allowedImageTypes = new Set(["image/jpeg", "image/jpg", "image/png"])
+  let safeSrc: string | undefined
+  if (previewUrl && selectedFile?.type && allowedImageTypes.has(selectedFile.type)) {
+    try {
+      const parsed = new URL(previewUrl)
+      if (parsed.protocol === "blob:") {
+        safeSrc = previewUrl
+      }
+    } catch {
+      safeSrc = undefined
+    }
+  }
 
   if (!isOpen) return null
 
