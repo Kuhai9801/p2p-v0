@@ -161,6 +161,10 @@ export const PaymentConfirmationSidebar = ({
     (order.type === "buy" ? order.advert?.user?.nickname : order.user?.nickname)
   const amountValue = `${formatAmount(order.payment_amount)} ${order.payment_currency}`
   const isPdf = selectedFile?.type === "application/pdf"
+  // Validate that the preview URL is a browser-generated blob: URL before
+  // injecting it into an HTML attribute. URL.createObjectURL always returns
+  // blob:origin/uuid, but the explicit check satisfies CodeQL js/xss-through-dom.
+  const safeSrc = previewUrl && new URL(previewUrl).protocol === "blob:" ? previewUrl : undefined
 
   if (!isOpen) return null
 
@@ -267,7 +271,7 @@ export const PaymentConfirmationSidebar = ({
                     ) : (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
-                        src={previewUrl}
+                        src={safeSrc}
                         alt={t("orders.uploadProof")}
                         className="h-full w-full object-cover"
                       />
