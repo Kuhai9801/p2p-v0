@@ -1,6 +1,8 @@
 {
   "adForm": {
     "adCreatedSuccess": "您制作的广告是为了{type}{account_currency}为了{payment_currency}。分享以覆盖更多人{audience}。",
+    "potentialSellers": "潜在卖家",
+    "potentialBuyers": "潜在买家",
     "adLimitReachedMessage": "对于该货币对和订单类型，您只能有 3 个有效广告。删除广告以创建新广告。",
     "adLimitReachedTitle": "已达到广告限制",
     "adUpdatedSuccess": "广告详细信息已更新。",
@@ -916,11 +918,11 @@
     "joinedToday": "今天加入",
     "joinedYesterday": "昨天加入",
     "last30Days": "过去 30 天",
-    "lessThanOneMin": "< 1 分钟",
     "lifetime": "终身",
     "loading": "正在加载...",
     "loadingUsers": "正在加载用户...",
     "mins": "分钟",
+    "hoursMinutes": "{hours}时{minutes}分",
     "noBlockedUsers": "还没有被屏蔽的用户",
     "noCounterparties": "尚无交易对手",
     "noCounterpartiesDescription": "与您进行过交易的交易者将出现在这里。",
@@ -976,7 +978,12 @@
     "validationNumbersOnly": "仅允许数字。",
     "validationSymbolsOnly": "仅限字母、数字、空格和符号 -+.,'#@():;被允许",
     "verificationExpired": "验证已过期",
-    "whenUsersFollow": "当用户关注您时，他们会出现在此处。"
+    "whenUsersFollow": "当用户关注您时，他们会出现在此处。",
+    "daysHours": "{days}天{hours}时",
+    "joinedOn": "加入于 {date}",
+    "ratingWithCount": "{rating}/5（{count} 个评分）",
+    "hoursOnly": "{hours}时",
+    "daysOnly": "{days}天"
   },
   "ratingSidebar": {
     "no": "否",

@@ -157,6 +157,17 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
+/* Novu notification popover — must escape overflow:hidden ancestors (orders,
+   profile, ads pages all have h-screen overflow-hidden content divs which cause
+   Floating UI to flip the popover upward, hiding it behind the header).
+   position:fixed removes it from any clipping context; z-index ensures it
+   paints above the header (z-20 = 20) on all pages. */
+[data-novu-popover-root],
+.nv-popoverContent {
+  position: fixed !important;
+  z-index: 9999 !important;
+}
+
 .novu-popover-content {
   max-width: 500px;
 }

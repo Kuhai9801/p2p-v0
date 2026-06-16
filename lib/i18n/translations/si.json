@@ -1,6 +1,8 @@
 {
   "adForm": {
     "adCreatedSuccess": "ඔබ දැන්වීමක් සාදා ඇත{type}{account_currency}සඳහා{payment_currency}. වැඩි විස්තර සඳහා එය බෙදා ගන්න{audience}.",
+    "potentialSellers": "විභව විකුණුම්කරුවන්",
+    "potentialBuyers": "විභව ගැනුම්කරුවන්",
     "adLimitReachedMessage": "ඔබට මෙම මුදල් යුගල සහ ඇණවුම් වර්ගය සඳහා ක්‍රියාකාරී දැන්වීම් 3ක් පමණක් තිබිය හැක. අලුත් එකක් සෑදීමට දැන්වීමක් මකන්න.",
     "adLimitReachedTitle": "දැන්වීම් සීමාව ළඟා විය",
     "adUpdatedSuccess": "දැන්වීම් විස්තර යාවත්කාලීන කර ඇත.",
@@ -916,11 +918,11 @@
     "joinedToday": "අද එකතු වුනා",
     "joinedYesterday": "ඊයේ එකතු වුණා",
     "last30Days": "පසුගිය දින 30",
-    "lessThanOneMin": "< විනාඩි 1",
     "lifetime": "ජීවිත කාලය",
     "loading": "පූරණය වෙමින්...",
     "loadingUsers": "පරිශීලකයන් පූරණය කරමින්...",
     "mins": "මිනිත්තු",
+    "hoursMinutes": "{hours}ප {minutes}මි",
     "noBlockedUsers": "තවමත් අවහිර කළ පරිශීලකයින් නොමැත",
     "noCounterparties": "තවම සගයන් නැත",
     "noCounterpartiesDescription": "ඔබ වෙළඳාම් කළ වෙළඳුන් මෙහි දිස්වනු ඇත.",
@@ -976,7 +978,12 @@
     "validationNumbersOnly": "අංක පමණක් අවසර ඇත.",
     "validationSymbolsOnly": "අකුරු, ඉලක්කම්, හිස්තැන් සහ සංකේත පමණි -+.,'#@():; අවසර ලැබේ",
     "verificationExpired": "සත්‍යාපනය කල් ඉකුත් විය",
-    "whenUsersFollow": "පරිශීලකයන් ඔබව අනුගමනය කරන විට, ඔවුන් මෙහි දිස් වනු ඇත."
+    "whenUsersFollow": "පරිශීලකයන් ඔබව අනුගමනය කරන විට, ඔවුන් මෙහි දිස් වනු ඇත.",
+    "daysHours": "{days}දි {hours}ප",
+    "joinedOn": "{date} දින සම්බන්ධ විය",
+    "ratingWithCount": "{rating}/5 ({count} ශ්‍රේණිගත කිරීම්)",
+    "hoursOnly": "{hours}ප",
+    "daysOnly": "{days}දි"
   },
   "ratingSidebar": {
     "no": "නැත",

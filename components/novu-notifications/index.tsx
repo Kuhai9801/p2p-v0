@@ -227,7 +227,7 @@ export function NovuNotifications({ disabled = false }: NovuNotificationsProps) 
         appearance={appearance}
         styles={{
           bell: { root: { background: "transparent", color: "black" } },
-          popover: { root: { zIndex: 100 } },
+          popover: { root: { zIndex: 9999 } },
         }}
       />
     </div>

@@ -1,6 +1,8 @@
 {
   "adForm": {
     "adCreatedSuccess": "Umeunda tangazo kwa {type} {account_currency} la {payment_currency}. Shiriki ili kuwafikia {audience} zaidi.",
+    "potentialSellers": "wauzaji wanaowezekana",
+    "potentialBuyers": "wanunuzi wanaowezekana",
     "adLimitReachedMessage": "Unaweza tu kuwa na matangazo 3 amilifu ya jozi hii ya sarafu na aina ya agizo. Futa tangazo ili kuunda jipya.",
     "adLimitReachedTitle": "Kikomo cha tangazo kimefikiwa",
     "adUpdatedSuccess": "Maelezo ya tangazo yamesasishwa.",
@@ -924,11 +926,11 @@
     "joinedToday": "Amejiunga leo",
     "joinedYesterday": "Amejiunga jana",
     "last30Days": "Siku 30 zilizopita",
-    "lessThanOneMin": "< 1 dakika",
     "lifetime": "Muda wote",
     "loading": "Inapakua...",
     "loadingUsers": "Inapakua watumiaji...",
     "mins": "dakika",
+    "hoursMinutes": "{hours}saa {minutes}dak",
     "noBlockedUsers": "Hakuna watumiaji wazuiwa bado",
     "noCounterparties": "Hakuna washirika wa biashara bado",
     "noCounterpartiesDescription": "Wafanyabiashara ambao umefanya biashara nao wataonekana hapa.",
@@ -984,7 +986,12 @@
     "validationNumbersOnly": "Namba pekee zinakubaliwa.",
     "validationSymbolsOnly": "Herufi, namba, nafasi, na alama -+.,'#@():; tu zinakubaliwa",
     "verificationExpired": "Uthibitisho umepita muda",
-    "whenUsersFollow": "Wakati watumiaji wanakufuata, wataonekana hapa."
+    "whenUsersFollow": "Wakati watumiaji wanakufuata, wataonekana hapa.",
+    "daysHours": "{days}siku {hours}saa",
+    "joinedOn": "Alijiunga tarehe {date}",
+    "ratingWithCount": "{rating}/5 (maoni {count})",
+    "hoursOnly": "{hours}saa",
+    "daysOnly": "{days}siku"
   },
   "ratingSidebar": {
     "no": "Hapana",

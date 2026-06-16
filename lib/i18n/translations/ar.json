@@ -1,6 +1,8 @@
 {
   "adForm": {
     "adCreatedSuccess": "لقد أنشأت إعلاناً لـ{type} {account_currency} مقابل {payment_currency}. شاركه للوصول إلى المزيد من {audience}.",
+    "potentialSellers": "البائعين المحتملين",
+    "potentialBuyers": "المشترين المحتملين",
     "adLimitReachedMessage": "يمكنك الحصول على 3 إعلانات نشطة فقط لزوج العملات ونوع الطلب هذا. احذف إعلاناً لإنشاء إعلان جديد.",
     "adLimitReachedTitle": "تم الوصول إلى حد الإعلانات",
     "adUpdatedSuccess": "تم تحديث تفاصيل الإعلان.",
@@ -916,11 +918,11 @@
     "joinedToday": "انضم اليوم",
     "joinedYesterday": "انضم أمس",
     "last30Days": "آخر 30 يومًا",
-    "lessThanOneMin": "< 1 دقيقة",
     "lifetime": "مدى الحياة",
     "loading": "جار التحميل...",
     "loadingUsers": "جارٍ تحميل المستخدمين...",
     "mins": "دقائق",
+    "hoursMinutes": "{hours}س {minutes}د",
     "noBlockedUsers": "لا يوجد مستخدمين محظورين حتى الآن",
     "noCounterparties": "لا يوجد أطراف مقابلة حتى الآن",
     "noCounterpartiesDescription": "المتداولون الذين تداولت معهم سيظهرون هنا.",
@@ -976,7 +978,12 @@
     "validationNumbersOnly": "يُسمح بالأرقام فقط.",
     "validationSymbolsOnly": "يُسمح فقط بالحروف والأرقام والمسافات والرموز -+.,'#@():;",
     "verificationExpired": "انتهت صلاحية التحقق",
-    "whenUsersFollow": "عندما يتابعك المستخدمون، سيظهرون هنا."
+    "whenUsersFollow": "عندما يتابعك المستخدمون، سيظهرون هنا.",
+    "daysHours": "{days}ي {hours}س",
+    "joinedOn": "انضم في {date}",
+    "ratingWithCount": "{rating}/5 ({count} تقييمات)",
+    "hoursOnly": "{hours}س",
+    "daysOnly": "{days}ي"
   },
   "ratingSidebar": {
     "no": "لا",

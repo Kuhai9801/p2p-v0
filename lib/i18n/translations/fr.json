@@ -1,6 +1,8 @@
 {
   "adForm": {
     "adCreatedSuccess": "Vous avez créé une annonce pour {type} {account_currency} pour {payment_currency}. Partagez-la pour atteindre plus de {audience}.",
+    "potentialSellers": "vendeurs potentiels",
+    "potentialBuyers": "acheteurs potentiels",
     "adLimitReachedMessage": "Vous ne pouvez avoir que 3 annonces actives pour cette paire de devises et ce type de commande. Supprimez-en une pour créer une nouvelle annonce.",
     "adLimitReachedTitle": "Limite d'annonces atteinte",
     "adUpdatedSuccess": "Les détails de l'annonce ont été mis à jour.",
@@ -932,11 +934,11 @@
     "joinedToday": "Inscrit aujourd'hui",
     "joinedYesterday": "Inscrit hier",
     "last30Days": "30 derniers jours",
-    "lessThanOneMin": "Moins d'une min",
     "lifetime": "Depuis le début",
     "loading": "Chargement...",
     "loadingUsers": "Chargement des utilisateurs...",
     "mins": "minutes",
+    "hoursMinutes": "{hours}h {minutes}min",
     "noBlockedUsers": "Pas encore d'utilisateurs bloqués",
     "noCounterparties": "Pas encore de contreparties",
     "noCounterpartiesDescription": "Les traders avec lesquels vous avez commercé apparaîtront ici.",
@@ -992,7 +994,12 @@
     "validationNumbersOnly": "Seuls les chiffres sont autorisés.",
     "validationSymbolsOnly": "Seuls les lettres, chiffres, espaces et symboles -+.,'#@():; sont autorisés",
     "verificationExpired": "Vérification expirée",
-    "whenUsersFollow": "Lorsque des utilisateurs vous suivent, ils apparaîtront ici."
+    "whenUsersFollow": "Lorsque des utilisateurs vous suivent, ils apparaîtront ici.",
+    "daysHours": "{days}j {hours}h",
+    "joinedOn": "Inscrit le {date}",
+    "ratingWithCount": "{rating}/5 ({count} évaluations)",
+    "hoursOnly": "{hours}h",
+    "daysOnly": "{days}j"
   },
   "ratingSidebar": {
     "no": "Non",

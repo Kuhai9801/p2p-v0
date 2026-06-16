@@ -4,6 +4,7 @@ import Image from "next/image"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { parseDurationMinutes } from "@/lib/format-duration"
 
 interface StatCardProps {
   tab: string
@@ -41,24 +42,49 @@ function StatCard({ title, value, tooltipKey }: StatCardProps) {
   )
 }
 
-export default function StatsGrid({ stats }) {
+interface StatsData {
+  statistics_30day?: {
+    completion_rate_buy?: number
+    completion_count_buy?: number
+    completion_rate_sell?: number
+    completion_count_sell?: number
+    completion_count_all?: number
+    buy_time_average?: number
+    release_time_average?: number
+    completion_amount_all?: string
+  }
+  statistics_lifetime?: {
+    completion_rate_buy?: number
+    completion_count_buy?: number
+    completion_rate_sell?: number
+    completion_count_sell?: number
+    completion_count_all?: number
+    buy_time_average?: number
+    release_time_average?: number
+    completion_amount_all?: string
+    partner_count?: number
+  }
+}
+
+export default function StatsGrid({ stats }: { stats: StatsData | null }) {
   const { t } = useTranslations()
 
-  const formatAmount = (amount) => {
-    return Number.parseFloat(amount).toLocaleString(undefined, {
+  const formatAmount = (amount: string | number) => {
+    return Number.parseFloat(String(amount)).toLocaleString(undefined, {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     })
   }
 
-  const formatTimeInMinutes = (seconds: number | null | undefined) => {
-    if (seconds == null || seconds <= 0) return "-"
-
-    const minutes = seconds / 60
-
-    if (minutes < 1) return t("profile.lessThanOneMin")
-
-    return `${minutes.toFixed(2)} ${t("profile.mins")}`
+  const formatTimeInMinutes = (minutes: number | null | undefined) => {
+    const parts = parseDurationMinutes(minutes)
+    switch (parts.kind) {
+      case "invalid": return "-"
+      case "zero": return `0 ${t("profile.mins")}`
+      case "minutes": return `${parts.value} ${t("profile.mins")}`
+      case "hours": return parts.m === 0 ? t("profile.hoursOnly", { hours: parts.h }) : t("profile.hoursMinutes", { hours: parts.h, minutes: parts.m })
+      case "days": return parts.h === 0 ? t("profile.daysOnly", { days: parts.d }) : t("profile.daysHours", { days: parts.d, hours: parts.h })
+    }
   }
 
   return (
@@ -113,8 +139,8 @@ export default function StatsGrid({ stats }) {
                     title={t("profile.tradeVolume")}
                     tooltipKey="profile.tradeVolume30DaysTooltip"
                     value={
-                      stats?.statistics_30day?.completion_amount_all > 0
-                        ? `${formatAmount(stats?.statistics_30day?.completion_amount_all)} USD`
+                      stats?.statistics_30day?.completion_amount_all && Number(stats.statistics_30day.completion_amount_all) > 0
+                        ? `${formatAmount(stats.statistics_30day.completion_amount_all)} USD`
                         : "0.00 USD"
                     }
                   />
@@ -170,8 +196,8 @@ export default function StatsGrid({ stats }) {
                     title={t("profile.tradeVolume")}
                     tooltipKey="profile.tradeVolumeLifetimeTooltip"
                     value={
-                      stats?.statistics_lifetime?.completion_amount_all > 0
-                        ? `${formatAmount(stats?.statistics_lifetime?.completion_amount_all)} USD`
+                      stats?.statistics_lifetime?.completion_amount_all && Number(stats.statistics_lifetime.completion_amount_all) > 0
+                        ? `${formatAmount(stats.statistics_lifetime.completion_amount_all)} USD`
                         : "0.00 USD"
                     }
                   />

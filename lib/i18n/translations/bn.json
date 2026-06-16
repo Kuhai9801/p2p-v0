@@ -1,6 +1,8 @@
 {
   "adForm": {
     "adCreatedSuccess": "আপনি {type} {account_currency} এর জন্য {payment_currency} একটি বিজ্ঞাপন তৈরি করেছেন। এটি ভাগ করুন আরও {audience} এর কাছে পৌঁছাতে।",
+    "potentialSellers": "সম্ভাব্য বিক্রেতারা",
+    "potentialBuyers": "সম্ভাব্য ক্রেতারা",
     "adLimitReachedMessage": "এই মুদ্র��� জোড়া এবং অ���্ডা��� টাইপের জন্য আপনার শুধুমাত্র ৩টি সক্রিয় বিজ্ঞাপন থাকতে পারে। নতুন বিজ্ঞাপন তৈরি করতে একটি মুছুন।",
     "adLimitReachedTitle": "বিজ্ঞাপন সীমা পৌঁছেছে",
     "adUpdatedSuccess": "বিজ্ঞাপন বিবরণ আপডেট করা হয়েছে।",
@@ -925,11 +927,11 @@
     "joinedToday": "আজ যোগদান করেছেন",
     "joinedYesterday": "গতকাল যোগদান করেছেন",
     "last30Days": "শেষ ৩০ দিন",
-    "lessThanOneMin": "< ১ মিনিট",
     "lifetime": "আজীবন",
     "loading": "লোড হচ্ছে...",
     "loadingUsers": "ব্যবহারকারীরা লোড হচ্ছে...",
     "mins": "মিনিট",
+    "hoursMinutes": "{hours}ঘ {minutes}মি",
     "noBlockedUsers": "এখনো কোন ব্লক করা ব্যবহারকারী নেই",
     "noCounterparties": "এখনো কোন ব্যবসায় অংশীদার নেই",
     "noCounterpartiesDescription": "যে ট্রেডাররা আপনি সাথে ব্যবসা করেছেন তারা এখানে প্রদর্শিত হবে।",
@@ -985,7 +987,12 @@
     "validationNumbersOnly": "শুধুমাত্র সংখ্যা অনুমোদিত।",
     "validationSymbolsOnly": "শুধুমাত্র অক্ষর, সংখ্যা, স্পেস, এবং চিহ্ন -+.,'#@():; অনুমোদিত",
     "verificationExpired": "যাচাইকরণ মেয়াদ শেষ",
-    "whenUsersFollow": "যখন ব্যবহারকারীরা আপনাকে অনুসরণ করবে, তারা এখানে প্রদর্শিত হবে।"
+    "whenUsersFollow": "যখন ব্যবহারকারীরা আপনাকে অনুসরণ করবে, তারা এখানে প্রদর্শিত হবে।",
+    "daysHours": "{days}দি {hours}ঘ",
+    "joinedOn": "{date} তারিখে যোগ দিয়েছেন",
+    "ratingWithCount": "{rating}/5 ({count} রেটিং)",
+    "hoursOnly": "{hours}ঘ",
+    "daysOnly": "{days}দি"
   },
   "ratingSidebar": {
     "no": "না",

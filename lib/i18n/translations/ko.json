@@ -1,6 +1,8 @@
 {
   "adForm": {
     "adCreatedSuccess": "{type}에 {account_currency}를 {payment_currency}로 광고를 만들었습니다. 더 많은 {audience}에게 도달하려면 공유하세요.",
+    "potentialSellers": "잠재적 판매자",
+    "potentialBuyers": "잠재적 구매자",
     "adLimitReachedMessage": "이 통화 쌍 및 주문 유형에 대해 3개의 활성 광고만 가질 수 있습니다. 새 광고를 만들려면 광고를 삭제하세요.",
     "adLimitReachedTitle": "광고 한도에 도달함",
     "adUpdatedSuccess": "광고 세부정보가 업데이트되었습니다.",
@@ -965,11 +967,11 @@
     "joinedToday": "오늘 가입",
     "joinedYesterday": "어제 가입",
     "last30Days": "최근 30일",
-    "lessThanOneMin": "< 1분",
     "lifetime": "전체 기간",
     "loading": "로딩 중...",
     "loadingUsers": "사용자를 로딩 중입니다...",
     "mins": "분",
+    "hoursMinutes": "{hours}시간 {minutes}분",
     "noBlockedUsers": "차단된 사용자 없음",
     "noCounterparties": "거래 파트너 없음",
     "noCounterpartiesDescription": "거래한 트레이더가 여기에 나타납니다.",
@@ -1025,7 +1027,12 @@
     "validationNumbersOnly": "숫자만 입력할 수 있습니다.",
     "validationSymbolsOnly": "문자, 숫자, 공백 및 기호 -+.,'#@():;만 허용됩니다",
     "verificationExpired": "검증 만료",
-    "whenUsersFollow": "사용자가 팔로우할 때 여기에 나타납니다."
+    "whenUsersFollow": "사용자가 팔로우할 때 여기에 나타납니다.",
+    "daysHours": "{days}일 {hours}시간",
+    "joinedOn": "{date}에 가입함",
+    "ratingWithCount": "{rating}/5 ({count}개 평점)",
+    "hoursOnly": "{hours}시간",
+    "daysOnly": "{days}일"
   },
   "ratingSidebar": {
     "no": "아니오",
