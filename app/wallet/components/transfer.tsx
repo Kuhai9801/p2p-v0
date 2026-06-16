@@ -174,8 +174,14 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
   const toSuccess = () => setStep("success")
   const toUnsuccessful = () => setStep("unsuccessful")
   const goBack = () => {
-    if (step === "enterAmount") setStep("chooseCurrency")
-    else if (step === "chooseCurrency") onClose()
+    if (step === "enterAmount") {
+      // When the flow starts directly at enterAmount (TRANSFER via sidebar),
+      // there is no chooseCurrency step to return to — close instead.
+      if (stepVal === "enterAmount") onClose()
+      else setStep("chooseCurrency")
+    } else if (step === "chooseCurrency") {
+      onClose()
+    }
   }
 
   const handleCurrencySelect = (currency: string) => {
