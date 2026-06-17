@@ -15,8 +15,7 @@ const Tooltip = ({ children, ...props }: React.ComponentProps<typeof TooltipPrim
     <TooltipPrimitive.Root
       open={open}
       onOpenChange={setOpen}
-      delayDuration={Number.POSITIVE_INFINITY}
-      disableHoverableContent
+      delayDuration={200}
       {...props}
     >
       {React.Children.map(children, (child) => {
