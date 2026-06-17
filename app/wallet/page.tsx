@@ -16,6 +16,7 @@ import { useWebSocketContext } from "@/contexts/websocket-context"
 import { useTrackers } from "@/analytics/useTrackers"
 import { useP2PSystemMaintenance } from "@/hooks/use-p2p-system-maintenance"
 import EmptyState from "@/components/empty-state"
+import { useWalletViewStore } from "@/stores/wallet-view-store"
 
 interface Balance {
   wallet_id: string
@@ -46,6 +47,7 @@ export default function WalletPage() {
   const tempBanUntil = userData?.temp_ban_until
   const isDisabled = userData?.status === "disabled"
   const { isActive: isMaintenanceActive } = useP2PSystemMaintenance()
+  const { setIsTransactionListVisible } = useWalletViewStore()
   const p2pBalanceAmount = userData?.balances?.amount ?? totalBalance
   const p2pBalanceCurrency = userData?.balances?.currency ?? balanceCurrency
 
@@ -88,6 +90,7 @@ export default function WalletPage() {
 
   useEffect(() => {
     track("ek_open_wallets")
+    return () => setIsTransactionListVisible(false)
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
@@ -158,12 +161,14 @@ export default function WalletPage() {
     setSelectedCurrency(currency)
     setTotalBalance(balance)
     setDisplayBalances(false)
+    setIsTransactionListVisible(true)
   }
 
   const handleBackToBalances = () => {
     setDisplayBalances(true)
     setSelectedCurrency(null)
     setSelectedTransaction(null)
+    setIsTransactionListVisible(false)
     // Restore the total balance from the p2p wallet
     if (balanceData?.wallets?.items) {
       const p2pWallet = balanceData.wallets.items.find((wallet: any) => wallet.type === "p2p")

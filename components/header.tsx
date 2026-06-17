@@ -17,12 +17,14 @@ import { Button } from "@/components/ui/button"
 import { useTrackers } from "@/analytics/useTrackers"
 import { useP2PSystemMaintenance } from "@/hooks/use-p2p-system-maintenance"
 import { guardP2PNavigation } from "@/lib/p2p-maintenance-navigation"
+import { useWalletViewStore } from "@/stores/wallet-view-store"
 
 export default function Header() {
   const userId = useUserDataStore((state) => state.userId)
   const { t } = useTranslations()
   const { track } = useTrackers()
   const { isActive: isMaintenanceActive } = useP2PSystemMaintenance()
+  const { isTransactionListVisible } = useWalletViewStore()
   const isMobile = useIsMobile()
   const { isChatVisible } = useChatVisibilityStore()
   const pathname = usePathname()
@@ -55,9 +57,10 @@ export default function Header() {
     { name: t("navigation.profile"), href: "/profile" },
   ]
 
-  // Hide header on advertiser page, order detail page, and when viewing chat on mobile
+  // Hide header on advertiser page, order detail page, ad create/edit pages, wallet transaction list, and when viewing chat on mobile
   const isOrderDetailPage = pathname.match(/^\/orders\/[^/]+$/)
-  if (pathname.startsWith("/advertiser") || isOrderDetailPage || (isMobile && isOrderDetailPage && isChatVisible)) return null
+  const isAdFormPage = pathname === "/ads/create" || pathname.startsWith("/ads/edit/")
+  if (pathname.startsWith("/advertiser") || isOrderDetailPage || isAdFormPage || isTransactionListVisible || (isMobile && isOrderDetailPage && isChatVisible)) return null
 
   return (
     <>
