@@ -739,7 +739,8 @@
     "youPay": "আপনি প্রদান করবেন",
     "youReceive": "আপনি পাবেন",
     "youSend": "আপনি পাঠান",
-    "yourTransactionRating": "আপনার লেনদেন রেটিং"
+    "yourTransactionRating": "আপনার লেনদেন রেটিং",
+    "fundsWillBeCredited": "আপনার অ্যাকাউন্টে ফান্ড ফেরত জমা করা হবে।"
   },
   "orders": {
     "active": "সক্রিয়",

@@ -748,7 +748,8 @@
     "youPay": "Paghi",
     "youReceive": "Ricevi",
     "youSend": "Invii",
-    "yourTransactionRating": "La tua valutazione della transazione"
+    "yourTransactionRating": "La tua valutazione della transazione",
+    "fundsWillBeCredited": "I fondi verranno accreditati nuovamente sul tuo conto."
   },
   "orders": {
     "active": "Attivi",

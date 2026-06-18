@@ -730,7 +730,8 @@
     "youPay": "நீங்கள் செலுத்துங்கள்",
     "youReceive": "நீங்கள் பெறுவீர்கள்",
     "youSend": "நீ அனுப்பு",
-    "yourTransactionRating": "உங்கள் பரிவர்த்தனை மதிப்பீடு"
+    "yourTransactionRating": "உங்கள் பரிவர்த்தனை மதிப்பீடு",
+    "fundsWillBeCredited": "நிதி உங்கள் கணக்கில் திரும்ப வரவு வைக்கப்படும்."
   },
   "orders": {
     "active": "செயலில்",

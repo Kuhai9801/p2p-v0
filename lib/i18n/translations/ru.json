@@ -760,7 +760,8 @@
     "youPay": "Вы платите",
     "youReceive": "Вы получаете",
     "youSend": "Вы отправляете",
-    "yourTransactionRating": "Ваша оценка транзакции"
+    "yourTransactionRating": "Ваша оценка транзакции",
+    "fundsWillBeCredited": "Средства будут возвращены на ваш счёт."
   },
   "orders": {
     "active": "Активные",

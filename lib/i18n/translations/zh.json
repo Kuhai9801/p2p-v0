@@ -730,7 +730,8 @@
     "youPay": "你付钱",
     "youReceive": "您收到",
     "youSend": "你发送",
-    "yourTransactionRating": "您的交易评级"
+    "yourTransactionRating": "您的交易评级",
+    "fundsWillBeCredited": "资金将退回到您的账户。"
   },
   "orders": {
     "active": "活跃",
