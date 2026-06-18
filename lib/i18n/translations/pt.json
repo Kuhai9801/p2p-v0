@@ -213,7 +213,9 @@
     "send": "Enviar",
     "typeMessage": "Digite uma mensagem...",
     "oneItemAtATimeTitle": "Um item de cada vez",
-    "oneItemAtATimeDescription": "Envie sua mensagem e anexo separadamente, não na mesma solicitação."
+    "oneItemAtATimeDescription": "Envie sua mensagem e anexo separadamente, não na mesma solicitação.",
+    "imageBlocked": "Imagem bloqueada",
+    "attachmentsRemaining": "Anexos restantes: {count}"
   },
   "common": {
     "add": "Adicionar",

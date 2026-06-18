@@ -208,7 +208,9 @@
     "send": "전송",
     "typeMessage": "메시지를 입력하세요...",
     "oneItemAtATimeTitle": "한 번에 하나의 항목",
-    "oneItemAtATimeDescription": "동일한 요청이 아닌 메시지와 첨부 파일을 별도로 보내십시오."
+    "oneItemAtATimeDescription": "동일한 요청이 아닌 메시지와 첨부 파일을 별도로 보내십시오.",
+    "imageBlocked": "이미지가 차단됨",
+    "attachmentsRemaining": "남은 첨부파일: {count}"
   },
   "common": {
     "add": "추가",

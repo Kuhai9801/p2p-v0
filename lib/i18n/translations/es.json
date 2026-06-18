@@ -209,7 +209,9 @@
     "send": "Enviar",
     "typeMessage": "Escribe un mensaje...",
     "oneItemAtATimeTitle": "Un elemento a la vez",
-    "oneItemAtATimeDescription": "Envíe su mensaje y archivo adjunto por separado, no en la misma solicitud."
+    "oneItemAtATimeDescription": "Envíe su mensaje y archivo adjunto por separado, no en la misma solicitud.",
+    "imageBlocked": "Imagen bloqueada",
+    "attachmentsRemaining": "Archivos adjuntos restantes: {count}"
   },
   "common": {
     "add": "Agregar",

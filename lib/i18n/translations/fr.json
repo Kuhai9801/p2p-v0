@@ -209,7 +209,9 @@
     "send": "Envoyer",
     "typeMessage": "Tapez un message...",
     "oneItemAtATimeTitle": "Un élément à la fois",
-    "oneItemAtATimeDescription": "Envoyez votre message et votre pièce jointe séparément, et non dans la même demande."
+    "oneItemAtATimeDescription": "Envoyez votre message et votre pièce jointe séparément, et non dans la même demande.",
+    "imageBlocked": "Image bloquée",
+    "attachmentsRemaining": "Pièces jointes restantes : {count}"
   },
   "common": {
     "add": "Ajouter",

@@ -51,6 +51,7 @@ export default function OrderChat({
   const [messages, setMessages] = useState<Message[]>([])
   const [isSending, setIsSending] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+  const [attachmentsRemaining, setAttachmentsRemaining] = useState<number | null>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const maxLength = 300
@@ -75,6 +76,10 @@ export default function OrderChat({
               return [...prev, newMessage]
             })
           }
+        }
+
+        if (typeof data.payload.data.chat_attachments_limit === "number") {
+          setAttachmentsRemaining(data.payload.data.chat_attachments_limit)
         }
 
         setIsLoading(false)
@@ -171,6 +176,11 @@ export default function OrderChat({
     const files = e.target.files
     if (files && files.length > 0) {
       const file = files[0]
+
+      if (attachmentsRemaining !== null && attachmentsRemaining <= 0) {
+        if (fileInputRef.current) fileInputRef.current.value = ""
+        return
+      }
 
       if (file.size > maxFileSizeBytes) {
         if (fileInputRef.current) fileInputRef.current.value = ""
@@ -336,9 +346,9 @@ export default function OrderChat({
                     <div key={msg.id} dir="ltr" className={`flex ${msg.sender_is_self ? "justify-end" : "justify-start"}`}>
                       <div className="max-w-[80%] rounded-lg pb-[16px]">
                         {msg.attachment && (
-                          <div className={`flex items-start ${msg.sender_is_self ? "justify-end" : ""}`}>
+                          <div className={`flex items-start gap-[4px] ${msg.sender_is_self ? "justify-end" : ""}`}>
                             <div
-                              className={`relative ${msg.sender_is_self ? "bg-slate-200" : "bg-slate-1700"} p-[16px] rounded-[8px] ${msg.rejected ? "opacity-50" : ""}`}
+                              className={`relative ${msg.sender_is_self ? "bg-slate-200" : "bg-slate-1700"} p-[16px] rounded-[8px]`}
                             >
                               {!msg.sender_is_self && (
                                 <div className="absolute left-0 top-[16px] w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent border-r-[8px] border-r-slate-1700 -translate-x-full" />
@@ -346,17 +356,23 @@ export default function OrderChat({
                               {msg.sender_is_self && (
                                 <div className="absolute right-0 top-[16px] w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent border-l-[8px] border-l-slate-200 translate-x-full" />
                               )}
-                              <div className="bg-slate-75 p-[8px] rounded-[4px] text-xs">
-                                {msg.rejected ? (
-                                  <Image src="/icons/image-unavailable.svg" alt={t("common.error")} width={40} height={40} />
-                                ) : (
+                              {msg.rejected ? (
+                                // Blocked attachment — "Image blocked" placeholder
+                                <div className="bg-white border border-grayscale-200 rounded-[4px] flex flex-col items-center justify-center w-[160px] h-[120px] gap-[4px] p-[8px]">
+                                  <Image src="/icons/image-unavailable.svg" alt="" aria-hidden="true" width={32} height={32} />
+                                  <p className="text-xs text-slate-1200 text-center">{t("chat.imageBlocked")}</p>
+                                </div>
+                              ) : (
+                                <div className="bg-slate-75 p-[8px] rounded-[4px] text-xs">
                                   <a href={msg.attachment.url} target="_blank" download rel="noreferrer">
                                     {msg.attachment.name}
                                   </a>
-                                )}
-                              </div>
+                                </div>
+                              )}
                             </div>
-                            {msg.rejected && <Image src="/icons/info-icon.png" alt={t("common.error")} width={24} height={24} className="mt-[16px]" />}
+                            {msg.rejected && (
+                              <Image src="/icons/info-icon.png" alt={t("common.error")} width={24} height={24} className="mt-[16px] shrink-0" />
+                            )}
                           </div>
                         )}
                         {msg.message && (
@@ -432,10 +448,11 @@ export default function OrderChat({
                 </Button>
               ) : (
                 <Button
-                  className="absolute end-3 top-1/2 transform -translate-y-1/2 p-1 text-gray-500 hover:text-gray-700 h-auto"
+                  className="absolute end-3 top-1/2 transform -translate-y-1/2 p-1 text-gray-500 hover:text-gray-700 h-auto disabled:opacity-30 disabled:cursor-not-allowed"
                   onClick={() => fileInputRef.current?.click()}
                   variant="ghost"
                   size="sm"
+                  disabled={attachmentsRemaining !== null && attachmentsRemaining <= 0}
                 >
                   <Image src="/icons/paperclip-icon.png" alt="Attach file" width={20} height={20} className="h-5 w-5" />
                 </Button>
@@ -449,7 +466,13 @@ export default function OrderChat({
               />
             </div>
             <div className="flex justify-between items-center">
-              <div></div>
+              <div className="text-xs ms-1">
+                {attachmentsRemaining !== null && (
+                  <span className={attachmentsRemaining <= 0 ? "text-error-text" : "text-grayscale-text-muted"}>
+                    {t("chat.attachmentsRemaining", { count: attachmentsRemaining })}
+                  </span>
+                )}
+              </div>
               <div className="text-xs text-[#0000007A] me-4">
                 {message.length}/{maxLength}
               </div>

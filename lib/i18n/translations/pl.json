@@ -212,7 +212,9 @@
     "send": "Wyślij",
     "typeMessage": "Wpisz wiadomość...",
     "oneItemAtATimeTitle": "Jeden przedmiot na raz",
-    "oneItemAtATimeDescription": "Wyślij wiadomość i załącznik osobno, a nie w tym samym żądaniu."
+    "oneItemAtATimeDescription": "Wyślij wiadomość i załącznik osobno, a nie w tym samym żądaniu.",
+    "imageBlocked": "Obraz zablokowany",
+    "attachmentsRemaining": "Pozostałe załączniki: {count}"
   },
   "common": {
     "add": "Dodaj",

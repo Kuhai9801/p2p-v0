@@ -244,7 +244,9 @@
     "send": "Gửi",
     "typeMessage": "Nhập tin nhắn...",
     "oneItemAtATimeTitle": "Một mục tại một thời điểm",
-    "oneItemAtATimeDescription": "Gửi tin nhắn và tệp đính kèm của bạn một cách riêng biệt, không theo cùng một yêu cầu."
+    "oneItemAtATimeDescription": "Gửi tin nhắn và tệp đính kèm của bạn một cách riêng biệt, không theo cùng một yêu cầu.",
+    "imageBlocked": "Hình ảnh bị chặn",
+    "attachmentsRemaining": "Tệp đính kèm còn lại: {count}"
   },
   "common": {
     "add": "Thêm",

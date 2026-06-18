@@ -233,7 +233,9 @@
     "send": "Senden",
     "typeMessage": "Nachricht eingeben...",
     "oneItemAtATimeTitle": "Ein Artikel nach dem anderen",
-    "oneItemAtATimeDescription": "Senden Sie Ihre Nachricht und den Anhang separat, nicht in derselben Anfrage."
+    "oneItemAtATimeDescription": "Senden Sie Ihre Nachricht und den Anhang separat, nicht in derselben Anfrage.",
+    "imageBlocked": "Bild blockiert",
+    "attachmentsRemaining": "Verbleibende Anhänge: {count}"
   },
   "common": {
     "add": "Hinzufügen",

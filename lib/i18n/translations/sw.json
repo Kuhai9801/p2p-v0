@@ -208,7 +208,9 @@
     "send": "Tuma",
     "typeMessage": "Andika ujumbe...",
     "oneItemAtATimeTitle": "Kipengee kimoja kwa wakati mmoja",
-    "oneItemAtATimeDescription": "Tuma ujumbe wako na kiambatisho kando, si kwa ombi moja."
+    "oneItemAtATimeDescription": "Tuma ujumbe wako na kiambatisho kando, si kwa ombi moja.",
+    "imageBlocked": "Picha imezuiwa",
+    "attachmentsRemaining": "Viambatisho vilivyosalia: {count}"
   },
   "common": {
     "add": "Ongeza",

@@ -208,7 +208,9 @@
     "send": "أرسل",
     "typeMessage": "اكتب رسالة...",
     "oneItemAtATimeTitle": "عنصر واحد في وقت واحد",
-    "oneItemAtATimeDescription": "أرسل رسالتك والمرفق بشكل منفصل، وليس في نفس الطلب."
+    "oneItemAtATimeDescription": "أرسل رسالتك والمرفق بشكل منفصل، وليس في نفس الطلب.",
+    "imageBlocked": "تم حظر الصورة",
+    "attachmentsRemaining": "المرفقات المتبقية: {count}"
   },
   "common": {
     "add": "أضف",

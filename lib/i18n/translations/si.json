@@ -208,7 +208,9 @@
     "send": "යවන්න",
     "typeMessage": "පණිවිඩයක් ටයිප් කරන්න...",
     "oneItemAtATimeTitle": "වරකට එක් අයිතමයක්",
-    "oneItemAtATimeDescription": "ඔබගේ පණිවිඩය සහ ඇමුණුම එකම ඉල්ලීමකින් නොව වෙන වෙනම යවන්න."
+    "oneItemAtATimeDescription": "ඔබගේ පණිවිඩය සහ ඇමුණුම එකම ඉල්ලීමකින් නොව වෙන වෙනම යවන්න.",
+    "imageBlocked": "රූපය අවහිර කර ඇත",
+    "attachmentsRemaining": "ඇමුණුම් ඉතිරිව ඇත: {count}"
   },
   "common": {
     "add": "එකතු කරන්න",

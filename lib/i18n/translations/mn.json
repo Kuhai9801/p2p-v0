@@ -208,7 +208,9 @@
     "send": "Илгээх",
     "typeMessage": "Зурвас бичнэ үү...",
     "oneItemAtATimeTitle": "Нэг удаад нэг зүйл",
-    "oneItemAtATimeDescription": "Мессеж болон хавсралтыг нэг хүсэлтээр биш тусад нь илгээнэ үү."
+    "oneItemAtATimeDescription": "Мессеж болон хавсралтыг нэг хүсэлтээр биш тусад нь илгээнэ үү.",
+    "imageBlocked": "Зургийг блоклосон",
+    "attachmentsRemaining": "Үлдсэн хавсралт: {count}"
   },
   "common": {
     "add": "Нэмэх",

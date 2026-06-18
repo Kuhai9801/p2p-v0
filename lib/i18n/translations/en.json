@@ -441,7 +441,9 @@
     "fileTooLargeDescription": "Attachments must be 5 MB or less. Compress the file or send a smaller one.",
     "chooseAnotherFile": "Choose another file",
     "oneItemAtATimeTitle": "One item at a time",
-    "oneItemAtATimeDescription": "Send your message and attachment separately, not in the same request."
+    "oneItemAtATimeDescription": "Send your message and attachment separately, not in the same request.",
+    "imageBlocked": "Image blocked",
+    "attachmentsRemaining": "Attachments remaining: {count}"
   },
   "orderDetails": {
     "title": "Order details",

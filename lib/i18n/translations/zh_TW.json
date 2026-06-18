@@ -208,7 +208,9 @@
     "send": "傳送",
     "typeMessage": "輸入訊息...",
     "oneItemAtATimeTitle": "一次一件物品",
-    "oneItemAtATimeDescription": "單獨發送您的訊息和附件，而不是在同一請求中發送。"
+    "oneItemAtATimeDescription": "單獨發送您的訊息和附件，而不是在同一請求中發送。",
+    "imageBlocked": "圖片被屏蔽",
+    "attachmentsRemaining": "剩餘附件：{count}"
   },
   "common": {
     "add": "添加",

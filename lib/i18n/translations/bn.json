@@ -217,7 +217,9 @@
     "send": "পাঠান",
     "typeMessage": "একটি বার্তা টাইপ করুন...",
     "oneItemAtATimeTitle": "এক সময়ে একটি আইটেম",
-    "oneItemAtATimeDescription": "আপনার বার্তা এবং সংযুক্তি আলাদাভাবে পাঠান, একই অনুরোধে নয়।"
+    "oneItemAtATimeDescription": "আপনার বার্তা এবং সংযুক্তি আলাদাভাবে পাঠান, একই অনুরোধে নয়।",
+    "imageBlocked": "ছবি অবরুদ্ধ",
+    "attachmentsRemaining": "বাকি সংযুক্তি: {count}"
   },
   "common": {
     "add": "যোগ করুন",

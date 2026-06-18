@@ -208,7 +208,9 @@
     "send": "发送",
     "typeMessage": "输入消息...",
     "oneItemAtATimeTitle": "一次一件物品",
-    "oneItemAtATimeDescription": "单独发送您的消息和附件，而不是在同一请求中发送。"
+    "oneItemAtATimeDescription": "单独发送您的消息和附件，而不是在同一请求中发送。",
+    "imageBlocked": "图片被屏蔽",
+    "attachmentsRemaining": "剩余附件：{count}"
   },
   "common": {
     "add": "添加",

@@ -233,7 +233,9 @@
     "send": "Отправить",
     "typeMessage": "Введите сообщение...",
     "oneItemAtATimeTitle": "Один предмет за раз",
-    "oneItemAtATimeDescription": "Отправляйте сообщение и вложение отдельно, а не в одном запросе."
+    "oneItemAtATimeDescription": "Отправляйте сообщение и вложение отдельно, а не в одном запросе.",
+    "imageBlocked": "Изображение заблокировано",
+    "attachmentsRemaining": "Осталось вложений: {count}"
   },
   "common": {
     "add": "Добавить",
