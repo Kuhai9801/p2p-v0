@@ -1,6 +1,8 @@
 {
   "adForm": {
     "adCreatedSuccess": "Bạn đã tạo quảng cáo để {type} {account_currency} cho {payment_currency}. Chia sẻ nó để tiếp cận {audience}.",
+    "potentialSellers": "người bán tiềm năng",
+    "potentialBuyers": "người mua tiềm năng",
     "adLimitReachedMessage": "Bạn chỉ có thể có 3 quảng cáo đang hoạt động cho cặp tiền tệ và loại đơn hàng này. Xóa một quảng cáo để tạo quảng cáo mới.",
     "adLimitReachedTitle": "Đã đạt giới hạn quảng cáo",
     "adUpdatedSuccess": "Chi tiết quảng cáo đã được cập nhật.",
@@ -971,11 +973,11 @@
     "joinedToday": "Tham gia hôm nay",
     "joinedYesterday": "Tham gia hôm qua",
     "last30Days": "30 ngày qua",
-    "lessThanOneMin": "< 1 phút",
     "lifetime": "Toàn bộ thời gian",
     "loading": "Đang tải...",
     "loadingUsers": "Đang tải người dùng...",
     "mins": "phút",
+    "hoursMinutes": "{hours}h {minutes}phút",
     "noBlockedUsers": "Chưa có người dùng bị chặn",
     "noCounterparties": "Chưa có đối tác giao dịch",
     "noCounterpartiesDescription": "Các nhà giao dịch bạn đã giao dịch sẽ xuất hiện ở đây.",
@@ -1031,7 +1033,12 @@
     "validationNumbersOnly": "Chỉ cho phép số.",
     "validationSymbolsOnly": "Chỉ cho phép chữ cái, số, khoảng trắng và ký hiệu -+.,'#@():;",
     "verificationExpired": "Xác minh đã hết hạn",
-    "whenUsersFollow": "Khi người dùng theo dõi bạn, họ sẽ xuất hiện ở đây."
+    "whenUsersFollow": "Khi người dùng theo dõi bạn, họ sẽ xuất hiện ở đây.",
+    "daysHours": "{days}ngày {hours}h",
+    "joinedOn": "Tham gia ngày {date}",
+    "ratingWithCount": "{rating}/5 ({count} đánh giá)",
+    "hoursOnly": "{hours}h",
+    "daysOnly": "{days}ngày"
   },
   "ratingSidebar": {
     "no": "Không",

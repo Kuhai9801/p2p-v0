@@ -45,7 +45,7 @@ export function KycOnboardingStepRow({ step, statusLabels }: KycOnboardingStepRo
           className="object-contain"
         />
       </div>
-      <div className="flex-1 text-left text-base font-normal text-slate-1200">{step.title}</div>
+      <div className="flex-1 text-start text-base font-normal text-slate-1200">{step.title}</div>
       {showProfileCheck && (
         <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center">
           <Image

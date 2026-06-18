@@ -202,11 +202,19 @@ export const fetchUserStats = async (): Promise<UserStatsResponse> => {
     if (responseData && responseData.data) {
       const data = responseData.data
 
-      const formatTimeAverage = (seconds: number) => {
-        if (!seconds || seconds <= 0) return "-"
-        const mins = seconds / 60
-        if (mins < 1) return "< 1 min"
-        return `${Math.floor(mins)} min${Math.floor(mins) > 1 ? "s" : ""}`
+      const formatTimeAverage = (minutes: number | null) => {
+        if (minutes == null) return "-"
+        const m = Math.round(minutes)
+        if (m <= 0) return "0 min"
+        if (m < 60) return `${m} min`
+        const hours = Math.floor(m / 60)
+        const remainingMins = m % 60
+        if (hours >= 24) {
+          const days = Math.floor(hours / 24)
+          const remainingHours = hours % 24
+          return remainingHours === 0 ? `${days}d` : `${days}d ${remainingHours}h`
+        }
+        return remainingMins === 0 ? `${hours}h` : `${hours}h ${remainingMins}m`
       }
 
       const transformedStats: UserStats = {
@@ -219,11 +227,11 @@ export const fetchUserStats = async (): Promise<UserStatsResponse> => {
           period: "(30d)",
         },
         avgPayTime: {
-          time: formatTimeAverage(Number(data.buy_time_average_30day)),
+          time: formatTimeAverage(data.buy_time_average_30day != null ? Number(data.buy_time_average_30day) : null),
           period: "(30d)",
         },
         avgReleaseTime: {
-          time: formatTimeAverage(Number(data.release_time_average_30day)),
+          time: formatTimeAverage(data.release_time_average_30day != null ? Number(data.release_time_average_30day) : null),
           period: "(30d)",
         },
         tradePartners: Number(data.partner_count_lifetime) || 0,

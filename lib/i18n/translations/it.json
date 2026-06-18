@@ -1,6 +1,8 @@
 {
   "adForm": {
     "adCreatedSuccess": "Hai creato un annuncio per {type} {account_currency} per {payment_currency}. Condividilo per raggiungere più {audience}.",
+    "potentialSellers": "potenziali venditori",
+    "potentialBuyers": "potenziali acquirenti",
     "adLimitReachedMessage": "Puoi avere solo 3 annunci attivi per questa coppia di valute e tipo di ordine. Eliminane uno per creare un nuovo annuncio.",
     "adLimitReachedTitle": "Limite annunci raggiunto",
     "adUpdatedSuccess": "I dettagli dell'annuncio sono stati aggiornati.",
@@ -945,11 +947,11 @@
     "joinedToday": "Iscritto oggi",
     "joinedYesterday": "Iscritto ieri",
     "last30Days": "Ultimi 30 giorni",
-    "lessThanOneMin": "< 1 minuto",
     "lifetime": "Dall'inizio",
     "loading": "Caricamento...",
     "loadingUsers": "Caricamento utenti...",
     "mins": "min",
+    "hoursMinutes": "{hours}h {minutes}min",
     "noBlockedUsers": "Nessun utente bloccato ancora",
     "noCounterparties": "Nessun contraente ancora",
     "noCounterpartiesDescription": "I trader con cui hai scambiato appariranno qui.",
@@ -1005,7 +1007,12 @@
     "validationNumbersOnly": "Sono consentiti solo numeri.",
     "validationSymbolsOnly": "Sono consentiti solo lettere, numeri, spazi e simboli -+.,'#@():;",
     "verificationExpired": "Verifica scaduta",
-    "whenUsersFollow": "Quando gli utenti ti seguiranno, appariranno qui."
+    "whenUsersFollow": "Quando gli utenti ti seguiranno, appariranno qui.",
+    "daysHours": "{days}g {hours}h",
+    "joinedOn": "Iscritto il {date}",
+    "ratingWithCount": "{rating}/5 ({count} valutazioni)",
+    "hoursOnly": "{hours}h",
+    "daysOnly": "{days}g"
   },
   "ratingSidebar": {
     "no": "No",

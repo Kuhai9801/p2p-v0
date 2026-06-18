@@ -1,6 +1,8 @@
 {
   "adForm": {
     "adCreatedSuccess": "Sie haben eine Anzeige zum {type} von {account_currency} für {payment_currency} erstellt. Teilen Sie es, um mehr {audience} zu erreichen.",
+    "potentialSellers": "potenzielle Verkäufer",
+    "potentialBuyers": "potenzielle Käufer",
     "adLimitReachedMessage": "Sie können nur 3 aktive Anzeigen für dieses Währungspaar und diese Bestellart haben. Löschen Sie eine, um eine neue Anzeige zu erstellen.",
     "adLimitReachedTitle": "Anzeigenlimit erreicht",
     "adUpdatedSuccess": "Anzeigendetails wurden aktualisiert.",
@@ -954,11 +956,11 @@
     "joinedToday": "Heute beigetreten",
     "joinedYesterday": "Gestern beigetreten",
     "last30Days": "Letzte 30 Tage",
-    "lessThanOneMin": "< 1 Min.",
     "lifetime": "Gesamt",
     "loading": "Wird geladen...",
     "loadingUsers": "Nutzer werden geladen...",
     "mins": "Min.",
+    "hoursMinutes": "{hours}Std. {minutes}Min.",
     "noBlockedUsers": "Noch keine blockierten Nutzer",
     "noCounterparties": "Noch keine Handelspartner",
     "noCounterpartiesDescription": "Händler, mit denen Sie gehandelt haben, werden hier angezeigt.",
@@ -1014,7 +1016,12 @@
     "validationNumbersOnly": "Nur Zahlen sind erlaubt.",
     "validationSymbolsOnly": "Nur Buchstaben, Zahlen, Leerzeichen und die Symbole -+.,'#@():; sind erlaubt",
     "verificationExpired": "Verifizierung abgelaufen",
-    "whenUsersFollow": "Wenn Ihnen Nutzer folgen, erscheinen sie hier."
+    "whenUsersFollow": "Wenn Ihnen Nutzer folgen, erscheinen sie hier.",
+    "daysHours": "{days}T. {hours}Std.",
+    "joinedOn": "Beigetreten am {date}",
+    "ratingWithCount": "{rating}/5 ({count} Bewertungen)",
+    "hoursOnly": "{hours}Std.",
+    "daysOnly": "{days}T."
   },
   "ratingSidebar": {
     "no": "Nein",

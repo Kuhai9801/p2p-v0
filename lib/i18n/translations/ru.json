@@ -1,6 +1,8 @@
 {
   "adForm": {
     "adCreatedSuccess": "Вы создали объявление для {type} {account_currency} за {payment_currency}. Поделитесь им, чтобы привлечь больше {audience}.",
+    "potentialSellers": "потенциальных продавцов",
+    "potentialBuyers": "потенциальных покупателей",
     "adLimitReachedMessage": "У вас может быть только 3 активных объявления для этой валютной пары и типа заказа. Удалите одно, чтобы создать новое объявление.",
     "adLimitReachedTitle": "Достигнут лимит объявлений",
     "adUpdatedSuccess": "Детали объявления обновлены.",
@@ -957,11 +959,11 @@
     "joinedToday": "Присоединился сегодня",
     "joinedYesterday": "Присоединился вчера",
     "last30Days": "Последние 30 дней",
-    "lessThanOneMin": "< 1 мин",
     "lifetime": "За все время",
     "loading": "Загрузка...",
     "loadingUsers": "Загрузка пользователей...",
     "mins": "мин",
+    "hoursMinutes": "{hours}ч {minutes}мин",
     "noBlockedUsers": "Еще нет заблокированных пользователей",
     "noCounterparties": "Торговых партнеров еще нет",
     "noCounterpartiesDescription": "Трейдеры, с которыми вы торговали, появятся здесь.",
@@ -1017,7 +1019,12 @@
     "validationNumbersOnly": "Разрешены только цифры.",
     "validationSymbolsOnly": "Разрешены только буквы, цифры, пробелы и символы -+.,'#@():;",
     "verificationExpired": "Срок верификации истек",
-    "whenUsersFollow": "Когда пользователи подпишутся на вас, они появятся здесь."
+    "whenUsersFollow": "Когда пользователи подпишутся на вас, они появятся здесь.",
+    "daysHours": "{days}д {hours}ч",
+    "joinedOn": "Присоединился {date}",
+    "ratingWithCount": "{rating}/5 ({count} оценок)",
+    "hoursOnly": "{hours}ч",
+    "daysOnly": "{days}д"
   },
   "ratingSidebar": {
     "no": "Нет",

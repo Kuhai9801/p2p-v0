@@ -453,18 +453,23 @@ export default function StatsTabs({ stats, isLoading, activeTab, maintenanceActi
           </div>
         ) : (
           <Tabs value={selectedTab} onValueChange={handleTabChange} className="h-full">
-            <div className="flex items-end border-b-2 border-b-grayscale-500 mb-2 md:mt-8 overflow-x-auto">
-              <TabsList className="h-auto min-h-10 w-auto bg-transparent p-0 gap-1 md:gap-2">
-                {tabs.map((tab) => (
-                  <TabsTrigger
-                    key={tab.id}
-                    value={tab.id}
-                    className="h-auto w-auto flex-none shrink-0 px-4 md:px-5 py-2.5 rounded-none border-b-2 border-b-transparent -mb-[2px] leading-normal data-[state=active]:border-b-black data-[state=active]:shadow-none data-[state=active]:bg-transparent"
-                  >
-                    {tab.label}
-                  </TabsTrigger>
-                ))}
-              </TabsList>
+            <div className="mb-2 md:mt-8">
+              <div className="overflow-x-auto">
+                {/* Gray line is on TabsList (inside the overflow container) so it is never
+                    clipped. Active indicator uses after:: positioned within the button
+                    bounds — no negative margins that overflow-x-auto would clip. */}
+                <TabsList className="h-auto min-h-10 w-auto bg-transparent p-0 gap-1 md:gap-2 border-b-2 border-b-grayscale-500">
+                  {tabs.map((tab) => (
+                    <TabsTrigger
+                      key={tab.id}
+                      value={tab.id}
+                      className="h-auto w-auto flex-none shrink-0 px-4 md:px-5 py-2.5 rounded-none leading-normal after:content-[''] after:absolute after:inset-x-0 after:bottom-0 after:h-[2px] after:transition-colors data-[state=active]:after:bg-black data-[state=active]:!shadow-none data-[state=active]:!bg-transparent data-[state=active]:text-foreground"
+                    >
+                      {tab.label}
+                    </TabsTrigger>
+                  ))}
+                </TabsList>
+              </div>
             </div>
 
             <TabsContent value="stats" className="mt-4">

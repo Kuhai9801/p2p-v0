@@ -1,6 +1,8 @@
 {
   "adForm": {
     "adCreatedSuccess": "Utworzyłeś reklamę dla {type} {account_currency} dla {payment_currency}. Udostępnij, aby dotrzeć do większej liczby {audience}.",
+    "potentialSellers": "potencjalnych sprzedawców",
+    "potentialBuyers": "potencjalnych kupujących",
     "adLimitReachedMessage": "Dla tej pary walutowej i typu zamówienia możesz mieć tylko 3 aktywne reklamy. Usuń ogłoszenie, aby utworzyć nowe.",
     "adLimitReachedTitle": "Osiągnięto limit reklam",
     "adUpdatedSuccess": "Szczegóły ogłoszenia zostały zaktualizowane.",
@@ -939,11 +941,11 @@
     "joinedToday": "Dołączył dzisiaj",
     "joinedYesterday": "Dołączył wczoraj",
     "last30Days": "Ostatnie 30 dni",
-    "lessThanOneMin": "< 1 min",
     "lifetime": "Całe życie",
     "loading": "Ładowanie...",
     "loadingUsers": "Ładowanie użytkowników...",
     "mins": "min",
+    "hoursMinutes": "{hours}godz. {minutes}min",
     "noBlockedUsers": "Jeszcze brak zablokowanych użytkowników",
     "noCounterparties": "Brak partnerów handlowych",
     "noCounterpartiesDescription": "Handlowcy, z którymi handlowałeś, pojawią się tutaj.",
@@ -999,7 +1001,12 @@
     "validationNumbersOnly": "Dozwolone są tylko cyfry.",
     "validationSymbolsOnly": "Dozwolone są tylko litery, cyfry, spacje i symbole -+.,'#@():;",
     "verificationExpired": "Weryfikacja wygasła",
-    "whenUsersFollow": "Gdy użytkownicy Cię obserwują, pojawią się tutaj."
+    "whenUsersFollow": "Gdy użytkownicy Cię obserwują, pojawią się tutaj.",
+    "daysHours": "{days}d {hours}godz.",
+    "joinedOn": "Dołączył {date}",
+    "ratingWithCount": "{rating}/5 ({count} ocen)",
+    "hoursOnly": "{hours}godz.",
+    "daysOnly": "{days}d"
   },
   "ratingSidebar": {
     "no": "Nie",

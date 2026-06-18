@@ -39,27 +39,23 @@ export default function ProfilePage() {
 
     const data = meData
     const joinDate = new Date(data.registered_at)
-    const now = new Date()
-    const diff = now.getTime() - joinDate.getTime()
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24))
-
-    let joinDateString
-    if (days === 0) {
-      joinDateString = t("profile.joinedToday")
-    } else if (days === 1) {
-      joinDateString = t("profile.joinedYesterday")
-    } else {
-      joinDateString = t("profile.joinedDaysAgo", { days })
-    }
+    const day = String(joinDate.getDate()).padStart(2, "0")
+    const month = String(joinDate.getMonth() + 1).padStart(2, "0")
+    const year = joinDate.getFullYear()
+    const joinDateString = t("profile.joinedOn", { date: `${day}/${month}/${year}` })
 
     return {
       ...data,
       username: data.nickname,
       is_online: data.is_online ?? true,
-      rating:
-        data.statistics_lifetime?.rating_average !== null && data.statistics_lifetime?.rating_average !== undefined
-          ? `${data.statistics_lifetime.rating_average}/5`
-          : t("profile.notRatedYet"),
+      rating: (() => {
+        const avg = data.statistics_lifetime?.rating_average
+        if (avg === null || avg === undefined) return t("profile.notRatedYet")
+        const count = data.statistics_lifetime?.rating_count
+        return count > 0
+          ? t("profile.ratingWithCount", { rating: avg, count })
+          : `${avg}/5`
+      })(),
       recommendation:
         data.statistics_lifetime?.recommend_average !== null && data.statistics_lifetime?.recommend_average !== undefined
           ? t("profile.recommendedBy", {

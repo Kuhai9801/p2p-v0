@@ -3,6 +3,7 @@
 import { Tooltip, TooltipArrow, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip"
 import Image from "next/image"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { parseDurationMinutes } from "@/lib/format-duration"
 
 interface AdvertiserProfile {
   id: string | number
@@ -54,13 +55,15 @@ interface StatsContentProps {
 export default function StatsContent({ profile }: StatsContentProps) {
   const { t } = useTranslations()
 
-  const getDuration = (duration: number | null | undefined) => {
-    if (duration == null || duration <= 0) return "-"
-
-    const newDuration = duration / 60
-    if (newDuration < 1) return t("profile.lessThanOneMin")
-
-    return `${newDuration.toFixed(2)} ${t("profile.mins")}`
+  const getDuration = (minutes: number | null | undefined) => {
+    const parts = parseDurationMinutes(minutes)
+    switch (parts.kind) {
+      case "invalid": return "-"
+      case "zero": return `0 ${t("profile.mins")}`
+      case "minutes": return `${parts.value} ${t("profile.mins")}`
+      case "hours": return parts.m === 0 ? t("profile.hoursOnly", { hours: parts.h }) : t("profile.hoursMinutes", { hours: parts.h, minutes: parts.m })
+      case "days": return parts.h === 0 ? t("profile.daysOnly", { days: parts.d }) : t("profile.daysHours", { days: parts.d, hours: parts.h })
+    }
   }
 
   return (

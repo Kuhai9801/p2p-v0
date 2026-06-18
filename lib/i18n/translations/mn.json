@@ -1,6 +1,8 @@
 {
   "adForm": {
     "adCreatedSuccess": "Та зар үүсгэсэн байна{type}{account_currency}төлөө{payment_currency}. Илүү ихийг хүргэхийн тулд үүнийг хуваалцаарай{audience}.",
+    "potentialSellers": "боломжит худалдагчид",
+    "potentialBuyers": "боломжит худалдан авагчид",
     "adLimitReachedMessage": "Та энэ валютын хос болон захиалгын төрлөөр зөвхөн 3 идэвхтэй зартай байх боломжтой. Шинэ зар үүсгэхийн тулд зарыг устгана уу.",
     "adLimitReachedTitle": "Зарын хязгаарт хүрсэн",
     "adUpdatedSuccess": "Зарын дэлгэрэнгүй мэдээлэл шинэчлэгдсэн.",
@@ -927,11 +929,11 @@
     "joinedToday": "Өнөөдөр нэгдсэн",
     "joinedYesterday": "Өчигдөр нэгдсэн",
     "last30Days": "Сүүлийн 30 хоног",
-    "lessThanOneMin": "< 1 мин",
     "lifetime": "Насан туршдаа",
     "loading": "Ачааж байна...",
     "loadingUsers": "Хэрэглэгчдийг ачаалж байна...",
     "mins": "мин",
+    "hoursMinutes": "{hours}ц {minutes}мин",
     "noBlockedUsers": "Одоогоор хориглосон хэрэглэгч алга",
     "noCounterparties": "Одоогоор эсрэг талууд байхгүй",
     "noCounterpartiesDescription": "Таны арилжаа хийсэн худалдаачид энд гарч ирнэ.",
@@ -987,7 +989,12 @@
     "validationNumbersOnly": "Зөвхөн тоо зөвшөөрөгдөнө.",
     "validationSymbolsOnly": "Зөвхөн үсэг, тоо, зай, тэмдэг -+.,'#@():; зөвшөөрөгдсөн",
     "verificationExpired": "Баталгаажуулах хугацаа дууссан",
-    "whenUsersFollow": "Хэрэглэгчид таныг дагавал энд харагдах болно."
+    "whenUsersFollow": "Хэрэглэгчид таныг дагавал энд харагдах болно.",
+    "daysHours": "{days}өд {hours}ц",
+    "joinedOn": "{date}-д нэгдсэн",
+    "ratingWithCount": "{rating}/5 ({count} үнэлгээ)",
+    "hoursOnly": "{hours}ц",
+    "daysOnly": "{days}өд"
   },
   "ratingSidebar": {
     "no": "Үгүй",

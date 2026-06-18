@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import { cn, getHomeUrl } from "@/lib/utils"
 import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
 import { useUserDataStore, getCachedSignup } from "@/stores/user-data-store"
+import { useWalletViewStore } from "@/stores/wallet-view-store"
 import { useState, useEffect } from "react"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { SvgIcon } from "@/components/icons/svg-icon"
@@ -21,6 +22,7 @@ import WalletSelectedIcon from "@/public/icons/ic-wallet-selected.svg"
 export default function MobileFooterNav() {
   const pathname = usePathname()
   const { isChatVisible } = useChatVisibilityStore()
+  const { isTransactionListVisible } = useWalletViewStore()
   const { t } = useTranslations()
   const { userData } = useUserDataStore()
   const [showWallet, setShowWallet] = useState<boolean>(() => {
@@ -51,7 +53,8 @@ export default function MobileFooterNav() {
     pathname.startsWith("/orders/") ||
     pathname.startsWith("/ads/create") ||
     pathname.startsWith("/ads/edit") ||
-    isChatVisible
+    isChatVisible ||
+    (pathname.startsWith("/wallet") && isTransactionListVisible)
   ) {
     return null
   }

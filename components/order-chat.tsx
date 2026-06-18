@@ -333,7 +333,7 @@ export default function OrderChat({
                     </div>
                   </div>
                   {dateMessages.map((msg) => (
-                    <div key={msg.id} className={`flex ${msg.sender_is_self ? "justify-end" : "justify-start"}`}>
+                    <div key={msg.id} dir="ltr" className={`flex ${msg.sender_is_self ? "justify-end" : "justify-start"}`}>
                       <div className="max-w-[80%] rounded-lg pb-[16px]">
                         {msg.attachment && (
                           <div className={`flex items-start ${msg.sender_is_self ? "justify-end" : ""}`}>
@@ -341,10 +341,10 @@ export default function OrderChat({
                               className={`relative ${msg.sender_is_self ? "bg-slate-200" : "bg-slate-1700"} p-[16px] rounded-[8px] ${msg.rejected ? "opacity-50" : ""}`}
                             >
                               {!msg.sender_is_self && (
-                                <div className="absolute ltr:left-0 rtl:right-0 top-[16px] w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent ltr:border-r-[8px] ltr:border-r-slate-1700 ltr:-translate-x-full rtl:border-l-[8px] rtl:border-l-slate-1700 rtl:translate-x-full" />
+                                <div className="absolute left-0 top-[16px] w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent border-r-[8px] border-r-slate-1700 -translate-x-full" />
                               )}
                               {msg.sender_is_self && (
-                                <div className="absolute ltr:right-0 rtl:left-0 top-[16px] w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent ltr:border-l-[8px] ltr:border-l-slate-200 ltr:translate-x-full rtl:border-r-[8px] rtl:border-r-slate-200 rtl:-translate-x-full" />
+                                <div className="absolute right-0 top-[16px] w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent border-l-[8px] border-l-slate-200 translate-x-full" />
                               )}
                               <div className="bg-slate-75 p-[8px] rounded-[4px] text-xs">
                                 {msg.rejected ? (
@@ -365,10 +365,10 @@ export default function OrderChat({
                               className={`relative break-words ${msg.sender_is_self ? (msg.rejected ? "bg-slate-200 opacity-50" : "bg-slate-200") : "bg-slate-1700"} p-[16px] rounded-[8px] flex-1`}
                             >
                               {!msg.sender_is_self && (
-                                <div className="absolute ltr:left-0 rtl:right-0 top-[16px] w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent ltr:border-r-[8px] ltr:border-r-slate-1700 ltr:-translate-x-full rtl:border-l-[8px] rtl:border-l-slate-1700 rtl:translate-x-full" />
+                                <div className="absolute left-0 top-[16px] w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent border-r-[8px] border-r-slate-1700 -translate-x-full" />
                               )}
                               {msg.sender_is_self && (
-                                <div className="absolute ltr:right-0 rtl:left-0 top-[16px] w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent ltr:border-l-[8px] ltr:border-l-slate-200 ltr:translate-x-full rtl:border-r-[8px] rtl:border-r-slate-200 rtl:-translate-x-full" />
+                                <div className="absolute right-0 top-[16px] w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent border-l-[8px] border-l-slate-200 translate-x-full" />
                               )}
                               {msg.message}
                             </div>

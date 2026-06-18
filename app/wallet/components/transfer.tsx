@@ -174,8 +174,14 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
   const toSuccess = () => setStep("success")
   const toUnsuccessful = () => setStep("unsuccessful")
   const goBack = () => {
-    if (step === "enterAmount") setStep("chooseCurrency")
-    else if (step === "chooseCurrency") onClose()
+    if (step === "enterAmount") {
+      // When the flow starts directly at enterAmount (TRANSFER via sidebar),
+      // there is no chooseCurrency step to return to — close instead.
+      if (stepVal === "enterAmount") onClose()
+      else setStep("chooseCurrency")
+    } else if (step === "chooseCurrency") {
+      onClose()
+    }
   }
 
   const handleCurrencySelect = (currency: string) => {
@@ -1401,11 +1407,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
   if (step === "enterAmount") {
     return (
       <div className="absolute inset-0 flex flex-col h-full p-4 md:pt-5">
-        <div className="flex justify-between items-center mb-6 md:max-w-[608px] md:mx-auto md:w-full">
-          <Button variant="ghost" size="sm" className="px-0 md:hidden" onClick={goBack} aria-label="Go back">
-            <Image src="/icons/back-circle.png" alt={t("common.back")} width={32} height={32} />
-          </Button>
-          <div className="hidden md:block w-8 h-8"></div>
+        <div className="flex justify-end items-center mb-6 md:max-w-[608px] md:mx-auto md:w-full">
           <Button variant="ghost" size="sm" className="px-0" onClick={() => { track("ek_close_transfer"); onClose() }} aria-label="Close">
             <Image src="/icons/close-circle-secondary.png" alt={t("common.close")} width={32} height={32} />
           </Button>

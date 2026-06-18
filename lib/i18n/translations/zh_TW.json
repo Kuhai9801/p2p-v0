@@ -1,6 +1,8 @@
 {
   "adForm": {
     "adCreatedSuccess": "您製作的廣告是為了{type}{account_currency}為了{payment_currency}。分享以覆蓋更多人{audience}。",
+    "potentialSellers": "潛在賣家",
+    "potentialBuyers": "潛在買家",
     "adLimitReachedMessage": "對於該貨幣對和訂單類型，您只能有 3 個有效廣告。刪除廣告以建立新廣告。",
     "adLimitReachedTitle": "已達到廣告限制",
     "adUpdatedSuccess": "廣告詳細資訊已更新。",
@@ -927,11 +929,11 @@
     "joinedToday": "今天加入",
     "joinedYesterday": "昨天加入",
     "last30Days": "過去 30 天",
-    "lessThanOneMin": "< 1 分鐘",
     "lifetime": "終身",
     "loading": "正在加載...",
     "loadingUsers": "正在載入用戶...",
     "mins": "分分鐘",
+    "hoursMinutes": "{hours}時{minutes}分",
     "noBlockedUsers": "還沒有被封鎖的用戶",
     "noCounterparties": "目前尚無交易對手",
     "noCounterpartiesDescription": "與您進行過交易的交易者將出現在這裡。",
@@ -987,7 +989,12 @@
     "validationNumbersOnly": "僅允許數字。",
     "validationSymbolsOnly": "僅限字母、數字、空格和符號 -+.,'#@():;被允許",
     "verificationExpired": "驗證已過期",
-    "whenUsersFollow": "當用戶關注您時，他們會出現在此。"
+    "whenUsersFollow": "當用戶關注您時，他們會出現在此。",
+    "daysHours": "{days}天{hours}時",
+    "joinedOn": "加入於 {date}",
+    "ratingWithCount": "{rating}/5（{count} 個評分）",
+    "hoursOnly": "{hours}時",
+    "daysOnly": "{days}天"
   },
   "ratingSidebar": {
     "no": "否",
