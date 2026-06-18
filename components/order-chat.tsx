@@ -52,7 +52,7 @@ export default function OrderChat({
   const [isSending, setIsSending] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [attachmentsRemaining, setAttachmentsRemaining] = useState<number | null>(null)
-  const messagesEndRef = useRef<HTMLDivElement>(null)
+  const messagesContainerRef = useRef<HTMLDivElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const maxLength = 300
   const maxFileSizeBytes = 5 * 1024 * 1024 // 5 MB
@@ -100,7 +100,8 @@ export default function OrderChat({
   }, [isConnected, getChatHistory, orderId])
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+    const c = messagesContainerRef.current
+    if (c) c.scrollTop = c.scrollHeight
   }, [messages])
 
   const showOrderTempLockedAlert = () => {
@@ -310,7 +311,7 @@ export default function OrderChat({
           )}
         </div>
       </div>
-      <div className="flex-1 overflow-y-auto">
+      <div ref={messagesContainerRef} className="flex-1 overflow-y-auto">
         <div className="p-[16px] m-[16px] bg-orange-50 rounded-[16px]">
           <div className="space-y-3">
             <div className="flex items-start gap-[8px]">
@@ -346,7 +347,7 @@ export default function OrderChat({
                     <div key={msg.id} dir="ltr" className={`flex ${msg.sender_is_self ? "justify-end" : "justify-start"}`}>
                       <div className="max-w-[80%] rounded-lg pb-[16px]">
                         {msg.attachment && (
-                          <div className={`flex items-start gap-[4px] ${msg.sender_is_self ? "justify-end" : ""}`}>
+                          <div className={`flex items-center gap-[4px] ${msg.sender_is_self ? "justify-end" : ""}`}>
                             <div
                               className={`relative ${msg.sender_is_self ? "bg-slate-200" : "bg-slate-1700"} p-[16px] rounded-[8px]`}
                             >
@@ -371,7 +372,7 @@ export default function OrderChat({
                               )}
                             </div>
                             {msg.rejected && (
-                              <Image src="/icons/info-icon.png" alt={t("common.error")} width={24} height={24} className="mt-[16px] shrink-0" />
+                              <Image src="/icons/warning-circle.png" alt={t("common.error")} width={24} height={24} className="shrink-0" />
                             )}
                           </div>
                         )}
@@ -416,7 +417,6 @@ export default function OrderChat({
               ))}
             </>
           )}
-          <div ref={messagesEndRef} />
         </div>
       </div>
 
