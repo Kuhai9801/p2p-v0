@@ -730,7 +730,8 @@
     "youPay": "Та төлнө",
     "youReceive": "Та хүлээн авна",
     "youSend": "Та илгээнэ үү",
-    "yourTransactionRating": "Таны гүйлгээний үнэлгээ"
+    "yourTransactionRating": "Таны гүйлгээний үнэлгээ",
+    "fundsWillBeCredited": "Мөнгийг таны дансанд буцааж байршуулна."
   },
   "orders": {
     "active": "Идэвхтэй",

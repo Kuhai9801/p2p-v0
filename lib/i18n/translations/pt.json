@@ -750,7 +750,8 @@
     "youPay": "Você paga",
     "youReceive": "Você recebe",
     "youSend": "Você envia",
-    "yourTransactionRating": "Sua avaliação da transação"
+    "yourTransactionRating": "Sua avaliação da transação",
+    "fundsWillBeCredited": "Os fundos serão creditados de volta na sua conta."
   },
   "orders": {
     "active": "Ativos",

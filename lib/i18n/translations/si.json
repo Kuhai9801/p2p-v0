@@ -730,7 +730,8 @@
     "youPay": "ඔබ ගෙවන්න",
     "youReceive": "ඔබට ලැබේ",
     "youSend": "ඔබ එවන්න",
-    "yourTransactionRating": "ඔබේ ගනුදෙනු ශ්‍රේණිගත කිරීම"
+    "yourTransactionRating": "ඔබේ ගනුදෙනු ශ්‍රේණිගත කිරීම",
+    "fundsWillBeCredited": "ශේෂය ඔබේ ගිණුමට නැවත බැරවනු ඇත."
   },
   "orders": {
     "active": "ක්රියාකාරී",

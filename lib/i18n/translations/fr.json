@@ -746,7 +746,8 @@
     "youPay": "Vous payez",
     "youReceive": "Vous recevez",
     "youSend": "Vous envoyez",
-    "yourTransactionRating": "Votre évaluation de la transaction"
+    "yourTransactionRating": "Votre évaluation de la transaction",
+    "fundsWillBeCredited": "Les fonds seront recrédités sur votre compte."
   },
   "orders": {
     "active": "Actives",

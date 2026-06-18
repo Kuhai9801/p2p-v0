@@ -757,7 +757,8 @@
     "youPay": "Sie zahlen",
     "youReceive": "Sie erhalten",
     "youSend": "Sie senden",
-    "yourTransactionRating": "Ihre Transaktionsbewertung"
+    "yourTransactionRating": "Ihre Transaktionsbewertung",
+    "fundsWillBeCredited": "Das Guthaben wird Ihrem Konto wieder gutgeschrieben."
   },
   "orders": {
     "active": "Aktiv",
