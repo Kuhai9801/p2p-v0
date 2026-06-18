@@ -587,6 +587,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
         open={visibilityDialogOpen}
         onOpenChange={setVisibilityDialogOpen}
         reasons={selectedVisibilityReasons}
+        onActivateAd={() => selectedAd && handleToggleStatus(selectedAd)}
       />
     </>
   )
