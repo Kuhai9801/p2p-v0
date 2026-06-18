@@ -9,6 +9,7 @@ import Sidebar from "@/components/sidebar"
 import { WebSocketProvider } from "@/contexts/websocket-context"
 import * as AuthAPI from "@/services/api/api-auth"
 import { useUserDataStore } from "@/stores/user-data-store"
+import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
 import { useOnboardingStatus } from "@/hooks/use-api-queries"
 import { cn, getLoginUrl } from "@/lib/utils"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
@@ -43,6 +44,7 @@ export default function Main({
   const { setIsWalletAccount } = useUserDataStore()
   const [isReady, setIsReady] = useState(false)
   const { isActive: isMaintenanceActive } = useP2PSystemMaintenance()
+  const { isChatVisible } = useChatVisibilityStore()
   const { data: onboardingStatus, isLoading: isOnboardingLoading } = useOnboardingStatus(
     isAuthenticated && !isMaintenanceActive,
   )
@@ -245,7 +247,7 @@ export default function Main({
         {showMaintenanceBanner && <P2PSystemMaintenanceBanner embeddedInDarkHeader />}
         {showBalanceWarning && <P2PBalanceWarning />}
         {isHeaderVisible && <Header className="flex-shrink-0" />}
-        <main className={cn("flex-1 overflow-hidden", !pathname.startsWith("/profile") && "pb-20")}>{children}</main>
+        <main className={cn("flex-1 overflow-hidden", !pathname.startsWith("/profile") && !isChatVisible && "pb-20")}>{children}</main>
         {!pathname.startsWith("/profile") && <MobileFooterNav className="flex-shrink-0" />}
       </div>
     </WebSocketProvider>
