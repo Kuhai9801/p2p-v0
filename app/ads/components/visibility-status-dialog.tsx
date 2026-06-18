@@ -54,7 +54,7 @@ const getReasonContent = (reason: string, t: (key: string) => string) => {
 
 const getReasonAction = (reason: string, t: (key: string) => string) => {
   const actionMap: Record<string, { label: string; action: string }> = {
-    advert_inactive: { label: t("visibilityStatus.actions.editAd"), action: "edit" },
+    advert_inactive: { label: t("visibilityStatus.actions.activateAd"), action: "activate" },
     advert_remaining: { label: t("visibilityStatus.actions.editAd"), action: "edit" },
     advertiser_daily_limit: { label: t("visibilityStatus.actions.editAd"), action: "edit" },
     advertiser_balance: { label: t("visibilityStatus.actions.editAd"), action: "edit" },
@@ -75,6 +75,7 @@ export function VisibilityStatusDialog({
   open,
   onOpenChange,
   reasons,
+  onActivateAd,
 }: VisibilityStatusDialogProps) {
   const isMobile = useIsMobile()
   const { t, locale } = useTranslations()
@@ -85,6 +86,10 @@ export function VisibilityStatusDialog({
   const handleAction = (actionType: string) => {
     track("ek_visibility_primary_action_ad_visibility_sheet", { visibility_primary_action: actionType })
     switch (actionType) {
+      case "activate":
+        onActivateAd?.()
+        onOpenChange(false)
+        break
       case "edit":
       case "edit_schedule":
       case "edit_ad_visibility":
