@@ -339,7 +339,7 @@ export default function OrdersPage() {
             )}
           </div>
         </div>
-        <div className="flex-1 min-h-0 pb-4 flex flex-col overflow-hidden">
+        <div className="flex-1 min-h-0 flex flex-col overflow-hidden">
           {isMaintenanceActive ? (
             <div>
               {activeTab === "active" ? (
@@ -359,7 +359,7 @@ export default function OrdersPage() {
               )}
             </div>
           ) : (
-            <div ref={scrollContainer} className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden pb-4">
+            <div ref={scrollContainer} className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden">
               <Table>
                 <TableHeader className="hidden border-b sticky top-0 bg-white shadow-sm">
                   <TableRow>

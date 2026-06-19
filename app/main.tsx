@@ -251,12 +251,7 @@ export default function Main({
         {showMaintenanceBanner && <P2PSystemMaintenanceBanner embeddedInDarkHeader />}
         {showBalanceWarning && <P2PBalanceWarning />}
         {isHeaderVisible && <Header className="flex-shrink-0" />}
-        <main
-          className={cn(
-            "flex flex-col flex-1 min-h-0 overflow-hidden",
-            showMobileFooterNav && !pathname.startsWith("/profile") && "pb-20",
-          )}
-        >
+        <main className="flex flex-col flex-1 min-h-0 overflow-hidden">
           {children}
         </main>
         {showMobileFooterNav && !pathname.startsWith("/profile") && (

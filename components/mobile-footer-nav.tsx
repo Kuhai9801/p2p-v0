@@ -20,7 +20,7 @@ import AdsSelectedIcon from "@/public/icons/ic-my-ads-selected.svg"
 import WalletIcon from "@/public/icons/ic-wallet.svg"
 import WalletSelectedIcon from "@/public/icons/ic-wallet-selected.svg"
 
-export default function MobileFooterNav() {
+export default function MobileFooterNav({ className }: { className?: string }) {
   const pathname = usePathname()
   const { isChatVisible } = useChatVisibilityStore()
   const { isTransactionListVisible } = useWalletViewStore()
@@ -60,7 +60,7 @@ export default function MobileFooterNav() {
   const isWalletActive = pathname.startsWith("/wallet")
 
   return (
-    <div className="fixed bottom-0 inset-x-0 bg-white border-t md:hidden z-40">
+    <div className={cn("bg-white border-t md:hidden z-40 flex-shrink-0", className)}>
       <div className={cn("grid grid-cols-4 min-h-16 relative", showWallet && "grid-cols-5")}>
         <Link
           href={getHomeUrl(isV1Signup, "home")}
