@@ -278,7 +278,7 @@ export default function OrderChat({
   }
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col flex-1 min-h-0 h-full w-full">
       <div className="flex items-center p-4 border-b flex-shrink-0">
         {onNavigateToOrderDetails && (
           <Button
@@ -311,7 +311,7 @@ export default function OrderChat({
           )}
         </div>
       </div>
-      <div ref={messagesContainerRef} className="flex-1 overflow-y-auto">
+      <div ref={messagesContainerRef} className="flex-1 min-h-0 overflow-y-auto">
         <div className="p-[16px] m-[16px] bg-orange-50 rounded-[16px]">
           <div className="space-y-3">
             <div className="flex items-start gap-[8px]">

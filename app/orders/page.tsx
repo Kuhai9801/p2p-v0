@@ -254,7 +254,7 @@ export default function OrdersPage() {
         : selectedOrder?.advert?.user?.last_online_at
 
     return (
-      <div className="flex flex-col flex-1 min-h-0">
+      <div className="flex flex-col flex-1 min-h-0 h-full w-full">
         <OrderChat
           orderId={selectedOrder.id}
           counterpartyName={counterpartyName}

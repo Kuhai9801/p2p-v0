@@ -253,7 +253,7 @@ export default function Main({
         {isHeaderVisible && <Header className="flex-shrink-0" />}
         <main
           className={cn(
-            "flex-1 min-h-0 overflow-hidden",
+            "flex flex-col flex-1 min-h-0 overflow-hidden",
             showMobileFooterNav && !pathname.startsWith("/profile") && "pb-20",
           )}
         >
