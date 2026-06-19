@@ -734,7 +734,8 @@
     "youPay": "أنت تدفع",
     "youReceive": "تتلقى",
     "youSend": "ترسل",
-    "yourTransactionRating": "تصنيف المعاملات الخاصة بك"
+    "yourTransactionRating": "تصنيف المعاملات الخاصة بك",
+    "fundsWillBeCredited": "سيتم إرجاع الأموال إلى حسابك."
   },
   "orders": {
     "active": "نشط",

@@ -783,7 +783,8 @@
     "youPay": "지불 금액",
     "youReceive": "받는 금액",
     "youSend": "전송할 금액",
-    "yourTransactionRating": "거래 평가"
+    "yourTransactionRating": "거래 평가",
+    "fundsWillBeCredited": "자금이 계좌로 다시 입금됩니다."
   },
   "orders": {
     "active": "활성",

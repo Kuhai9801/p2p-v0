@@ -746,7 +746,8 @@
     "youPay": "Płacisz",
     "youReceive": "Otrzymujesz",
     "youSend": "Wysyłasz",
-    "yourTransactionRating": "Twoja ocena transakcji"
+    "yourTransactionRating": "Twoja ocena transakcji",
+    "fundsWillBeCredited": "Środki zostaną zwrócone na Twoje konto."
   },
   "orders": {
     "active": "Aktywne",

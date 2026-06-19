@@ -750,7 +750,8 @@
     "youPay": "Pagas",
     "youReceive": "Recibes",
     "youSend": "Envías",
-    "yourTransactionRating": "Tu calificación de la transacción"
+    "yourTransactionRating": "Tu calificación de la transacción",
+    "fundsWillBeCredited": "Los fondos serán acreditados de nuevo en su cuenta."
   },
   "orders": {
     "active": "Activas",

@@ -742,7 +742,8 @@
     "youPay": "Unalipa",
     "youReceive": "Utapokea",
     "youSend": "Unatuma",
-    "yourTransactionRating": "Ukadiriaji wako wa muamala"
+    "yourTransactionRating": "Ukadiriaji wako wa muamala",
+    "fundsWillBeCredited": "Fedha zitakreditiwa tena kwenye akaunti yako."
   },
   "orders": {
     "active": "Inatumika",

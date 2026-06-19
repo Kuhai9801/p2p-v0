@@ -734,7 +734,8 @@
     "youPay": "你付錢",
     "youReceive": "您收到",
     "youSend": "你發送",
-    "yourTransactionRating": "您的交易評級"
+    "yourTransactionRating": "您的交易評級",
+    "fundsWillBeCredited": "資金將退回到您的帳戶。"
   },
   "orders": {
     "active": "活躍",

@@ -14,6 +14,7 @@ import type { Order } from "@/services/api/api-orders"
 import OrderChat from "@/components/order-chat"
 import OrderChatSkeleton from "@/components/order-chat-skeleton"
 import { useToast } from "@/hooks/use-toast"
+import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import {
@@ -695,6 +696,12 @@ export default function OrderDetailsPage() {
                   )}
                 </div>
                 <div className={cn(isMobile && "flex-1 min-h-0 overflow-y-auto px-[24px] pb-4")}>
+                {order.status === "timed_out" && !isBuyer && (
+                  <Alert variant="info" className="flex items-center gap-2 mb-[24px]">
+                    <InfoCircleIcon className="h-6 w-6 flex-shrink-0 [&>path]:fill-current" aria-hidden="true" />
+                    <AlertDescription>{t("orderDetails.fundsWillBeCredited")}</AlertDescription>
+                  </Alert>
+                )}
                 <div className="p-4 border rounded-lg mb-[24px]">
                   {order.status === "completed" ? (
                     <OrderDetails order={order} setShowChat={setShowChat} />

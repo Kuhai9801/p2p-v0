@@ -778,7 +778,8 @@
     "youPay": "Bạn thanh toán",
     "youReceive": "Bạn nhận được",
     "youSend": "Bạn gửi",
-    "yourTransactionRating": "Đánh giá giao dịch của bạn"
+    "yourTransactionRating": "Đánh giá giao dịch của bạn",
+    "fundsWillBeCredited": "Tiền sẽ được hoàn trả lại vào tài khoản của bạn."
   },
   "orders": {
     "active": "Đang hoạt động",
