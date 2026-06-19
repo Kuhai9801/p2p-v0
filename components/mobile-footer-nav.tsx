@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { usePathname } from 'next/navigation'
 import { cn, getHomeUrl } from "@/lib/utils"
+import { shouldShowMobileFooterNav } from "@/lib/mobile-footer-nav"
 import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
 import { useUserDataStore, getCachedSignup } from "@/stores/user-data-store"
 import { useWalletViewStore } from "@/stores/wallet-view-store"
@@ -49,13 +50,7 @@ export default function MobileFooterNav() {
     return null
   }
 
-  if (
-    pathname.startsWith("/orders/") ||
-    pathname.startsWith("/ads/create") ||
-    pathname.startsWith("/ads/edit") ||
-    isChatVisible ||
-    (pathname.startsWith("/wallet") && isTransactionListVisible)
-  ) {
+  if (!shouldShowMobileFooterNav(pathname, isChatVisible, isTransactionListVisible)) {
     return null
   }
 

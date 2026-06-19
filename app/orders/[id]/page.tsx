@@ -471,21 +471,19 @@ export default function OrderDetailsPage() {
       order?.advert.user.id == userId ? order?.user?.last_online_at : order?.advert?.user?.last_online_at
 
     return (
-      <div className="relative h-[calc(100vh-64px)] md:mb-[64px] flex flex-col">
-        <div className="flex-1 h-full">
-          <OrderChat
-            orderId={orderId}
-            counterpartyName={counterpartyNickname || "User"}
-            counterpartyInitial={(counterpartyNickname || "U")[0].toUpperCase()}
-            isClosed={["cancelled", "completed", "refunded"].includes(order?.status)}
-            counterpartyOnlineStatus={counterpartyOnlineStatus}
-            counterpartyLastOnlineAt={counterpartyLastOnlineAt}
-            onNavigateToOrderDetails={() => {
-              setShowChat(false)
-              setIsChatVisible(false)
-            }}
-          />
-        </div>
+      <div className="flex flex-col flex-1 min-h-0">
+        <OrderChat
+          orderId={orderId}
+          counterpartyName={counterpartyNickname || "User"}
+          counterpartyInitial={(counterpartyNickname || "U")[0].toUpperCase()}
+          isClosed={["cancelled", "completed", "refunded"].includes(order?.status)}
+          counterpartyOnlineStatus={counterpartyOnlineStatus}
+          counterpartyLastOnlineAt={counterpartyLastOnlineAt}
+          onNavigateToOrderDetails={() => {
+            setShowChat(false)
+            setIsChatVisible(false)
+          }}
+        />
       </div>
     )
   }

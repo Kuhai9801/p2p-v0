@@ -254,20 +254,18 @@ export default function OrdersPage() {
         : selectedOrder?.advert?.user?.last_online_at
 
     return (
-      <div className="h-full md:h-[calc(100vh-64px)] md:mb-[64px] flex flex-col">
-        <div className="flex-1 h-full">
-          <OrderChat
-            orderId={selectedOrder.id}
-            counterpartyName={counterpartyName}
-            counterpartyInitial={counterpartyInitial}
-            isClosed={isClosed}
-            counterpartyOnlineStatus={counterpartyOnlineStatus}
-            counterpartyLastOnlineAt={counterpartyLastOnlineAt}
-            onNavigateToOrderDetails={() => {
-              router.push(`/orders/${selectedOrder.id}`)
-            }}
-          />
-        </div>
+      <div className="flex flex-col flex-1 min-h-0">
+        <OrderChat
+          orderId={selectedOrder.id}
+          counterpartyName={counterpartyName}
+          counterpartyInitial={counterpartyInitial}
+          isClosed={isClosed}
+          counterpartyOnlineStatus={counterpartyOnlineStatus}
+          counterpartyLastOnlineAt={counterpartyLastOnlineAt}
+          onNavigateToOrderDetails={() => {
+            router.push(`/orders/${selectedOrder.id}`)
+          }}
+        />
       </div>
     )
   }

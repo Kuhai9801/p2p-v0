@@ -23,6 +23,8 @@ import { useOnboardingGate } from "@/hooks/use-onboarding-gate"
 import { useP2PBalanceWarning } from "@/hooks/use-p2p-balance-warning"
 import { useP2PSystemMaintenance } from "@/hooks/use-p2p-system-maintenance"
 import { shouldShowP2PMaintenanceBanner } from "@/lib/p2p-maintenance-constants"
+import { shouldShowMobileFooterNav } from "@/lib/mobile-footer-nav"
+import { useWalletViewStore } from "@/stores/wallet-view-store"
 import "./globals.css"
 
 export default function Main({
@@ -45,6 +47,8 @@ export default function Main({
   const [isReady, setIsReady] = useState(false)
   const { isActive: isMaintenanceActive } = useP2PSystemMaintenance()
   const { isChatVisible } = useChatVisibilityStore()
+  const { isTransactionListVisible } = useWalletViewStore()
+  const showMobileFooterNav = shouldShowMobileFooterNav(pathname, isChatVisible, isTransactionListVisible)
   const { data: onboardingStatus, isLoading: isOnboardingLoading } = useOnboardingStatus(
     isAuthenticated && !isMaintenanceActive,
   )
@@ -247,8 +251,17 @@ export default function Main({
         {showMaintenanceBanner && <P2PSystemMaintenanceBanner embeddedInDarkHeader />}
         {showBalanceWarning && <P2PBalanceWarning />}
         {isHeaderVisible && <Header className="flex-shrink-0" />}
-        <main className={cn("flex-1 overflow-hidden", !pathname.startsWith("/profile") && !isChatVisible && "pb-20")}>{children}</main>
-        {!pathname.startsWith("/profile") && <MobileFooterNav className="flex-shrink-0" />}
+        <main
+          className={cn(
+            "flex-1 min-h-0 overflow-hidden",
+            showMobileFooterNav && !pathname.startsWith("/profile") && "pb-20",
+          )}
+        >
+          {children}
+        </main>
+        {showMobileFooterNav && !pathname.startsWith("/profile") && (
+          <MobileFooterNav className="flex-shrink-0" />
+        )}
       </div>
     </WebSocketProvider>
   )
