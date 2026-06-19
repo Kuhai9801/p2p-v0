@@ -281,67 +281,66 @@ export default function OrdersPage() {
   return (
     <>
       <div className="flex flex-col flex-1 min-h-0 h-full md:h-screen px-3 overflow-hidden">
-        <div ref={scrollContainer} className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden">
-          <div className="sticky top-0 z-10 -mx-3 md:mx-0 bg-background">
-            <div className="relative z-10 w-full h-[80px] flex flex-row items-center gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between">
-              <Tabs value={activeTab} onValueChange={handleTabChange}>
-                <TabsList className="w-full bg-transparent p-0 gap-4">
-                  <TabsTrigger
-                    value="active"
-                    className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none px-0"
-                    variant="underline"
-                  >
-                    {t("orders.active")}
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="past"
-                    className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none px-0"
-                    variant="underline"
-                  >
-                    {t("orders.past")}
-                  </TabsTrigger>
-                </TabsList>
-              </Tabs>
-              {showCheckPreviousOrdersButton && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-white font-normal hover:text-white hover:bg-transparent "
-                  onClick={handleCheckPreviousOrders}
+        <div className="flex flex-col flex-shrink-0">
+          <div className="relative z-10 w-[calc(100%+24px)] md:w-full h-[80px] flex flex-row items-center gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-0 md:m-0">
+            <Tabs value={activeTab} onValueChange={handleTabChange}>
+              <TabsList className="w-full bg-transparent p-0 gap-4">
+                <TabsTrigger
+                  value="active"
+                  className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none px-0"
+                  variant="underline"
                 >
-                  {t("orders.checkPreviousOrders")}
-                  <Image
-                    src="/icons/chevron-right-white.png"
-                    width={10}
-                    height={24}
-                    className="ms-1 rtl:rotate-180"
-                    alt=""
-                    aria-hidden
-                  />
-                </Button>
-              )}
-            </div>
-            {tempBanUntil && !isMaintenanceActive && (
-              <div className="mt-4 px-3 md:px-0">
-                <TemporaryBanAlert tempBanUntil={tempBanUntil} />
-              </div>
-            )}
-            {activeTab === "past" && !isLoading && hasPastOrders && (
-              <div className="my-4 self-end rtl:self-start px-3 md:px-0">
-                <DateFilter
-                  value={dateFilter}
-                  customRange={customDateRange}
-                  onValueChange={(val) => {
-                    track("ek_date_filter_orders")
-                    setDateFilter(val)
-                  }}
-                  onCustomRangeChange={setCustomDateRange}
+                  {t("orders.active")}
+                </TabsTrigger>
+                <TabsTrigger
+                  value="past"
+                  className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none px-0"
+                  variant="underline"
+                >
+                  {t("orders.past")}
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
+            {showCheckPreviousOrdersButton && (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-white font-normal hover:text-white hover:bg-transparent "
+                onClick={handleCheckPreviousOrders}
+              >
+                {t("orders.checkPreviousOrders")}
+                <Image
+                  src="/icons/chevron-right-white.png"
+                  width={10}
+                  height={24}
+                  className="ms-1 rtl:rotate-180"
+                  alt=""
+                  aria-hidden
                 />
-              </div>
+              </Button>
             )}
           </div>
+          {tempBanUntil && !isMaintenanceActive && (
+            <div className="mt-4">
+              <TemporaryBanAlert tempBanUntil={tempBanUntil} />
+            </div>
+          )}
+          {activeTab === "past" && !isLoading && hasPastOrders && (
+            <div className="my-4 self-end rtl:self-start">
+              <DateFilter
+                value={dateFilter}
+                customRange={customDateRange}
+                onValueChange={(val) => {
+                  track("ek_date_filter_orders")
+                  setDateFilter(val)
+                }}
+                onCustomRangeChange={setCustomDateRange}
+              />
+            </div>
+          )}
+        </div>
 
-          <div className="max-md:-mt-6 max-md:pt-6 md:mt-0">
+        <div ref={scrollContainer} className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden pt-4">
           {isMaintenanceActive ? (
             <div>
               {activeTab === "active" ? (
@@ -484,7 +483,6 @@ export default function OrdersPage() {
               )}
             </>
           )}
-          </div>
         </div>
         <RatingSidebar
           isOpen={isRatingSidebarOpen}
