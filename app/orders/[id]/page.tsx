@@ -491,7 +491,7 @@ export default function OrderDetailsPage() {
   }
 
   return (
-    <div className="lg:absolute inset-x-0 top-6 bottom-0 bg-white overflow-y-auto h-[calc(100%+80px)] md:h-full">
+    <div className="lg:absolute inset-x-0 top-6 bottom-0 bg-white flex flex-col h-full md:overflow-y-auto md:h-full">
       {order?.type && (
         <Navigation
           isBackBtnVisible={false}
@@ -500,6 +500,7 @@ export default function OrderDetailsPage() {
           redirectUrl={"/orders"}
         />
       )}
+      <div className="flex-1 overflow-y-auto md:overflow-visible">
       <div className="container mx-auto px-[24px] mt-4 pb-6">
         {isLoading ? (
           <div className="flex flex-row gap-6">
@@ -554,7 +555,7 @@ export default function OrderDetailsPage() {
               <div className="w-full lg:w-1/2 rounded-lg">
                 <div
                   className={cn(
-                    `${getStatusBadgeStyle(order.status, isBuyer)} p-4 flex justify-between items-center rounded-none lg:rounded-lg mb-[24px] mt-[-16px] lg:mt-[0] mx-[-24px] lg:mx-[0]`,
+                    `${getStatusBadgeStyle(order.status, isBuyer)} p-4 flex justify-between items-center rounded-none lg:rounded-lg mb-[24px] mt-[-16px] lg:mt-[0] mx-[-24px] lg:mx-[0] sticky top-0 z-10`,
                     order.status === "pending_release" && isBuyer && isMobile ? "flex-col items-start" :
                       order.status === "pending_payment" || order.status === "pending_release"
                         ? "justify-between"
@@ -688,7 +689,7 @@ export default function OrderDetailsPage() {
 
                 {((order.type === "buy" && order.status === "pending_payment" && order.user.id == userId) ||
                   (order.type === "sell" && order.status === "pending_payment" && order.advert.user.id == userId)) && (
-                    <div className="py-8 flex flex-col-reverse md:flex-row gap-2 md:gap-4">
+                    <div className="py-4 flex flex-col-reverse md:flex-row gap-2 md:gap-4 sticky bottom-0 bg-white md:static md:bg-transparent">
                       <Button variant="outline" className="flex-1 bg-transparent" onClick={handleCancelOrder}>
                         {t("orderDetails.cancelOrder")}
                       </Button>
@@ -705,7 +706,7 @@ export default function OrderDetailsPage() {
                       order.status === "timed_out" ||
                       order.status === "disputed") &&
                     order.user.id == userId)) && (
-                    <div className="md:pl-4 pt-4 flex gap-4 md:float-right">
+                    <div className="md:pl-4 pt-4 flex gap-4 md:float-right sticky bottom-0 bg-white md:static md:bg-transparent">
                       <Button
                         className="flex-1"
                         onClick={handlePaymentReceived}
@@ -793,6 +794,7 @@ export default function OrderDetailsPage() {
             </div>
           </div>
         )}
+      </div>
       </div>
 
       <ComplaintForm
