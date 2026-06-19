@@ -695,7 +695,7 @@ export default function OrderDetailsPage() {
                     </div>
                   )}
                 </div>
-                <div className={cn(isMobile && "flex-1 min-h-0 overflow-y-auto px-[24px] pb-4")}>
+                <div className={cn(isMobile && "flex-1 min-h-0 overflow-y-auto px-[24px] pt-6 pb-4")}>
                 {order.status === "timed_out" && !isBuyer && (
                   <Alert variant="info" className="flex items-center gap-2 mb-[24px]">
                     <InfoCircleIcon className="h-6 w-6 flex-shrink-0 [&>path]:fill-current" aria-hidden="true" />
