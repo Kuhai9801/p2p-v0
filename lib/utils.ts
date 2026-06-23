@@ -157,7 +157,7 @@ export function formatStatus(
   // If no translation function provided, use fallback English text
   if (!t) {
     const statusMap: Record<string, string> = {
-      refunded: "Refunded",
+      refunded: isDetailed ? "Order expired" : "Expired",
       cancelled: isDetailed ? "Order cancelled" : "Cancelled",
       timed_out: isDetailed ? "Order expired" : "Expired",
       completed: isDetailed ? "Order complete" : "Completed",
@@ -179,7 +179,7 @@ export function formatStatus(
 
   switch (lowerStatus) {
     case "refunded":
-      return t("status.refunded")
+      return isDetailed ? t("status.orderExpired") : t("status.timedOut")
     case "cancelled":
       return isDetailed ? t("status.orderCancelled") : t("status.cancelled")
     case "timed_out":
