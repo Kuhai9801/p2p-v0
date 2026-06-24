@@ -14,7 +14,6 @@ overrides:
   seroval@<1.4.1: '>=1.4.1'
   seroval@<=1.4.0: '>=1.4.1'
   tar@<=7.5.2: '>=7.5.3'
-  undici@>=7.0.0 <7.18.2: '>=7.18.2'
   undici@>=4.5.0 <5.28.5: '>=5.28.5'
   undici@<5.29.0: '>=5.29.0'
   undici@<6.23.0: '>=6.23.0'
@@ -23,12 +22,8 @@ overrides:
   minimatch@<3.1.4: '>=3.1.4'
   svgo@>=3.0.0 <3.3.3: '>=3.3.3'
   '@tootallnate/once@<3.0.1': '>=3.0.1'
-  dompurify@>=3.1.3 <=3.3.1: '>=3.3.2'
   flatted@<3.4.0: '>=3.4.0'
   yauzl@<3.2.1: '>=3.2.1'
-  undici@>=7.0.0 <7.24.0: '>=7.24.0'
-  undici@>=7.17.0 <7.24.0: '>=7.24.0'
-  undici@<7.24.0: '>=7.24.0'
   flatted@<=3.4.1: '>=3.4.2'
   socket.io-parser@>=4.0.0 <4.2.6: '>=4.2.6'
   yaml@>=2.0.0 <2.8.3: '>=2.8.3'
@@ -37,7 +32,6 @@ overrides:
   srvx@<0.11.13: '>=0.11.13'
   path-to-regexp@>=8.0.0 <8.4.0: '>=8.4.0'
   path-to-regexp@>=0.1.0 <6.3.0: '>=6.3.0'
-  dompurify@<=3.3.3: '>=3.4.0'
   '@protobufjs/utf8@<=1.1.0': '>=1.1.1'
   postcss@<8.5.10: '>=8.5.10'
   fast-uri@<=3.1.0: '>=3.1.1'
@@ -53,15 +47,9 @@ overrides:
   protobufjs@<=7.6.2: '>=7.6.3'
   js-yaml@<=4.1.1: '>=4.2.0'
   '@babel/core@<=7.29.0': '>=7.29.6'
-  dompurify@<3.4.7: '>=3.4.7'
-  dompurify@<=3.4.5: '>=3.4.6'
-  dompurify@<3.4.9: '>=3.4.9'
-  dompurify@>=3.0.0 <=3.4.7: '>=3.4.8'
-  dompurify@<=3.4.6: '>=3.4.7'
   '@opentelemetry/core@<2.8.0': '>=2.8.0'
-  undici@>=7.23.0 <7.28.0: '>=7.28.0'
-  undici@>=7.0.0 <7.28.0: '>=7.28.0'
-  dompurify@<=3.4.10: '>=3.4.11'
+  undici@<7.28.0: '>=7.28.0'
+  dompurify@<3.4.11: '>=3.4.11'
 
 importers:
 
@@ -202,6 +190,9 @@ importers:
       date-fns:
         specifier: latest
         version: 4.4.0
+      dompurify:
+        specifier: '>=3.4.11'
+        version: 3.4.11
       embla-carousel-react:
         specifier: latest
         version: 8.6.0(react@19.0.0)
@@ -274,6 +265,9 @@ importers:
       tailwindcss-animate:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@3.4.17(ts-node@10.9.1(@types/node@22.0.0)(typescript@5.0.2)))
+      undici:
+        specifier: '>=7.28.0'
+        version: 8.5.0
       url:
         specifier: latest
         version: 0.11.4
@@ -6202,10 +6196,6 @@ packages:
   undici-types@6.11.1:
     resolution: {integrity: sha512-mIDEX2ek50x0OlRgxryxsenE5XaQD4on5U2inY7RApK3SOJpofyw7uW2AyfMKkhAxXIceo2DeWGVGwyvng1GNQ==}
 
-  undici@7.24.2:
-    resolution: {integrity: sha512-P9J1HWYV/ajFr8uCqk5QixwiRKmB1wOamgS0e+o2Z4A44Ej2+thFVRLG/eA7qprx88XXhnV5Bl8LHXTURpzB3Q==}
-    engines: {node: '>=20.18.1'}
-
   undici@8.5.0:
     resolution: {integrity: sha512-xamtWoB1EshgjpmlXd7GGm2VfdDtw1+rD8uhry8pSNW3If6S8E0m2T2+orSKeZXEn/aPJMviCpDBA65WJt8zhg==}
     engines: {node: '>=22.19.0'}
@@ -11978,7 +11968,7 @@ snapshots:
       exit-hook: 2.2.1
       glob-to-regexp: 0.4.1
       stoppable: 1.1.0
-      undici: 7.24.2
+      undici: 8.5.0
       workerd: 1.20250718.0
       ws: 8.21.0
       youch: 3.3.4
@@ -13227,8 +13217,6 @@ snapshots:
   undici-types@5.26.5: {}
 
   undici-types@6.11.1: {}
-
-  undici@7.24.2: {}
 
   undici@8.5.0: {}
 
