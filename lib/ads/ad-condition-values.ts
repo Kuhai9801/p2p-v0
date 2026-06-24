@@ -35,15 +35,44 @@ export function normalizeMinimumCompletionRateFromApi(
   return value
 }
 
+/** Whether the API band is a legacy restricted tier (silver/gold/diamond). */
+export function isRestrictedTradeBand(band: string | null | undefined): boolean {
+  return band != null && RESTRICTED_TRADE_BANDS.has(band)
+}
+
+/** Edit prefill: legacy tier thresholds (e.g. 45 days, 80%) are not chip options. */
+export function normalizeMinimumJoinedDaysForEditPrefill(
+  value: number | null | undefined,
+  minimumTradeBand?: string | null,
+): number | null {
+  if (isRestrictedTradeBand(minimumTradeBand)) return null
+  const normalized = normalizeMinimumJoinedDaysFromApi(value)
+  if (normalized != null && !AD_JOINED_DAYS_OPTIONS.includes(normalized as (typeof AD_JOINED_DAYS_OPTIONS)[number])) {
+    return null
+  }
+  return normalized
+}
+
+/** Edit prefill: legacy tier thresholds are not chip options — default to Any. */
+export function normalizeMinimumCompletionRateForEditPrefill(
+  value: number | null | undefined,
+  minimumTradeBand?: string | null,
+): number | null {
+  if (isRestrictedTradeBand(minimumTradeBand)) return null
+  const normalized = normalizeMinimumCompletionRateFromApi(value)
+  if (
+    normalized != null &&
+    !AD_COMPLETION_RATE_OPTIONS.includes(normalized as (typeof AD_COMPLETION_RATE_OPTIONS)[number])
+  ) {
+    return null
+  }
+  return normalized
+}
+
 export function isJoinedDaysAny(days: number | null | undefined): boolean {
   return days == null
 }
 
 export function isCompletionRateAny(rate: number | null | undefined): boolean {
   return rate == null
-}
-
-/** Whether the API band is a legacy restricted tier (silver/gold/diamond). */
-export function isRestrictedTradeBand(band: string | null | undefined): boolean {
-  return band != null && RESTRICTED_TRADE_BANDS.has(band)
 }

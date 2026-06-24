@@ -1,8 +1,8 @@
 import type { AdFormData } from "@/app/ads/types"
 import {
   MINIMUM_JOIN_DAYS_API_KEY,
-  normalizeMinimumCompletionRateFromApi,
-  normalizeMinimumJoinedDaysFromApi,
+  normalizeMinimumCompletionRateForEditPrefill,
+  normalizeMinimumJoinedDaysForEditPrefill,
 } from "@/lib/ads/ad-condition-values"
 
 export interface AdvertEditSnapshot {
@@ -56,9 +56,13 @@ export function createAdvertEditSnapshot(params: {
     orderExpiryPeriod: params.orderExpiryPeriod,
     availableCountries: params.availableCountries ?? [],
     minimumTradeBand: normalizeTradeBandForComparison(params.minimumTradeBand),
-    minimumJoinedDays: normalizeMinimumJoinedDaysFromApi(params.minimumJoinedDays),
-    minimumCompletionRate30Day: normalizeMinimumCompletionRateFromApi(
+    minimumJoinedDays: normalizeMinimumJoinedDaysForEditPrefill(
+      params.minimumJoinedDays,
+      params.minimumTradeBand,
+    ),
+    minimumCompletionRate30Day: normalizeMinimumCompletionRateForEditPrefill(
       params.minimumCompletionRate30Day,
+      params.minimumTradeBand,
     ),
     isPrivate: params.isPrivate,
     instructions: (params.description ?? "").trim(),

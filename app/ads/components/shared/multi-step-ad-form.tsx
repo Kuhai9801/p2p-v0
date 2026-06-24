@@ -33,8 +33,8 @@ import {
   AD_COMPLETION_RATE_OPTIONS,
   AD_JOINED_DAYS_OPTIONS,
   readMinimumJoinDaysFromApi,
-  normalizeMinimumCompletionRateFromApi,
-  normalizeMinimumJoinedDaysFromApi,
+  normalizeMinimumCompletionRateForEditPrefill,
+  normalizeMinimumJoinedDaysForEditPrefill,
 } from "@/lib/ads/ad-condition-values"
 import {
   buildAdvertEditPatch,
@@ -240,17 +240,16 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
             }
 
             const apiBand = data.minimum_trade_band as string | null | undefined
+            const joinedDaysFromApi = readMinimumJoinDaysFromApi(data as Record<string, unknown>)
+            const completionRateFromApi =
+              data.minimum_completion_rate_30day != null
+                ? Number(data.minimum_completion_rate_30day)
+                : null
             setMinimumJoinedDays(
-              normalizeMinimumJoinedDaysFromApi(
-                readMinimumJoinDaysFromApi(data as Record<string, unknown>),
-              ),
+              normalizeMinimumJoinedDaysForEditPrefill(joinedDaysFromApi, apiBand),
             )
             setMinimumCompletionRate30Day(
-              normalizeMinimumCompletionRateFromApi(
-                data.minimum_completion_rate_30day != null
-                  ? Number(data.minimum_completion_rate_30day)
-                  : null,
-              ),
+              normalizeMinimumCompletionRateForEditPrefill(completionRateFromApi, apiBand),
             )
 
             setOriginalEditSnapshot(
@@ -263,14 +262,8 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                 orderExpiryPeriod: data.order_expiry_period ?? 15,
                 availableCountries: data.available_countries,
                 minimumTradeBand: apiBand,
-                minimumJoinedDays: normalizeMinimumJoinedDaysFromApi(
-                  readMinimumJoinDaysFromApi(data as Record<string, unknown>),
-                ),
-                minimumCompletionRate30Day: normalizeMinimumCompletionRateFromApi(
-                  data.minimum_completion_rate_30day != null
-                    ? Number(data.minimum_completion_rate_30day)
-                    : null,
-                ),
+                minimumJoinedDays: joinedDaysFromApi,
+                minimumCompletionRate30Day: completionRateFromApi,
                 isPrivate: !!data.is_private,
                 description: data.description,
                 paymentMethodNames: paymentMethodNames,

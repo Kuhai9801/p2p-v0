@@ -184,6 +184,29 @@ describe("createAdvertEditSnapshot", () => {
     expect(result.minimumCompletionRate30Day).toBeNull()
     expect(result.availableCountries).toEqual(["MY"])
   })
+
+  it("defaults ad conditions to Any when legacy restricted tier was set", () => {
+    const result = createAdvertEditSnapshot({
+      type: "buy",
+      minimumOrderAmount: 10,
+      maximumOrderAmount: 100,
+      exchangeRate: 16000,
+      exchangeRateType: "fixed",
+      orderExpiryPeriod: 30,
+      availableCountries: ["MY"],
+      minimumTradeBand: "gold",
+      minimumJoinedDays: 45,
+      minimumCompletionRate30Day: 80,
+      isPrivate: false,
+      description: "",
+      paymentMethodNames: ["bank_transfer"],
+      paymentMethodIds: [],
+    })
+
+    expect(result.minimumTradeBand).toBe("gold")
+    expect(result.minimumJoinedDays).toBeNull()
+    expect(result.minimumCompletionRate30Day).toBeNull()
+  })
 })
 
 describe("buildCurrentEditState", () => {
