@@ -174,118 +174,128 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   }, [mode, localCurrency, currencies, formData?.forCurrency])
 
   useEffect(() => {
-    if (mode === "edit" && adId) {
-      setIsLoadingInitialData(true)
-      const loadInitialData = async () => {
-        try {
-          const advertData = await AdsAPI.getAdvert(adId)
-          const { data } = advertData
+    if (mode !== "edit" || !adId) return
 
-          if (data) {
-            let paymentMethodNames: string[] = []
-            let paymentMethodIds: number[] = []
+    let cancelled = false
+    setIsLoadingInitialData(true)
 
-            if (data.payment_methods && Array.isArray(data.payment_methods)) {
-              if (data.type === "buy") {
-                paymentMethodNames = data.payment_methods.map((methodName: string) => {
-                  if (methodName.includes("_") || methodName === methodName.toLowerCase()) {
-                    return methodName
-                  }
-                  return convertToSnakeCase(methodName)
-                })
+    const loadInitialData = async () => {
+      try {
+        const advertData = await AdsAPI.getAdvert(adId)
+        if (cancelled) return
 
-                setSelectedPaymentMethodIds(paymentMethodNames)
-              } else {
-                paymentMethodIds = data.payment_method_ids
-                  .map((id: any) => Number(id))
-                  .filter((id: number) => !isNaN(id))
+        const { data } = advertData
 
-                setSelectedPaymentMethodIds(paymentMethodIds)
-              }
-            }
+        if (data) {
+          let paymentMethodNames: string[] = []
+          let paymentMethodIds: number[] = []
 
-            const formattedData = {
-              ...data,
-              totalAmount:
-                Number.parseFloat(data.available_amount) +
-                Number.parseFloat(data.completed_order_amount) +
-                Number.parseFloat(data.open_order_amount),
-              fixedRate: Number.parseFloat(data.exchange_rate),
-              minAmount: data.minimum_order_amount,
-              maxAmount: data.maximum_order_amount,
-              paymentMethods: paymentMethodNames,
-              payment_method_ids: paymentMethodIds,
-              instructions: (data.description || "").trim(),
-              forCurrency: data.payment_currency,
-              buyCurrency: data.account_currency,
-              priceType: data.exchange_rate_type,
-              floatingRate: Number.parseFloat(data.exchange_rate) || "",
-            }
+          if (data.payment_methods && Array.isArray(data.payment_methods)) {
+            if (data.type === "buy") {
+              paymentMethodNames = data.payment_methods.map((methodName: string) => {
+                if (methodName.includes("_") || methodName === methodName.toLowerCase()) {
+                  return methodName
+                }
+                return convertToSnakeCase(methodName)
+              })
 
-            setFormData(formattedData)
-            formDataRef.current = formattedData
-
-            if (data.order_expiry_period) {
-              setOrderTimeLimit(data.order_expiry_period)
-            }
-
-            if (data.available_countries) {
-              setSelectedCountries(data.available_countries)
-            }
-
-            if (data.is_private) {
-              setAdVisibility("closed-group")
+              setSelectedPaymentMethodIds(paymentMethodNames)
             } else {
-              setAdVisibility("everyone")
+              paymentMethodIds = data.payment_method_ids
+                .map((id: any) => Number(id))
+                .filter((id: number) => !isNaN(id))
+
+              setSelectedPaymentMethodIds(paymentMethodIds)
             }
-
-            const apiBand = data.minimum_trade_band as string | null | undefined
-            const joinedDaysFromApi = readMinimumJoinDaysFromApi(data as Record<string, unknown>)
-            const completionRateFromApi =
-              data.minimum_completion_rate_30day != null
-                ? Number(data.minimum_completion_rate_30day)
-                : null
-            setMinimumJoinedDays(
-              normalizeMinimumJoinedDaysForEditPrefill(joinedDaysFromApi, apiBand),
-            )
-            setMinimumCompletionRate30Day(
-              normalizeMinimumCompletionRateForEditPrefill(completionRateFromApi, apiBand),
-            )
-
-            setOriginalEditSnapshot(
-              createAdvertEditSnapshot({
-                type: data.type,
-                minimumOrderAmount: data.minimum_order_amount,
-                maximumOrderAmount: data.maximum_order_amount,
-                exchangeRate: Number.parseFloat(data.exchange_rate),
-                exchangeRateType: data.exchange_rate_type,
-                orderExpiryPeriod: data.order_expiry_period ?? 15,
-                availableCountries: data.available_countries,
-                minimumTradeBand: apiBand,
-                minimumJoinedDays: joinedDaysFromApi,
-                minimumCompletionRate30Day: completionRateFromApi,
-                isPrivate: !!data.is_private,
-                description: data.description,
-                paymentMethodNames: paymentMethodNames,
-                paymentMethodIds: paymentMethodIds,
-              }),
-            )
           }
 
-        } catch (error) {
-          toast({
-            description: t("adForm.failedToLoadAd"),
-            className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
-            duration: 2500,
-          })
-        } finally {
+          const formattedData = {
+            ...data,
+            totalAmount:
+              Number.parseFloat(data.available_amount) +
+              Number.parseFloat(data.completed_order_amount) +
+              Number.parseFloat(data.open_order_amount),
+            fixedRate: Number.parseFloat(data.exchange_rate),
+            minAmount: data.minimum_order_amount,
+            maxAmount: data.maximum_order_amount,
+            paymentMethods: paymentMethodNames,
+            payment_method_ids: paymentMethodIds,
+            instructions: (data.description || "").trim(),
+            forCurrency: data.payment_currency,
+            buyCurrency: data.account_currency,
+            priceType: data.exchange_rate_type,
+            floatingRate: Number.parseFloat(data.exchange_rate) || "",
+          }
+
+          setFormData(formattedData)
+          formDataRef.current = formattedData
+
+          if (data.order_expiry_period) {
+            setOrderTimeLimit(data.order_expiry_period)
+          }
+
+          if (data.available_countries) {
+            setSelectedCountries(data.available_countries)
+          }
+
+          if (data.is_private) {
+            setAdVisibility("closed-group")
+          } else {
+            setAdVisibility("everyone")
+          }
+
+          const apiBand = data.minimum_trade_band as string | null | undefined
+          const joinedDaysFromApi = readMinimumJoinDaysFromApi(data as Record<string, unknown>)
+          const completionRateFromApi =
+            data.minimum_completion_rate_30day != null
+              ? Number(data.minimum_completion_rate_30day)
+              : null
+          setMinimumJoinedDays(
+            normalizeMinimumJoinedDaysForEditPrefill(joinedDaysFromApi, apiBand),
+          )
+          setMinimumCompletionRate30Day(
+            normalizeMinimumCompletionRateForEditPrefill(completionRateFromApi, apiBand),
+          )
+
+          setOriginalEditSnapshot(
+            createAdvertEditSnapshot({
+              type: data.type,
+              minimumOrderAmount: data.minimum_order_amount,
+              maximumOrderAmount: data.maximum_order_amount,
+              exchangeRate: Number.parseFloat(data.exchange_rate),
+              exchangeRateType: data.exchange_rate_type,
+              orderExpiryPeriod: data.order_expiry_period ?? 15,
+              availableCountries: data.available_countries,
+              minimumTradeBand: apiBand,
+              minimumJoinedDays: joinedDaysFromApi,
+              minimumCompletionRate30Day: completionRateFromApi,
+              isPrivate: !!data.is_private,
+              description: data.description,
+              paymentMethodNames: paymentMethodNames,
+              paymentMethodIds: paymentMethodIds,
+            }),
+          )
+        }
+      } catch (error) {
+        if (cancelled) return
+        toast({
+          description: t("adForm.failedToLoadAd"),
+          className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+          duration: 2500,
+        })
+      } finally {
+        if (!cancelled) {
           setIsLoadingInitialData(false)
         }
       }
-
-      loadInitialData()
     }
-  }, [mode, adId, setSelectedPaymentMethodIds])
+
+    loadInitialData()
+
+    return () => {
+      cancelled = true
+    }
+  }, [mode, adId, setSelectedPaymentMethodIds, toast, t])
 
   useEffect(() => {
     if (mode === "create" && formData.type && previousTypeRef.current && formData.type !== previousTypeRef.current) {

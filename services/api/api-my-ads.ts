@@ -23,7 +23,9 @@ export interface APIAdvert {
   is_active: boolean
   maximum_order_amount: number
   minimum_order_amount: number
+  /** Current API field for minimum account age (days). */
   minimum_join_days?: number | null
+  /** @deprecated Legacy response key; prefer {@link minimum_join_days}. */
   minimum_joined_days?: number | null
   minimum_completion_rate_30day?: number | null
   minimum_trade_band?: "bronze" | "silver" | "gold" | "diamond" | null
