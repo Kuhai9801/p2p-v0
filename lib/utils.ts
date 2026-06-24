@@ -157,7 +157,7 @@ export function formatStatus(
   // If no translation function provided, use fallback English text
   if (!t) {
     const statusMap: Record<string, string> = {
-      refunded: "Refunded",
+      refunded: isDetailed ? "Order expired" : "Expired",
       cancelled: isDetailed ? "Order cancelled" : "Cancelled",
       timed_out: isDetailed ? "Order expired" : "Expired",
       completed: isDetailed ? "Order complete" : "Completed",
@@ -179,7 +179,7 @@ export function formatStatus(
 
   switch (lowerStatus) {
     case "refunded":
-      return t("status.refunded")
+      return isDetailed ? t("status.orderExpired") : t("status.timedOut")
     case "cancelled":
       return isDetailed ? t("status.orderCancelled") : t("status.cancelled")
     case "timed_out":
@@ -211,6 +211,7 @@ export function getStatusBadgeStyle(status: string, isBuyer: boolean): string {
     case "disputed":
       return "bg-red-100 text-red-700"
     case "timed_out":
+    case "refunded":
       return "bg-slate-100 text-slate-800"
     default:
       return "bg-blue-50 text-blue-100"
