@@ -31,6 +31,7 @@ overrides:
   picomatch@>=4.0.0 <4.0.4: '>=4.0.4'
   srvx@<0.11.13: '>=0.11.13'
   path-to-regexp@>=8.0.0 <8.4.0: '>=8.4.0'
+  path-to-regexp@8.3.0: '>=8.4.0'
   path-to-regexp@>=0.1.0 <6.3.0: '>=6.3.0'
   '@protobufjs/utf8@<=1.1.0': '>=1.1.1'
   postcss@<8.5.10: '>=8.5.10'
@@ -5401,9 +5402,6 @@ packages:
   path-to-regexp@6.3.0:
     resolution: {integrity: sha512-Yhpw4T9C6hPpgPeA28us07OJeqZ5EzQTkbfwuhsUg0c237RomFoETJgmp2sa3F/41gfLE6G5cqcYwznmeEeOlQ==}
 
-  path-to-regexp@8.3.0:
-    resolution: {integrity: sha512-7jdwVIRtsP8MYpdXSwOS0YdD0Du+qOoF/AEPIt88PcCFrZCzx41oxku1jD88hZBwbNUIEfpqvuhjFaMAqMTWnA==}
-
   path-to-regexp@8.4.2:
     resolution: {integrity: sha512-qRcuIdP69NPm4qbACK+aDogI5CBDMi1jKe0ry5rSQJz8JVLsC7jV8XpiJjGRLLol3N+R5ihGYcrPLTno6pAdBA==}
 
@@ -9903,7 +9901,7 @@ snapshots:
       etag: 1.8.1
       mime-types: 2.1.35
       node-fetch: 2.6.9
-      path-to-regexp: 8.3.0
+      path-to-regexp: 8.4.2
       path-to-regexp-updated: path-to-regexp@6.3.0
       ts-morph: 12.0.0
       ts-node: 10.9.1(@types/node@20.11.0)(typescript@4.9.5)
@@ -9935,7 +9933,7 @@ snapshots:
       '@vercel/error-utils': 2.0.3
       '@vercel/nft': 1.1.1
       '@vercel/static-config': 3.1.2
-      path-to-regexp: 8.3.0
+      path-to-regexp: 8.4.2
       path-to-regexp-updated: path-to-regexp@6.3.0
       ts-morph: 12.0.0
     transitivePeerDependencies:
@@ -12334,8 +12332,6 @@ snapshots:
       minipass: 7.1.3
 
   path-to-regexp@6.3.0: {}
-
-  path-to-regexp@8.3.0: {}
 
   path-to-regexp@8.4.2: {}
 
