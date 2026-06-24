@@ -70,7 +70,7 @@ export default function CountrySelection({ countries, selectedCountries, onCount
 
   const getDisplayText = () => {
     if (isAllSelected) {
-      return t("common.selectedAll")
+      return t("common.allCountries")
     }
     return `${t("common.selectedCount")} (${selectedCountries.length})`
   }

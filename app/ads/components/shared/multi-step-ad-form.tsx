@@ -14,8 +14,8 @@ import { ProgressSteps } from "./progress-steps"
 import Navigation from "@/components/navigation"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import OrderTimeLimitSelector from "./order-time-limit-selector"
+import AdConditionChipSelector from "./ad-condition-chip-selector"
 import AdVisibilitySelector from "./ad-visibility-selector"
-import MinimumTierSelector, { type MinimumTradeBand } from "./minimum-tier-selector"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import Image from "next/image"
 import CountrySelection from "./country-selection"
@@ -30,9 +30,17 @@ import type { Ad } from "@/types"
 import { useTrackers } from "@/analytics/useTrackers"
 import type { AdFormData } from "@/app/ads/types"
 import {
+  AD_COMPLETION_RATE_OPTIONS,
+  AD_JOINED_DAYS_OPTIONS,
+  readMinimumJoinDaysFromApi,
+  normalizeMinimumCompletionRateForEditPrefill,
+  normalizeMinimumJoinedDaysForEditPrefill,
+} from "@/lib/ads/ad-condition-values"
+import {
   buildAdvertEditPatch,
   buildCurrentEditState,
   createAdvertEditSnapshot,
+  finalizeAdvertEditPatch,
   hasAdvertEditChanges,
   type AdvertEditSnapshot,
 } from "@/lib/ads/advert-edit-patch"
@@ -84,7 +92,8 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   const [userPaymentMethods, setUserPaymentMethods] = useState<UserPaymentMethod[]>([])
   const [availablePaymentMethods, setAvailablePaymentMethods] = useState<AvailablePaymentMethod[]>([])
   const [adVisibility, setAdVisibility] = useState<string>("everyone")
-  const [minimumTradeBand, setMinimumTradeBand] = useState<MinimumTradeBand>(null)
+  const [minimumJoinedDays, setMinimumJoinedDays] = useState<number | null>(null)
+  const [minimumCompletionRate30Day, setMinimumCompletionRate30Day] = useState<number | null>(null)
   const { leaveExchangeRatesChannel } = useWebSocketContext()
   const { userData } = useUserDataStore()
   const [showSuccessScreen, setShowSuccessScreen] = useState(false)
@@ -165,109 +174,128 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   }, [mode, localCurrency, currencies, formData?.forCurrency])
 
   useEffect(() => {
-    if (mode === "edit" && adId) {
-      setIsLoadingInitialData(true)
-      const loadInitialData = async () => {
-        try {
-          const advertData = await AdsAPI.getAdvert(adId)
-          const { data } = advertData
+    if (mode !== "edit" || !adId) return
 
-          if (data) {
-            let paymentMethodNames: string[] = []
-            let paymentMethodIds: number[] = []
+    let cancelled = false
+    setIsLoadingInitialData(true)
 
-            if (data.payment_methods && Array.isArray(data.payment_methods)) {
-              if (data.type === "buy") {
-                paymentMethodNames = data.payment_methods.map((methodName: string) => {
-                  if (methodName.includes("_") || methodName === methodName.toLowerCase()) {
-                    return methodName
-                  }
-                  return convertToSnakeCase(methodName)
-                })
+    const loadInitialData = async () => {
+      try {
+        const advertData = await AdsAPI.getAdvert(adId)
+        if (cancelled) return
 
-                setSelectedPaymentMethodIds(paymentMethodNames)
-              } else {
-                paymentMethodIds = data.payment_method_ids
-                  .map((id: any) => Number(id))
-                  .filter((id: number) => !isNaN(id))
+        const { data } = advertData
 
-                setSelectedPaymentMethodIds(paymentMethodIds)
-              }
-            }
+        if (data) {
+          let paymentMethodNames: string[] = []
+          let paymentMethodIds: number[] = []
 
-            const formattedData = {
-              ...data,
-              totalAmount:
-                Number.parseFloat(data.available_amount) +
-                Number.parseFloat(data.completed_order_amount) +
-                Number.parseFloat(data.open_order_amount),
-              fixedRate: Number.parseFloat(data.exchange_rate),
-              minAmount: data.minimum_order_amount,
-              maxAmount: data.maximum_order_amount,
-              paymentMethods: paymentMethodNames,
-              payment_method_ids: paymentMethodIds,
-              instructions: (data.description || "").trim(),
-              forCurrency: data.payment_currency,
-              buyCurrency: data.account_currency,
-              priceType: data.exchange_rate_type,
-              floatingRate: Number.parseFloat(data.exchange_rate) || "",
-            }
+          if (data.payment_methods && Array.isArray(data.payment_methods)) {
+            if (data.type === "buy") {
+              paymentMethodNames = data.payment_methods.map((methodName: string) => {
+                if (methodName.includes("_") || methodName === methodName.toLowerCase()) {
+                  return methodName
+                }
+                return convertToSnakeCase(methodName)
+              })
 
-            setFormData(formattedData)
-            formDataRef.current = formattedData
-
-            if (data.order_expiry_period) {
-              setOrderTimeLimit(data.order_expiry_period)
-            }
-
-            if (data.available_countries) {
-              setSelectedCountries(data.available_countries)
-            }
-
-            if (data.is_private) {
-              setAdVisibility("closed-group")
+              setSelectedPaymentMethodIds(paymentMethodNames)
             } else {
-              setAdVisibility("everyone")
+              paymentMethodIds = data.payment_method_ids
+                .map((id: any) => Number(id))
+                .filter((id: number) => !isNaN(id))
+
+              setSelectedPaymentMethodIds(paymentMethodIds)
             }
-
-            const apiBand = data.minimum_trade_band as string | null | undefined
-            const KNOWN_TIERS = new Set(["silver", "gold", "diamond"])
-            const normalizedBand =
-              apiBand && KNOWN_TIERS.has(apiBand) ? (apiBand as MinimumTradeBand) : null
-            setMinimumTradeBand(normalizedBand)
-
-            setOriginalEditSnapshot(
-              createAdvertEditSnapshot({
-                type: data.type,
-                minimumOrderAmount: data.minimum_order_amount,
-                maximumOrderAmount: data.maximum_order_amount,
-                exchangeRate: Number.parseFloat(data.exchange_rate),
-                exchangeRateType: data.exchange_rate_type,
-                orderExpiryPeriod: data.order_expiry_period ?? 15,
-                availableCountries: data.available_countries,
-                minimumTradeBand: apiBand,
-                isPrivate: !!data.is_private,
-                description: data.description,
-                paymentMethodNames: paymentMethodNames,
-                paymentMethodIds: paymentMethodIds,
-              }),
-            )
           }
 
-        } catch (error) {
-          toast({
-            description: t("adForm.failedToLoadAd"),
-            className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
-            duration: 2500,
-          })
-        } finally {
+          const formattedData = {
+            ...data,
+            totalAmount:
+              Number.parseFloat(data.available_amount) +
+              Number.parseFloat(data.completed_order_amount) +
+              Number.parseFloat(data.open_order_amount),
+            fixedRate: Number.parseFloat(data.exchange_rate),
+            minAmount: data.minimum_order_amount,
+            maxAmount: data.maximum_order_amount,
+            paymentMethods: paymentMethodNames,
+            payment_method_ids: paymentMethodIds,
+            instructions: (data.description || "").trim(),
+            forCurrency: data.payment_currency,
+            buyCurrency: data.account_currency,
+            priceType: data.exchange_rate_type,
+            floatingRate: Number.parseFloat(data.exchange_rate) || "",
+          }
+
+          setFormData(formattedData)
+          formDataRef.current = formattedData
+
+          if (data.order_expiry_period) {
+            setOrderTimeLimit(data.order_expiry_period)
+          }
+
+          if (data.available_countries) {
+            setSelectedCountries(data.available_countries)
+          }
+
+          if (data.is_private) {
+            setAdVisibility("closed-group")
+          } else {
+            setAdVisibility("everyone")
+          }
+
+          const apiBand = data.minimum_trade_band as string | null | undefined
+          const joinedDaysFromApi = readMinimumJoinDaysFromApi(data as Record<string, unknown>)
+          const completionRateFromApi =
+            data.minimum_completion_rate_30day != null
+              ? Number(data.minimum_completion_rate_30day)
+              : null
+          setMinimumJoinedDays(
+            normalizeMinimumJoinedDaysForEditPrefill(joinedDaysFromApi, apiBand),
+          )
+          setMinimumCompletionRate30Day(
+            normalizeMinimumCompletionRateForEditPrefill(completionRateFromApi, apiBand),
+          )
+
+          setOriginalEditSnapshot(
+            createAdvertEditSnapshot({
+              type: data.type,
+              minimumOrderAmount: data.minimum_order_amount,
+              maximumOrderAmount: data.maximum_order_amount,
+              exchangeRate: Number.parseFloat(data.exchange_rate),
+              exchangeRateType: data.exchange_rate_type,
+              orderExpiryPeriod: data.order_expiry_period ?? 15,
+              availableCountries: data.available_countries,
+              minimumTradeBand: apiBand,
+              minimumJoinedDays: joinedDaysFromApi,
+              minimumCompletionRate30Day: completionRateFromApi,
+              isPrivate: !!data.is_private,
+              description: data.description,
+              paymentMethodNames: paymentMethodNames,
+              paymentMethodIds: paymentMethodIds,
+            }),
+          )
+        }
+      } catch (error) {
+        if (cancelled) return
+        toast({
+          description: t("adForm.failedToLoadAd"),
+          className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+          duration: 2500,
+        })
+      } finally {
+        if (!cancelled) {
           setIsLoadingInitialData(false)
         }
       }
-
-      loadInitialData()
     }
-  }, [mode, adId, setSelectedPaymentMethodIds])
+
+    loadInitialData()
+
+    return () => {
+      cancelled = true
+    }
+  }, [mode, adId, setSelectedPaymentMethodIds, toast, t])
 
   useEffect(() => {
     if (mode === "create" && formData.type && previousTypeRef.current && formData.type !== previousTypeRef.current) {
@@ -286,7 +314,8 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
     const current = buildCurrentEditState(formData, {
       orderTimeLimit,
       selectedCountries,
-      minimumTradeBand,
+      minimumJoinedDays,
+      minimumCompletionRate30Day,
       isPrivate: adVisibility === "closed-group",
       selectedPaymentMethodIds:
         formData.type === "sell" ? selectedPaymentMethodIds : [],
@@ -299,7 +328,8 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
     formData,
     orderTimeLimit,
     selectedCountries,
-    minimumTradeBand,
+    minimumJoinedDays,
+    minimumCompletionRate30Day,
     adVisibility,
     selectedPaymentMethodIds,
   ])
@@ -421,7 +451,8 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
         order_expiry_period: orderTimeLimit,
         available_countries: selectedCountries.length > 0 ? selectedCountries : undefined,
         is_private: isPrivate,
-        ...(minimumTradeBand ? { minimum_trade_band: minimumTradeBand } : {}),
+        minimum_join_days: minimumJoinedDays,
+        minimum_completion_rate_30day: minimumCompletionRate30Day,
         ...(finalData.type === "buy"
           ? { payment_method_names: finalData.paymentMethods || [] }
           : { payment_method_ids: selectedPaymentMethodIdsForSubmit }),
@@ -463,12 +494,17 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
       const current = buildCurrentEditState(finalData, {
         orderTimeLimit,
         selectedCountries,
-        minimumTradeBand,
+        minimumJoinedDays,
+        minimumCompletionRate30Day,
         isPrivate,
         selectedPaymentMethodIds: selectedPaymentMethodIdsForSubmit,
       })
 
-      const patch = buildAdvertEditPatch(originalEditSnapshot, current)
+      const patch = finalizeAdvertEditPatch(
+        buildAdvertEditPatch(originalEditSnapshot, current),
+        minimumJoinedDays,
+        minimumCompletionRate30Day,
+      )
 
       if (Object.keys(patch).length === 0) {
         setIsSubmitting(false)
@@ -795,66 +831,9 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                 ) : (
                   <div className="space-y-6">
                     <div>
-                      <div className="flex gap-[4px] items-center mb-4">
-                        <h3 className="text-base font-bold leading-6 tracking-normal">{t("adForm.orderTimeLimit")}</h3>
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <Image
-                                src="/icons/info-circle.svg"
-                                alt="Info"
-                                width={24}
-                                height={24}
-                                className="cursor-pointer"
-                              />
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p className="text-white">{t("adForm.orderTimeLimitTooltip")}</p>
-                              <TooltipArrow className="fill-black" />
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                      </div>
-                      <OrderTimeLimitSelector value={orderTimeLimit} onValueChange={setOrderTimeLimit} />
-                    </div>
-
-                    <div className="w-full md:w-[100%]">
-                      <div className="flex gap-[4px] items-center mb-4">
-                        <h3 className="text-base font-bold">{t("adForm.chooseYourAudience")}</h3>
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <Image
-                                src="/icons/info-circle.svg"
-                                alt="Info"
-                                width={24}
-                                height={24}
-                                className="cursor-pointer"
-                              />
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p className="text-white">{t("adForm.audienceTooltip")}</p>
-                              <TooltipArrow className="fill-black" />
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>{" "}
-                      </div>
-                      <div>
-                        <CountrySelection
-                          selectedCountries={selectedCountries}
-                          onCountriesChange={setSelectedCountries}
-                          countries={countries}
-                          isLoading={isLoadingCountries}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="w-full md:w-[100%]">
-                      <div className="flex gap-[4px] items-center mb-4">
-                        <h3 className="text-base font-bold leading-6 tracking-normal">
-                          {formData.type === "sell"
-                            ? t("adForm.minimumBuyerTier")
-                            : t("adForm.minimumSellerTier")}
+                      <div className="flex gap-1 items-center mb-4">
+                        <h3 className="text-base font-normal leading-6 tracking-normal text-start">
+                          {t("adForm.orderTimeLimit")}
                         </h3>
                         <TooltipProvider>
                           <Tooltip>
@@ -868,25 +847,156 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                               />
                             </TooltipTrigger>
                             <TooltipContent>
-                              <p className="text-white">
+                              <p className="text-white text-start">{t("adForm.orderTimeLimitTooltip")}</p>
+                              <TooltipArrow className="fill-black" />
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </div>
+                      <OrderTimeLimitSelector value={orderTimeLimit} onValueChange={setOrderTimeLimit} />
+                    </div>
+
+                    <div className="w-full md:w-[100%]">
+                      <div className="flex gap-1 items-center mb-4">
+                        <h3 className="text-base font-normal text-start">{t("adForm.country")}</h3>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Image
+                                src="/icons/info-circle.svg"
+                                alt="Info"
+                                width={24}
+                                height={24}
+                                className="cursor-pointer"
+                              />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p className="text-white text-start">
                                 {formData.type === "sell"
-                                  ? t("adForm.minimumBuyerTierHelper")
-                                  : t("adForm.minimumSellerTierHelper")}
+                                  ? t("adForm.countryHelperBuyer")
+                                  : t("adForm.countryHelperSeller")}
                               </p>
                               <TooltipArrow className="fill-black" />
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
                       </div>
-                      <MinimumTierSelector
-                        value={minimumTradeBand}
-                        onValueChange={setMinimumTradeBand}
-                        adType={(formData.type as "buy" | "sell") || "buy"}
+                      <div>
+                        <CountrySelection
+                          selectedCountries={selectedCountries}
+                          onCountriesChange={setSelectedCountries}
+                          countries={countries}
+                          isLoading={isLoadingCountries}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="w-full md:w-[100%]">
+                      <div className="flex gap-1 items-center mb-4">
+                        <h3 className="text-base font-normal leading-6 tracking-normal text-start">
+                          {t("adForm.joinedMoreThan")}
+                        </h3>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Image
+                                src="/icons/info-circle.svg"
+                                alt="Info"
+                                width={24}
+                                height={24}
+                                className="cursor-pointer"
+                              />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p className="text-white text-start">
+                                {formData.type === "sell"
+                                  ? t("adForm.joinedMoreThanHelperBuyer")
+                                  : t("adForm.joinedMoreThanHelperSeller")}
+                              </p>
+                              <TooltipArrow className="fill-black" />
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </div>
+                      <AdConditionChipSelector
+                        value={minimumJoinedDays}
+                        onValueChange={(value) => {
+                          track("ek_select_joined_days_create_ad_step_3", {
+                            minimum_join_days: value?.toString() ?? "any",
+                          })
+                          setMinimumJoinedDays(value)
+                        }}
+                        options={AD_JOINED_DAYS_OPTIONS}
+                        labelFor={(days) => {
+                          switch (days) {
+                            case 15:
+                              return t("adForm.joinedMoreThan15Days")
+                            case 30:
+                              return t("adForm.joinedMoreThan30Days")
+                            case 60:
+                              return t("adForm.joinedMoreThan60Days")
+                            default:
+                              return `${days}`
+                          }
+                        }}
+                      />
+                    </div>
+
+                    <div className="w-full md:w-[100%]">
+                      <div className="flex gap-1 items-center mb-4">
+                        <h3 className="text-base font-normal leading-6 tracking-normal text-start">
+                          {t("adForm.completionRateMoreThan")}
+                        </h3>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Image
+                                src="/icons/info-circle.svg"
+                                alt="Info"
+                                width={24}
+                                height={24}
+                                className="cursor-pointer"
+                              />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p className="text-white text-start">
+                                {formData.type === "sell"
+                                  ? t("adForm.completionRateMoreThanHelperBuyer")
+                                  : t("adForm.completionRateMoreThanHelperSeller")}
+                              </p>
+                              <TooltipArrow className="fill-black" />
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </div>
+                      <AdConditionChipSelector
+                        value={minimumCompletionRate30Day}
+                        onValueChange={(value) => {
+                          track("ek_select_completion_rate_create_ad_step_3", {
+                            minimum_completion_rate_30day: value?.toString() ?? "any",
+                          })
+                          setMinimumCompletionRate30Day(value)
+                        }}
+                        options={AD_COMPLETION_RATE_OPTIONS}
+                        labelFor={(rate) => {
+                          switch (rate) {
+                            case 50:
+                              return t("adForm.completionRate50Percent")
+                            case 70:
+                              return t("adForm.completionRate70Percent")
+                            case 90:
+                              return t("adForm.completionRate90Percent")
+                            default:
+                              return `${rate}%`
+                          }
+                        }}
                       />
                     </div>
                     {showVisibility && (<div>
-                      <div className="flex gap-[4px] items-center mb-4">
-                        <h3 className="text-base font-bold leading-6 tracking-normal">{t("adForm.adVisibility")}</h3>
+                      <div className="flex gap-1 items-center mb-4">
+                        <h3 className="text-base font-normal leading-6 tracking-normal text-start">
+                          {t("adForm.adVisibility")}
+                        </h3>
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger asChild>
