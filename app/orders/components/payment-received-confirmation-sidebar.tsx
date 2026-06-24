@@ -53,7 +53,6 @@ export const PaymentReceivedConfirmationSidebar = ({
       setResendTimer((prev) => {
         if (prev <= 1) {
           clearInterval(timer)
-          setOtpRequested(false)
           return 0
         }
         return prev - 1
@@ -143,8 +142,8 @@ export const PaymentReceivedConfirmationSidebar = ({
           })
         } else if (error.code === "OrderVerificationRateLimit") {
           setOtpRequested(true)
-          const time = Math.floor(error.detail.next_request_at / 1000)
-          setResendTimer(time)
+          const timeRemaining = Math.max(1, Math.ceil((error.detail.next_request_at - Date.now()) / 1000))
+          setResendTimer(timeRemaining)
           setError(error.message || "An error occurred. Please try again.")
         } else if (error.code === "OrderTempLocked") {
           setOtpRequested(false)

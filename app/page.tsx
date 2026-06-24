@@ -30,11 +30,8 @@ import { useUserDataStore } from "@/stores/user-data-store"
 import { BalanceSection } from "@/components/balance-section"
 import { cn } from "@/lib/utils"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
-import { P2PBalanceWarning } from "@/components/p2p-balance-warning"
 import { ExchangeRateDisplay } from "@/components/exchange-rate-display"
-import { useP2PBalanceWarning } from "@/hooks/use-p2p-balance-warning"
 import { useP2PSystemMaintenance } from "@/hooks/use-p2p-system-maintenance"
-import { useOnboardingGate } from "@/hooks/use-onboarding-gate"
 import { getTotalBalance } from "@/services/api/api-auth"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
@@ -141,14 +138,7 @@ export default function BuySellPage() {
   //      the `balance_change` WebSocket handler. Pass `undefined` while
   //      loading so the hook preserves its state until a definitive
   //      value arrives.
-  const { isFullyOnboarded } = useOnboardingGate()
   const { isActive: isMaintenanceActive } = useP2PSystemMaintenance()
-  const { shouldShow: shouldShowBalanceWarning } = useP2PBalanceWarning(
-    isLoadingBalance ? undefined : balance,
-    isFullyOnboarded,
-    !isV1Signup,
-  )
-  const showBalanceWarning = shouldShowBalanceWarning && !isMaintenanceActive
   const displayCurrency = currency || localCurrency || selectedAccountCurrency
   const showCurrencyFilter = currencies.length > 0 || Boolean(displayCurrency)
   const hasFilteredPaymentMethods =
@@ -497,11 +487,6 @@ export default function BuySellPage() {
           <div className="mb-4 md:mb-6 md:flex md:flex-col justify-between gap-4">
             {/* Desktop only — maintenance + mobile balance banners live in main.tsx. */}
             {/* Tuck the dark balance card under the banner's bottom edge via `-mb-8`. */}
-            {showBalanceWarning && (
-              <div className="hidden md:block md:-mb-8">
-                <P2PBalanceWarning />
-              </div>
-            )}
             <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div className="w-[calc(100%+24px)] md:w-full flex flex-row items-end gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -mx-3 mb-4 md:m-0">
                 <div className="flex flex-col items-start w-full md:w-auto">

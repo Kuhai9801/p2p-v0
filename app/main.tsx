@@ -15,11 +15,11 @@ import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { LoadingIndicator } from "@/components/loading-indicator"
 import { IntercomProvider } from "@/components/intercom-provider"
 import { P2PAnnouncementController } from "@/components/p2p-announcement"
-import { P2PBalanceWarning } from "@/components/p2p-balance-warning"
+
 import { P2PSystemMaintenanceBanner } from "@/components/p2p-system-maintenance"
 import { P2PMaintenanceController } from "@/components/p2p-maintenance-controller"
-import { useOnboardingGate } from "@/hooks/use-onboarding-gate"
-import { useP2PBalanceWarning } from "@/hooks/use-p2p-balance-warning"
+
+
 import { useP2PSystemMaintenance } from "@/hooks/use-p2p-system-maintenance"
 import { shouldShowP2PMaintenanceBanner } from "@/lib/p2p-maintenance-constants"
 import "./globals.css"
@@ -49,14 +49,6 @@ export default function Main({
 
   const isDisabled = userData?.status === "disabled"
 
-  // Mobile-only balance warning banner (appears above the Header on mobile).
-  // Desktop version lives in page.tsx where it can overlap the dark balance card.
-  const balanceAmount = userData?.balances?.amount
-  const isV2User = userData?.signup === "v2"
-  const { isFullyOnboarded } = useOnboardingGate()
-  const { shouldShow: shouldShowBalanceWarning } = useP2PBalanceWarning(balanceAmount, isFullyOnboarded, isV2User)
-  const isMarketsPage = pathname === "/"
-  const showBalanceWarning = isMarketsPage && shouldShowBalanceWarning && !isMaintenanceActive
   const showMaintenanceBanner =
     isMaintenanceActive && shouldShowP2PMaintenanceBanner(pathname)
 
@@ -243,8 +235,7 @@ export default function Main({
       </div>
       <div className="md:hidden flex flex-col h-dvh overflow-hidden">
         {showMaintenanceBanner && <P2PSystemMaintenanceBanner embeddedInDarkHeader />}
-        {showBalanceWarning && <P2PBalanceWarning />}
-        {isHeaderVisible && <Header className="flex-shrink-0" />}
+{isHeaderVisible && <Header className="flex-shrink-0" />}
         <main className={cn("flex-1 overflow-hidden", !pathname.startsWith("/profile") && "pb-20")}>{children}</main>
         {!pathname.startsWith("/profile") && <MobileFooterNav className="flex-shrink-0" />}
       </div>
