@@ -14,8 +14,8 @@ import { ProgressSteps } from "./progress-steps"
 import Navigation from "@/components/navigation"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import OrderTimeLimitSelector from "./order-time-limit-selector"
+import AdConditionChipSelector from "./ad-condition-chip-selector"
 import AdVisibilitySelector from "./ad-visibility-selector"
-import MinimumTierSelector, { type MinimumTradeBand } from "./minimum-tier-selector"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import Image from "next/image"
 import CountrySelection from "./country-selection"
@@ -30,9 +30,17 @@ import type { Ad } from "@/types"
 import { useTrackers } from "@/analytics/useTrackers"
 import type { AdFormData } from "@/app/ads/types"
 import {
+  AD_COMPLETION_RATE_OPTIONS,
+  AD_JOINED_DAYS_OPTIONS,
+  readMinimumJoinDaysFromApi,
+  normalizeMinimumCompletionRateFromApi,
+  normalizeMinimumJoinedDaysFromApi,
+} from "@/lib/ads/ad-condition-values"
+import {
   buildAdvertEditPatch,
   buildCurrentEditState,
   createAdvertEditSnapshot,
+  finalizeAdvertEditPatch,
   hasAdvertEditChanges,
   type AdvertEditSnapshot,
 } from "@/lib/ads/advert-edit-patch"
@@ -84,7 +92,8 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   const [userPaymentMethods, setUserPaymentMethods] = useState<UserPaymentMethod[]>([])
   const [availablePaymentMethods, setAvailablePaymentMethods] = useState<AvailablePaymentMethod[]>([])
   const [adVisibility, setAdVisibility] = useState<string>("everyone")
-  const [minimumTradeBand, setMinimumTradeBand] = useState<MinimumTradeBand>(null)
+  const [minimumJoinedDays, setMinimumJoinedDays] = useState<number | null>(null)
+  const [minimumCompletionRate30Day, setMinimumCompletionRate30Day] = useState<number | null>(null)
   const { leaveExchangeRatesChannel } = useWebSocketContext()
   const { userData } = useUserDataStore()
   const [showSuccessScreen, setShowSuccessScreen] = useState(false)
@@ -231,10 +240,18 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
             }
 
             const apiBand = data.minimum_trade_band as string | null | undefined
-            const KNOWN_TIERS = new Set(["silver", "gold", "diamond"])
-            const normalizedBand =
-              apiBand && KNOWN_TIERS.has(apiBand) ? (apiBand as MinimumTradeBand) : null
-            setMinimumTradeBand(normalizedBand)
+            setMinimumJoinedDays(
+              normalizeMinimumJoinedDaysFromApi(
+                readMinimumJoinDaysFromApi(data as Record<string, unknown>),
+              ),
+            )
+            setMinimumCompletionRate30Day(
+              normalizeMinimumCompletionRateFromApi(
+                data.minimum_completion_rate_30day != null
+                  ? Number(data.minimum_completion_rate_30day)
+                  : null,
+              ),
+            )
 
             setOriginalEditSnapshot(
               createAdvertEditSnapshot({
@@ -246,6 +263,14 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                 orderExpiryPeriod: data.order_expiry_period ?? 15,
                 availableCountries: data.available_countries,
                 minimumTradeBand: apiBand,
+                minimumJoinedDays: normalizeMinimumJoinedDaysFromApi(
+                  readMinimumJoinDaysFromApi(data as Record<string, unknown>),
+                ),
+                minimumCompletionRate30Day: normalizeMinimumCompletionRateFromApi(
+                  data.minimum_completion_rate_30day != null
+                    ? Number(data.minimum_completion_rate_30day)
+                    : null,
+                ),
                 isPrivate: !!data.is_private,
                 description: data.description,
                 paymentMethodNames: paymentMethodNames,
@@ -286,7 +311,8 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
     const current = buildCurrentEditState(formData, {
       orderTimeLimit,
       selectedCountries,
-      minimumTradeBand,
+      minimumJoinedDays,
+      minimumCompletionRate30Day,
       isPrivate: adVisibility === "closed-group",
       selectedPaymentMethodIds:
         formData.type === "sell" ? selectedPaymentMethodIds : [],
@@ -299,7 +325,8 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
     formData,
     orderTimeLimit,
     selectedCountries,
-    minimumTradeBand,
+    minimumJoinedDays,
+    minimumCompletionRate30Day,
     adVisibility,
     selectedPaymentMethodIds,
   ])
@@ -421,7 +448,8 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
         order_expiry_period: orderTimeLimit,
         available_countries: selectedCountries.length > 0 ? selectedCountries : undefined,
         is_private: isPrivate,
-        ...(minimumTradeBand ? { minimum_trade_band: minimumTradeBand } : {}),
+        minimum_join_days: minimumJoinedDays,
+        minimum_completion_rate_30day: minimumCompletionRate30Day,
         ...(finalData.type === "buy"
           ? { payment_method_names: finalData.paymentMethods || [] }
           : { payment_method_ids: selectedPaymentMethodIdsForSubmit }),
@@ -463,12 +491,17 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
       const current = buildCurrentEditState(finalData, {
         orderTimeLimit,
         selectedCountries,
-        minimumTradeBand,
+        minimumJoinedDays,
+        minimumCompletionRate30Day,
         isPrivate,
         selectedPaymentMethodIds: selectedPaymentMethodIdsForSubmit,
       })
 
-      const patch = buildAdvertEditPatch(originalEditSnapshot, current)
+      const patch = finalizeAdvertEditPatch(
+        buildAdvertEditPatch(originalEditSnapshot, current),
+        minimumJoinedDays,
+        minimumCompletionRate30Day,
+      )
 
       if (Object.keys(patch).length === 0) {
         setIsSubmitting(false)
@@ -795,66 +828,9 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                 ) : (
                   <div className="space-y-6">
                     <div>
-                      <div className="flex gap-[4px] items-center mb-4">
-                        <h3 className="text-base font-bold leading-6 tracking-normal">{t("adForm.orderTimeLimit")}</h3>
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <Image
-                                src="/icons/info-circle.svg"
-                                alt="Info"
-                                width={24}
-                                height={24}
-                                className="cursor-pointer"
-                              />
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p className="text-white">{t("adForm.orderTimeLimitTooltip")}</p>
-                              <TooltipArrow className="fill-black" />
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                      </div>
-                      <OrderTimeLimitSelector value={orderTimeLimit} onValueChange={setOrderTimeLimit} />
-                    </div>
-
-                    <div className="w-full md:w-[100%]">
-                      <div className="flex gap-[4px] items-center mb-4">
-                        <h3 className="text-base font-bold">{t("adForm.chooseYourAudience")}</h3>
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <Image
-                                src="/icons/info-circle.svg"
-                                alt="Info"
-                                width={24}
-                                height={24}
-                                className="cursor-pointer"
-                              />
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p className="text-white">{t("adForm.audienceTooltip")}</p>
-                              <TooltipArrow className="fill-black" />
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>{" "}
-                      </div>
-                      <div>
-                        <CountrySelection
-                          selectedCountries={selectedCountries}
-                          onCountriesChange={setSelectedCountries}
-                          countries={countries}
-                          isLoading={isLoadingCountries}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="w-full md:w-[100%]">
-                      <div className="flex gap-[4px] items-center mb-4">
-                        <h3 className="text-base font-bold leading-6 tracking-normal">
-                          {formData.type === "sell"
-                            ? t("adForm.minimumBuyerTier")
-                            : t("adForm.minimumSellerTier")}
+                      <div className="flex gap-1 items-center mb-4">
+                        <h3 className="text-base font-normal leading-6 tracking-normal text-start">
+                          {t("adForm.orderTimeLimit")}
                         </h3>
                         <TooltipProvider>
                           <Tooltip>
@@ -868,25 +844,156 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                               />
                             </TooltipTrigger>
                             <TooltipContent>
-                              <p className="text-white">
+                              <p className="text-white text-start">{t("adForm.orderTimeLimitTooltip")}</p>
+                              <TooltipArrow className="fill-black" />
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </div>
+                      <OrderTimeLimitSelector value={orderTimeLimit} onValueChange={setOrderTimeLimit} />
+                    </div>
+
+                    <div className="w-full md:w-[100%]">
+                      <div className="flex gap-1 items-center mb-4">
+                        <h3 className="text-base font-normal text-start">{t("adForm.country")}</h3>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Image
+                                src="/icons/info-circle.svg"
+                                alt="Info"
+                                width={24}
+                                height={24}
+                                className="cursor-pointer"
+                              />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p className="text-white text-start">
                                 {formData.type === "sell"
-                                  ? t("adForm.minimumBuyerTierHelper")
-                                  : t("adForm.minimumSellerTierHelper")}
+                                  ? t("adForm.countryHelperBuyer")
+                                  : t("adForm.countryHelperSeller")}
                               </p>
                               <TooltipArrow className="fill-black" />
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
                       </div>
-                      <MinimumTierSelector
-                        value={minimumTradeBand}
-                        onValueChange={setMinimumTradeBand}
-                        adType={(formData.type as "buy" | "sell") || "buy"}
+                      <div>
+                        <CountrySelection
+                          selectedCountries={selectedCountries}
+                          onCountriesChange={setSelectedCountries}
+                          countries={countries}
+                          isLoading={isLoadingCountries}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="w-full md:w-[100%]">
+                      <div className="flex gap-1 items-center mb-4">
+                        <h3 className="text-base font-normal leading-6 tracking-normal text-start">
+                          {t("adForm.joinedMoreThan")}
+                        </h3>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Image
+                                src="/icons/info-circle.svg"
+                                alt="Info"
+                                width={24}
+                                height={24}
+                                className="cursor-pointer"
+                              />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p className="text-white text-start">
+                                {formData.type === "sell"
+                                  ? t("adForm.joinedMoreThanHelperBuyer")
+                                  : t("adForm.joinedMoreThanHelperSeller")}
+                              </p>
+                              <TooltipArrow className="fill-black" />
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </div>
+                      <AdConditionChipSelector
+                        value={minimumJoinedDays}
+                        onValueChange={(value) => {
+                          track("ek_select_joined_days_create_ad_step_3", {
+                            minimum_join_days: value?.toString() ?? "any",
+                          })
+                          setMinimumJoinedDays(value)
+                        }}
+                        options={AD_JOINED_DAYS_OPTIONS}
+                        labelFor={(days) => {
+                          switch (days) {
+                            case 15:
+                              return t("adForm.joinedMoreThan15Days")
+                            case 30:
+                              return t("adForm.joinedMoreThan30Days")
+                            case 60:
+                              return t("adForm.joinedMoreThan60Days")
+                            default:
+                              return `${days}`
+                          }
+                        }}
+                      />
+                    </div>
+
+                    <div className="w-full md:w-[100%]">
+                      <div className="flex gap-1 items-center mb-4">
+                        <h3 className="text-base font-normal leading-6 tracking-normal text-start">
+                          {t("adForm.completionRateMoreThan")}
+                        </h3>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Image
+                                src="/icons/info-circle.svg"
+                                alt="Info"
+                                width={24}
+                                height={24}
+                                className="cursor-pointer"
+                              />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p className="text-white text-start">
+                                {formData.type === "sell"
+                                  ? t("adForm.completionRateMoreThanHelperBuyer")
+                                  : t("adForm.completionRateMoreThanHelperSeller")}
+                              </p>
+                              <TooltipArrow className="fill-black" />
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </div>
+                      <AdConditionChipSelector
+                        value={minimumCompletionRate30Day}
+                        onValueChange={(value) => {
+                          track("ek_select_completion_rate_create_ad_step_3", {
+                            minimum_completion_rate_30day: value?.toString() ?? "any",
+                          })
+                          setMinimumCompletionRate30Day(value)
+                        }}
+                        options={AD_COMPLETION_RATE_OPTIONS}
+                        labelFor={(rate) => {
+                          switch (rate) {
+                            case 50:
+                              return t("adForm.completionRate50Percent")
+                            case 70:
+                              return t("adForm.completionRate70Percent")
+                            case 90:
+                              return t("adForm.completionRate90Percent")
+                            default:
+                              return `${rate}%`
+                          }
+                        }}
                       />
                     </div>
                     {showVisibility && (<div>
-                      <div className="flex gap-[4px] items-center mb-4">
-                        <h3 className="text-base font-bold leading-6 tracking-normal">{t("adForm.adVisibility")}</h3>
+                      <div className="flex gap-1 items-center mb-4">
+                        <h3 className="text-base font-normal leading-6 tracking-normal text-start">
+                          {t("adForm.adVisibility")}
+                        </h3>
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger asChild>

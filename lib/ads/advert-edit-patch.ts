@@ -1,6 +1,9 @@
 import type { AdFormData } from "@/app/ads/types"
-
-export type MinimumTradeBand = "silver" | "gold" | "diamond" | null
+import {
+  MINIMUM_JOIN_DAYS_API_KEY,
+  normalizeMinimumCompletionRateFromApi,
+  normalizeMinimumJoinedDaysFromApi,
+} from "@/lib/ads/ad-condition-values"
 
 export interface AdvertEditSnapshot {
   advertType: "buy" | "sell"
@@ -10,23 +13,22 @@ export interface AdvertEditSnapshot {
   exchangeRateType: "fixed" | "float"
   orderExpiryPeriod: number
   availableCountries: string[]
-  minimumTradeBand: MinimumTradeBand
+  /** Restricted tier from original advert (`silver`/`gold`/`diamond`), or null when unrestricted. */
+  minimumTradeBand: string | null
+  minimumJoinedDays: number | null
+  minimumCompletionRate30Day: number | null
   isPrivate: boolean
   instructions: string
   paymentMethodNames: string[]
   paymentMethodIds: number[]
 }
 
+/** Maps BE `bronze` and UI `null` to the same unrestricted value for diffing. */
 export function normalizeTradeBandForComparison(
   band: string | null | undefined,
-): MinimumTradeBand {
+): string | null {
   if (!band || band === "bronze") return null
-  if (band === "silver" || band === "gold" || band === "diamond") return band
-  return null
-}
-
-export function tradeBandForApi(band: MinimumTradeBand): string {
-  return band ?? "bronze"
+  return band
 }
 
 export function createAdvertEditSnapshot(params: {
@@ -38,6 +40,8 @@ export function createAdvertEditSnapshot(params: {
   orderExpiryPeriod: number
   availableCountries?: string[] | null
   minimumTradeBand?: string | null
+  minimumJoinedDays?: number | null
+  minimumCompletionRate30Day?: number | null
   isPrivate: boolean
   description?: string | null
   paymentMethodNames: string[]
@@ -52,6 +56,10 @@ export function createAdvertEditSnapshot(params: {
     orderExpiryPeriod: params.orderExpiryPeriod,
     availableCountries: params.availableCountries ?? [],
     minimumTradeBand: normalizeTradeBandForComparison(params.minimumTradeBand),
+    minimumJoinedDays: normalizeMinimumJoinedDaysFromApi(params.minimumJoinedDays),
+    minimumCompletionRate30Day: normalizeMinimumCompletionRateFromApi(
+      params.minimumCompletionRate30Day,
+    ),
     isPrivate: params.isPrivate,
     instructions: (params.description ?? "").trim(),
     paymentMethodNames: params.paymentMethodNames,
@@ -64,7 +72,8 @@ export function buildCurrentEditState(
   options: {
     orderTimeLimit: number
     selectedCountries: string[]
-    minimumTradeBand: MinimumTradeBand
+    minimumJoinedDays: number | null
+    minimumCompletionRate30Day: number | null
     isPrivate: boolean
     selectedPaymentMethodIds: (string | number)[]
   },
@@ -89,7 +98,9 @@ export function buildCurrentEditState(
     exchangeRateType: priceType as "fixed" | "float",
     orderExpiryPeriod: options.orderTimeLimit,
     availableCountries: options.selectedCountries,
-    minimumTradeBand: options.minimumTradeBand,
+    minimumTradeBand: null,
+    minimumJoinedDays: options.minimumJoinedDays,
+    minimumCompletionRate30Day: options.minimumCompletionRate30Day,
     isPrivate: options.isPrivate,
     instructions: String(formData.instructions ?? "").trim(),
     paymentMethodNames:
@@ -101,6 +112,12 @@ export function buildCurrentEditState(
 }
 
 const doublesEqual = (a: number, b: number) => Math.abs(a - b) < 1e-9
+
+const nullableNumbersEqual = (a: number | null, b: number | null) => {
+  if (a == null && b == null) return true
+  if (a == null || b == null) return false
+  return doublesEqual(a, b)
+}
 
 const stringListsEqual = (a: string[], b: string[]) => {
   const sortedA = [...a].sort()
@@ -153,9 +170,21 @@ export function buildAdvertEditPatch(
     patch.is_private = current.isPrivate
   }
 
-  const currentBand = normalizeTradeBandForComparison(current.minimumTradeBand)
-  if (currentBand !== original.minimumTradeBand) {
-    patch.minimum_trade_band = tradeBandForApi(current.minimumTradeBand)
+  if (current.minimumJoinedDays !== original.minimumJoinedDays) {
+    patch[MINIMUM_JOIN_DAYS_API_KEY] = current.minimumJoinedDays
+  }
+
+  if (
+    !nullableNumbersEqual(
+      current.minimumCompletionRate30Day,
+      original.minimumCompletionRate30Day,
+    )
+  ) {
+    patch.minimum_completion_rate_30day = current.minimumCompletionRate30Day
+  }
+
+  if (original.minimumTradeBand != null) {
+    patch.minimum_trade_band = "bronze"
   }
 
   if (current.advertType === "buy") {
@@ -173,7 +202,31 @@ export function hasAdvertEditChanges(
   original: AdvertEditSnapshot,
   current: AdvertEditSnapshot,
 ): boolean {
+  if (original.minimumTradeBand != null) return true
+  if (current.minimumJoinedDays !== original.minimumJoinedDays) return true
+  if (
+    !nullableNumbersEqual(
+      current.minimumCompletionRate30Day,
+      original.minimumCompletionRate30Day,
+    )
+  ) {
+    return true
+  }
+
   return Object.keys(buildAdvertEditPatch(original, current)).length > 0
+}
+
+/** Ensures edit PATCH always includes ad condition fields (mirrors mobile toEditPatchBody). */
+export function finalizeAdvertEditPatch(
+  patch: Record<string, unknown>,
+  minimumJoinedDays: number | null,
+  minimumCompletionRate30Day: number | null,
+): Record<string, unknown> {
+  return {
+    ...patch,
+    [MINIMUM_JOIN_DAYS_API_KEY]: minimumJoinedDays,
+    minimum_completion_rate_30day: minimumCompletionRate30Day,
+  }
 }
 
 /** Normalizes only keys present on a partial PATCH payload. */

@@ -1,11 +1,13 @@
+import type { AdvertEditSnapshot } from "@/lib/ads/advert-edit-patch"
 import {
   buildAdvertEditPatch,
   buildCurrentEditState,
   createAdvertEditSnapshot,
+  finalizeAdvertEditPatch,
   hasAdvertEditChanges,
   normalizeUpdateAdPayload,
-  type AdvertEditSnapshot,
 } from "@/lib/ads/advert-edit-patch"
+import { MINIMUM_JOIN_DAYS_API_KEY } from "@/lib/ads/ad-condition-values"
 
 const snapshot = (overrides: Partial<AdvertEditSnapshot> = {}): AdvertEditSnapshot => ({
   advertType: "buy",
@@ -16,6 +18,8 @@ const snapshot = (overrides: Partial<AdvertEditSnapshot> = {}): AdvertEditSnapsh
   orderExpiryPeriod: 30,
   availableCountries: [],
   minimumTradeBand: null,
+  minimumJoinedDays: null,
+  minimumCompletionRate30Day: null,
   isPrivate: false,
   instructions: "",
   paymentMethodNames: ["bank_transfer"],
@@ -76,38 +80,26 @@ describe("buildAdvertEditPatch", () => {
     })
   })
 
-  it("sends bronze when clearing minimum trade band restriction", () => {
+  it("sends bronze when editing advert with legacy minimum trade band", () => {
     const original = snapshot({ minimumTradeBand: "diamond" })
-    const current = snapshot({ minimumTradeBand: null })
+    const current = snapshot()
 
     expect(buildAdvertEditPatch(original, current)).toEqual({
       minimum_trade_band: "bronze",
     })
   })
 
-  it("treats bronze and null minimum trade band as unchanged", () => {
-    const baseParams = {
-      type: "buy" as const,
-      minimumOrderAmount: 10,
-      maximumOrderAmount: 100,
-      exchangeRate: 16000,
-      exchangeRateType: "fixed" as const,
-      orderExpiryPeriod: 30,
-      isPrivate: false,
-      paymentMethodNames: ["bank_transfer"],
-      paymentMethodIds: [],
-    }
-
-    const original = createAdvertEditSnapshot({
-      ...baseParams,
-      minimumTradeBand: null,
-    })
-    const current = createAdvertEditSnapshot({
-      ...baseParams,
-      minimumTradeBand: "bronze",
+  it("includes ad condition fields only when changed", () => {
+    const original = snapshot({ minimumJoinedDays: 15 })
+    const current = snapshot({
+      minimumJoinedDays: 30,
+      minimumCompletionRate30Day: 70,
     })
 
-    expect(buildAdvertEditPatch(original, current)).toEqual({})
+    const patch = buildAdvertEditPatch(original, current)
+
+    expect(patch[MINIMUM_JOIN_DAYS_API_KEY]).toBe(30)
+    expect(patch.minimum_completion_rate_30day).toBe(70)
   })
 
   it("includes payment_method_names only when buy methods changed", () => {
@@ -140,8 +132,35 @@ describe("buildAdvertEditPatch", () => {
   })
 })
 
+describe("hasAdvertEditChanges", () => {
+  it("returns true for legacy minimum trade band even without edits", () => {
+    const original = snapshot({ minimumTradeBand: "gold" })
+    const current = snapshot()
+
+    expect(hasAdvertEditChanges(original, current)).toBe(true)
+  })
+
+  it("returns true when ad condition fields change", () => {
+    const original = snapshot()
+    const current = snapshot({ minimumJoinedDays: 15 })
+
+    expect(hasAdvertEditChanges(original, current)).toBe(true)
+  })
+})
+
+describe("finalizeAdvertEditPatch", () => {
+  it("always includes ad condition fields on edit submit", () => {
+    const patch = finalizeAdvertEditPatch({}, null, 70)
+
+    expect(patch).toEqual({
+      minimum_join_days: null,
+      minimum_completion_rate_30day: 70,
+    })
+  })
+})
+
 describe("createAdvertEditSnapshot", () => {
-  it("normalizes description and trade band from API values", () => {
+  it("normalizes description, trade band, and ad conditions from API values", () => {
     const result = createAdvertEditSnapshot({
       type: "buy",
       minimumOrderAmount: 10,
@@ -151,6 +170,8 @@ describe("createAdvertEditSnapshot", () => {
       orderExpiryPeriod: 30,
       availableCountries: ["MY"],
       minimumTradeBand: "bronze",
+      minimumJoinedDays: 0,
+      minimumCompletionRate30Day: -1,
       isPrivate: false,
       description: "  hello  ",
       paymentMethodNames: ["bank_transfer"],
@@ -159,6 +180,8 @@ describe("createAdvertEditSnapshot", () => {
 
     expect(result.instructions).toBe("hello")
     expect(result.minimumTradeBand).toBeNull()
+    expect(result.minimumJoinedDays).toBeNull()
+    expect(result.minimumCompletionRate30Day).toBeNull()
     expect(result.availableCountries).toEqual(["MY"])
   })
 })
@@ -177,7 +200,8 @@ describe("buildCurrentEditState", () => {
       {
         orderTimeLimit: 45,
         selectedCountries: ["SG"],
-        minimumTradeBand: "gold",
+        minimumJoinedDays: 30,
+        minimumCompletionRate30Day: 90,
         isPrivate: true,
         selectedPaymentMethodIds: ["1", "2"],
       },
@@ -191,7 +215,8 @@ describe("buildCurrentEditState", () => {
       exchangeRateType: "float",
       orderExpiryPeriod: 45,
       availableCountries: ["SG"],
-      minimumTradeBand: "gold",
+      minimumJoinedDays: 30,
+      minimumCompletionRate30Day: 90,
       isPrivate: true,
       instructions: "note",
       paymentMethodIds: [1, 2],
