@@ -10,6 +10,8 @@ import { OrdersAPI } from "@/services/api"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { cn } from "@/lib/utils"
 
+const DEFAULT_RATE_LIMIT_SECONDS = 60
+
 interface PaymentReceivedConfirmationSidebarProps {
   isOpen: boolean
   onClose: () => void
@@ -39,12 +41,13 @@ export const PaymentReceivedConfirmationSidebar = ({
   const userData = useUserDataStore((state) => state.userData)
 
   useEffect(() => {
-    if (isOpen && !otpRequested && resendTimer <= 0) {
+    if (isOpen && resendTimer <= 0) {
       handleRequestOtp()
       setOtpValue("")
       setError(null)
     }
-  }, [isOpen])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen]) // resendTimer excluded to avoid auto-sending on every tick; handleRequestOtp excluded because it is recreated each render
 
   useEffect(() => {
     if (!isOpen || resendTimer <= 0 || !otpRequested) return
@@ -142,9 +145,12 @@ export const PaymentReceivedConfirmationSidebar = ({
           })
         } else if (error.code === "OrderVerificationRateLimit") {
           setOtpRequested(true)
-          const timeRemaining = Math.max(1, Math.ceil((error.detail.next_request_at - Date.now()) / 1000))
+          const nextRequestAt = error.detail?.next_request_at
+          const timeRemaining = nextRequestAt
+            ? Math.max(1, Math.ceil((nextRequestAt - Date.now()) / 1000))
+            : DEFAULT_RATE_LIMIT_SECONDS
           setResendTimer(timeRemaining)
-          setError(error.message || "An error occurred. Please try again.")
+          setError(null)
         } else if (error.code === "OrderTempLocked") {
           setOtpRequested(false)
           showAlert({
