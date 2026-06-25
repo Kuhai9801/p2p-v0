@@ -23,7 +23,7 @@ export function AdvertiserSearchResultCard({ ad, onAdvertiserClick, onBuySellCli
     const { userId } = useUserDataStore()
 
     return (
-        <div className="px-4 py-3">
+        <div data-testid={`mobile-search-card-${ad.user.id}`} className="px-4 py-3">
             {/* Row 1: Advertiser info */}
             <div className="flex items-center">
                 <div className="relative h-[40px] w-[40px] flex-shrink-0 rounded-full bg-black flex items-center justify-center text-white font-bold text-xl me-[8px]">
@@ -33,6 +33,7 @@ export function AdvertiserSearchResultCard({ ad, onAdvertiserClick, onBuySellCli
                 <div className="flex flex-col min-w-0 flex-1">
                     <div className="flex items-center gap-2 flex-wrap">
                         <button
+                            data-testid={`mobile-search-btn-advertiser-${ad.user.id}`}
                             className="text-sm hover:underline cursor-pointer truncate"
                             onClick={() => onAdvertiserClick(ad.user.id)}
                         >
@@ -123,6 +124,7 @@ export function AdvertiserSearchResultCard({ ad, onAdvertiserClick, onBuySellCli
                 </div>
                 {userId && ad.user.id !== Number(userId) && (
                     <Button
+                        data-testid={`mobile-search-btn-trade-${ad.id}`}
                         variant={ad.type === "buy" ? "destructive" : "secondary"}
                         size="sm"
                         onClick={() => onBuySellClick(ad)}

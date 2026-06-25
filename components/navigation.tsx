@@ -41,7 +41,7 @@ export default function Navigation({
               <BackArrowIcon alt={t("common.back")} width={24} height={24} />
             </Button>
             <h1 className="text-xl font-bold">{title}</h1>
-            <Button variant="ghost" onClick={onClose} size="sm" className="bg-grayscale-300 px-1">
+            <Button variant="ghost" onClick={onClose} size="sm" className="bg-grayscale-300 px-1" data-testid="ad-form-btn-close">
               <Image src="/icons/close-circle.png" alt={t("common.close")} width={24} height={24} />
             </Button>
           </div>
@@ -84,6 +84,7 @@ export default function Navigation({
           }}
           size="sm"
           className="bg-grayscale-300 px-1"
+          data-testid="ad-form-btn-close"
         >
           <Image src="/icons/close-circle.png" alt={t("common.close")} width={24} height={24} />
         </Button>

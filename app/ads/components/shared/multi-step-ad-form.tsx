@@ -837,7 +837,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                         </h3>
                         <TooltipProvider>
                           <Tooltip>
-                            <TooltipTrigger asChild>
+                            <TooltipTrigger data-testid="ad-form-tooltip-time-limit">
                               <Image
                                 src="/icons/info-circle.svg"
                                 alt="Info"
@@ -861,7 +861,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                         <h3 className="text-base font-normal text-start">{t("adForm.country")}</h3>
                         <TooltipProvider>
                           <Tooltip>
-                            <TooltipTrigger asChild>
+                            <TooltipTrigger data-testid="ad-form-tooltip-countries">
                               <Image
                                 src="/icons/info-circle.svg"
                                 alt="Info"
@@ -898,7 +898,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                         </h3>
                         <TooltipProvider>
                           <Tooltip>
-                            <TooltipTrigger asChild>
+                            <TooltipTrigger data-testid="ad-form-tooltip-joined-days">
                               <Image
                                 src="/icons/info-circle.svg"
                                 alt="Info"
@@ -926,6 +926,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                           })
                           setMinimumJoinedDays(value)
                         }}
+                        testIdPrefix="ad-form-chip-joined-days"
                         options={AD_JOINED_DAYS_OPTIONS}
                         labelFor={(days) => {
                           switch (days) {
@@ -949,7 +950,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                         </h3>
                         <TooltipProvider>
                           <Tooltip>
-                            <TooltipTrigger asChild>
+                            <TooltipTrigger data-testid="ad-form-tooltip-completion-rate">
                               <Image
                                 src="/icons/info-circle.svg"
                                 alt="Info"
@@ -977,6 +978,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                           })
                           setMinimumCompletionRate30Day(value)
                         }}
+                        testIdPrefix="ad-form-chip-completion-rate"
                         options={AD_COMPLETION_RATE_OPTIONS}
                         labelFor={(rate) => {
                           switch (rate) {
@@ -999,7 +1001,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                         </h3>
                         <TooltipProvider>
                           <Tooltip>
-                            <TooltipTrigger asChild>
+                            <TooltipTrigger data-testid="ad-form-tooltip-visibility">
                               <Image
                                 src="/icons/info-circle.svg"
                                 alt="Info"
@@ -1029,6 +1031,13 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                       onClick={handleButtonClick}
                       disabled={isButtonDisabled || isSubmitting}
                       className="w-full"
+                      data-testid={
+                        currentStep === 0
+                          ? "ad-form-btn-next-step1"
+                          : currentStep === 1
+                          ? "ad-form-btn-next-step2"
+                          : "ad-form-btn-submit"
+                      }
                     >
                       {isSubmitting ? (
                         <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
@@ -1041,7 +1050,18 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
               ) : (
                 <div className="hidden md:block w-full bg-white h-24 md:sticky md:bottom-0">
                   <div className="flex justify-end px-6 pt-6">
-                    <Button type="button" onClick={handleButtonClick} disabled={isButtonDisabled || isSubmitting}>
+                    <Button
+                      type="button"
+                      onClick={handleButtonClick}
+                      disabled={isButtonDisabled || isSubmitting}
+                      data-testid={
+                        currentStep === 0
+                          ? "ad-form-btn-next-step1"
+                          : currentStep === 1
+                          ? "ad-form-btn-next-step2"
+                          : "ad-form-btn-submit"
+                      }
+                    >
                       {isSubmitting ? (
                         <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
                       ) : (

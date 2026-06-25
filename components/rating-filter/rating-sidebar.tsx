@@ -55,6 +55,7 @@ const RatingContent = ({
                 onMouseEnter={() => setHoverRating(star)}
                 onMouseLeave={() => setHoverRating(0)}
                 className="hover:bg-transparent p-0 me-[4px]"
+                data-testid={`rating-btn-star-${star}`}
               >
                 <Image
                   src={(hoverRating || rating) >= star ? "/icons/star-active.png" : "/icons/star-custom.png"}
@@ -74,6 +75,7 @@ const RatingContent = ({
               className={cn("border-opacity-10", recommend === true ? "bg-success-text hover:bg-success-text" : "")}
               size="sm"
               onClick={() => setRecommend(recommend === true ? null : true)}
+              data-testid="rating-btn-recommend-yes"
             >
               <Image
                 src={recommend === true ? "/icons/thumbs-up-white.png" : "/icons/thumbs-up-custom.png"}
@@ -95,6 +97,7 @@ const RatingContent = ({
               className={cn("border-opacity-10", recommend === false ? "bg-disputed-icon hover:bg-disputed-icon" : "")}
               size="sm"
               onClick={() => setRecommend(recommend === false ? null : false)}
+              data-testid="rating-btn-recommend-no"
             >
               <Image
                 src={recommend === false ? "/icons/thumbs-down-white.png" : "/icons/thumbs-down-custom.png"}
@@ -116,7 +119,7 @@ const RatingContent = ({
       </div>
     </div>
     <div className="p-4 md:px-0">
-      <Button onClick={onSubmit} disabled={rating === 0 || isSubmitting} className="w-full disabled:opacity-[0.24]">
+      <Button onClick={onSubmit} disabled={rating === 0 || isSubmitting} className="w-full disabled:opacity-[0.24]" data-testid="rating-btn-submit">
         {isSubmitting ? (
           <Image src="/icons/spinner.png" alt={t("common.loading")} width={20} height={20} className="animate-spin" />
         ) : (
@@ -140,6 +143,7 @@ export function RatingSidebar({
   const [hoverRating, setHoverRating] = useState(0)
   const [recommend, setRecommend] = useState<boolean | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [apiError, setApiError] = useState<string | null>(null)
 
   const isMobile = useIsMobile()
   const { t } = useTranslations()
@@ -181,6 +185,7 @@ export function RatingSidebar({
           onCancel: () => handleClose(),
         })
       } else {
+        setApiError(error instanceof Error ? error.message : "An error occurred. Please try again.")
         console.error("Error submitting rating:", error)
       }
     } finally {
@@ -192,6 +197,7 @@ export function RatingSidebar({
     setRating(0)
     setHoverRating(0)
     setRecommend(null)
+    setApiError(null)
     onClose()
   }
 
@@ -204,10 +210,11 @@ export function RatingSidebar({
   if (isMobile) {
     return (
       <Drawer open={isOpen} onOpenChange={onClose}>
-        <DrawerContent side="bottom" className="h-auto max-h-[80vh] rounded-t-2xl px-0">
+        <DrawerContent className="h-auto max-h-[80vh] rounded-t-2xl px-0" data-testid="rating-sidebar-container">
           <DrawerHeader className="pb-4">
             <DrawerTitle className="text-xl font-bold text-center">{displayTitle}</DrawerTitle>
           </DrawerHeader>
+          {apiError && <p className="text-error text-xs px-4 pb-2" data-testid="rating-error-api">{apiError}</p>}
           <RatingContent
             rating={rating}
             setRating={setRating}
@@ -228,10 +235,11 @@ export function RatingSidebar({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md sm:rounded-[32px]">
+      <DialogContent className="sm:max-w-md sm:rounded-[32px]" data-testid="rating-sidebar-container">
         <DialogHeader>
           <DialogTitle className="tracking-normal font-bold text-2xl">{displayTitle}</DialogTitle>
         </DialogHeader>
+        {apiError && <p className="text-error text-xs" data-testid="rating-error-api">{apiError}</p>}
         <RatingContent
           rating={rating}
           setRating={setRating}

@@ -56,7 +56,7 @@ export default function WalletSidebar({
 
   if (operation === "TRANSFER") {
     return (
-      <div className="fixed inset-0 z-50 bg-background" onClick={onClose}>
+      <div data-testid="wallet-sidebar-btn-transfer" className="fixed inset-0 z-50 bg-background" onClick={onClose}>
         <div className="h-full w-full" onClick={(e) => e.stopPropagation()}>
           <Transfer
             currencySelected={currencySelected}
@@ -74,12 +74,13 @@ export default function WalletSidebar({
   return (
     <div className="fixed inset-0 z-50 bg-black/50 flex md:justify-end md:items-stretch" onClick={onClose}>
       <div
+        data-testid="wallet-sidebar-container"
         className="bg-background w-full h-full md:max-w-md flex flex-col shadow-lg md:rounded-none"
         onClick={(e) => e.stopPropagation()}
       >
         <div dir={dir} className="flex items-center justify-between gap-4 px-4 pb-3 md:py-3 mt-9 md:mt-0 md:border-b">
           <h2 className="min-w-0 flex-1 text-start text-lg font-bold">{getTitle()}</h2>
-          <Button onClick={onClose} variant="ghost" size="sm" className="px-1">
+          <Button data-testid="wallet-sidebar-btn-close" onClick={onClose} variant="ghost" size="sm" className="px-1">
             <Image src="/icons/close-circle.png" alt={t("common.close")} width={24} height={24} />
           </Button>
         </div>

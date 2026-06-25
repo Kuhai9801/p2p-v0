@@ -8,6 +8,7 @@ interface AdConditionChipSelectorProps {
   onValueChange: (value: number | null) => void
   options: readonly number[]
   labelFor: (option: number) => string
+  testIdPrefix?: string
   className?: string
 }
 
@@ -16,6 +17,7 @@ export default function AdConditionChipSelector({
   onValueChange,
   options,
   labelFor,
+  testIdPrefix,
   className,
 }: AdConditionChipSelectorProps) {
   const { t } = useTranslations()
@@ -39,6 +41,7 @@ export default function AdConditionChipSelector({
             type="button"
             onClick={() => onValueChange(chip.value)}
             aria-pressed={isSelected}
+            data-testid={testIdPrefix ? `${testIdPrefix}-${chip.key}` : undefined}
             className={cn(
               "flex-1 h-10 rounded-full text-base font-normal transition-colors",
               "border-[1.5px] text-grayscale-100",

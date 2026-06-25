@@ -14,6 +14,9 @@ export interface AlertDialogConfig {
   onCancel?: () => void
   onClose?: () => void
   hideCloseButton?: boolean
+  testId?: string
+  confirmTestId?: string
+  cancelTestId?: string
 }
 
 export interface AlertDialogContextType {

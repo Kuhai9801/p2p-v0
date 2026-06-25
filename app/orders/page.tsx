@@ -33,14 +33,14 @@ import { useOrders } from "@/hooks/use-api-queries"
 import { useTrackers } from "@/analytics/useTrackers"
 import { useP2PSystemMaintenance } from "@/hooks/use-p2p-system-maintenance"
 
-function TimeRemainingDisplay({ expiresAt }) {
+function TimeRemainingDisplay({ expiresAt, testId }: { expiresAt: string; testId?: string }) {
   const timeRemaining = useTimeRemaining(expiresAt)
   const pad = (n: number) => String(n).padStart(2, "0")
 
   if (timeRemaining.hours && timeRemaining.minutes && timeRemaining.seconds) return null
 
   return (
-    <div className="text-xs bg-[#0000000a] text-[#000000B8] rounded-sm w-fit py-[4px] px-[8px]">
+    <div className="text-xs bg-[#0000000a] text-[#000000B8] rounded-sm w-fit py-[4px] px-[8px]" data-testid={testId}>
       {`${pad(timeRemaining.hours)}:${pad(timeRemaining.minutes)}:${pad(timeRemaining.seconds)}`}
     </div>
   )
@@ -232,7 +232,7 @@ export default function OrdersPage() {
   }
 
   const OrdersLoadingSkeleton = () => (
-    <div className="grid grid-cols-[1fr] md:grid-cols-[1fr_1fr] gap-4 bg-white">
+    <div className="grid grid-cols-[1fr] md:grid-cols-[1fr_1fr] gap-4 bg-white" data-testid="orders-skeleton">
       {[1, 2, 3, 4].map((i) => (
         <div key={i} className="border rounded-lg p-4">
           <Skeleton className="h-[160px] w-full rounded-lg bg-grayscale-500" />
@@ -274,14 +274,15 @@ export default function OrdersPage() {
 
   if (showPreviousOrders) {
     return (
-      <>
+      <div data-testid="orders-section-previous">
         <PreviousOrdersSection onBack={handleBackFromPreviousOrders} />
-      </>
+      </div>
     )
   }
 
   return (
     <>
+      {showKycPopup && <span data-testid="orders-alert-kyc" aria-hidden="true" className="hidden" />}
       <div className="flex flex-col h-screen px-3">
         <div className="flex flex-col">
           <div className="relative z-10 w-[calc(100%+24px)] md:w-full h-[80px] flex flex-row items-center gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-0 md:m-0">
@@ -291,6 +292,7 @@ export default function OrdersPage() {
                   value="active"
                   className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none px-0"
                   variant="underline"
+                  data-testid="orders-tab-active"
                 >
                   {t("orders.active")}
                 </TabsTrigger>
@@ -298,6 +300,7 @@ export default function OrdersPage() {
                   value="past"
                   className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none px-0"
                   variant="underline"
+                  data-testid="orders-tab-past"
                 >
                   {t("orders.past")}
                 </TabsTrigger>
@@ -309,6 +312,7 @@ export default function OrdersPage() {
                 size="sm"
                 className="text-white font-normal hover:text-white hover:bg-transparent "
                 onClick={handleCheckPreviousOrders}
+                data-testid="orders-btn-check-previous"
               >
                 {t("orders.checkPreviousOrders")}
                 <Image
@@ -323,27 +327,29 @@ export default function OrdersPage() {
             )}
           </div>
           {tempBanUntil && !isMaintenanceActive && (
-            <div className="mt-4">
+            <div className="mt-4" data-testid="orders-alert-temp-ban">
               <TemporaryBanAlert tempBanUntil={tempBanUntil} />
             </div>
           )}
           <div className="my-4 self-end rtl:self-start">
             {activeTab === "past" && !isLoading && hasPastOrders && (
-              <DateFilter
-                value={dateFilter}
-                customRange={customDateRange}
-                onValueChange={(val) => {
-                  track("ek_date_filter_orders")
-                  setDateFilter(val)
-                }}
-                onCustomRangeChange={setCustomDateRange}
-              />
+              <div data-testid="orders-select-date-filter">
+                <DateFilter
+                  value={dateFilter}
+                  customRange={customDateRange}
+                  onValueChange={(val) => {
+                    track("ek_date_filter_orders")
+                    setDateFilter(val)
+                  }}
+                  onCustomRangeChange={setCustomDateRange}
+                />
+              </div>
             )}
           </div>
         </div>
         <div className="flex-1 pb-4 flex flex-col overflow-hidden">
           {isMaintenanceActive ? (
-            <div>
+            <div data-testid="orders-empty-state">
               {activeTab === "active" ? (
                 <EmptyState icon="/icons/no-active-orders.svg" title={t("orders.noActiveOrders")} description={t("orders.noActiveOrdersDescription")} />
               ) : (
@@ -353,7 +359,7 @@ export default function OrdersPage() {
           ) : isLoading ? (
             <OrdersLoadingSkeleton />
           ) : orders.length === 0 ? (
-            <div>
+            <div data-testid="orders-empty-state">
               {activeTab === "active" ? (
                 <EmptyState icon="/icons/no-active-orders.svg" title={t("orders.noActiveOrders")} description={t("orders.noActiveOrdersDescription")} redirectToAds={true} redirectToMarket={true} />
               ) : (
@@ -388,6 +394,7 @@ export default function OrdersPage() {
                       <TableRow
                         className="grid grid-cols-[2fr_1fr] border rounded-lg cursor-pointer gap-2 py-4"
                         key={order.id}
+                        data-testid={`orders-row-${order.id}`}
                         onClick={() => {
                           track("ek_order_item_orders", {
                             section_name: activeTab === "active" ? "active_orders" : "past_orders",
@@ -426,6 +433,7 @@ export default function OrdersPage() {
                         <TableCell className="py-0 px-4 align-top row-start-1">
                           <div
                             className={`w-fit px-[12px] py-[8px] rounded-[6px] text-xs ${getStatusBadgeStyle(order.status, isBuyer)}`}
+                            data-testid={`orders-badge-status-${order.id}`}
                           >
                             {formatStatus(false, order.status, isBuyer, t)}
                           </div>
@@ -433,7 +441,7 @@ export default function OrdersPage() {
                         {activeTab === "active" && (
                           <TableCell className="py-0 px-4 align-top row-start-1 col-start-2 justify-self-end">
                             {(order.status === "pending_payment" || order.status === "pending_release") && (
-                              <TimeRemainingDisplay expiresAt={order.expires_at} />
+                              <TimeRemainingDisplay expiresAt={order.expires_at} testId={`orders-text-time-remaining-${order.id}`} />
                             )}
                           </TableCell>
                         )}
@@ -446,7 +454,7 @@ export default function OrdersPage() {
                               </div>
                             )}
                             {order.is_reviewable > 0 && !order.disputed_at && (
-                              <Button variant="black" size="xs" onClick={(e) => handleRateClick(e, order)}>
+                              <Button variant="black" size="xs" onClick={(e) => handleRateClick(e, order)} data-testid={`orders-btn-rate-${order.id}`}>
                                 {t("orders.rate")}
                               </Button>
                             )}
@@ -465,6 +473,7 @@ export default function OrdersPage() {
                                 className="text-slate-500 hover:text-slate-700 z-auto p-0"
                                 variant="ghost"
                                 size="sm"
+                                data-testid={`orders-btn-chat-${order.id}`}
                               >
                                 <Image src="/icons/chat-icon.png" alt={t("common.chat")} width={20} height={20} />
                               </Button>

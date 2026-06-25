@@ -765,14 +765,14 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
     const tradingWallets = filteredWallets.filter((w) => w.type?.toLowerCase() !== "p2p")
 
     return (
-      <div className="fixed inset-0 bg-black/50 z-50 md:hidden" onClick={() => setShowMobileSheet(null)}>
+      <div data-testid="transfer-sheet-wallet-picker" className="fixed inset-0 bg-black/50 z-50 md:hidden" onClick={() => setShowMobileSheet(null)}>
         <div
           className="absolute bottom-0 inset-x-0 bg-white rounded-t-2xl max-h-[80vh] overflow-hidden"
           onClick={(e) => e.stopPropagation()}
         >
           <div className="p-4">
             <div className="flex justify-center mb-4">
-              <div className="w-12 h-1 bg-gray-300 rounded-full"></div>
+              <div data-testid="transfer-sheet-wallet-picker-grip" className="w-12 h-1 bg-gray-300 rounded-full"></div>
             </div>
             <h2 className="text-slate-1200 text-[20px] font-extrabold mb-6 text-center">{title}</h2>
             <div className="space-y-4 max-h-[60vh] overflow-y-auto">
@@ -782,6 +782,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                   {p2pWallets.map((wallet) => (
                     <div
                       key={wallet.wallet_id}
+                      data-testid={`transfer-btn-wallet-${wallet.wallet_id ?? wallet.currency}`}
                       className="cursor-pointer"
                       onClick={() => {
                         handleWalletSelect(wallet, type)
@@ -806,6 +807,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                   {tradingWallets.map((wallet) => (
                     <div
                       key={wallet.wallet_id}
+                      data-testid={`transfer-btn-wallet-${wallet.wallet_id ?? wallet.currency}`}
                       className="cursor-pointer"
                       onClick={() => {
                         handleWalletSelect(wallet, type)
@@ -851,6 +853,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
           onClick={(e) => e.stopPropagation()}
         >
           <Button
+            data-testid="transfer-sheet-wallet-picker-btn-close"
             variant="ghost"
             size="default"
             className="absolute top-4 end-4 min-w-0 px-0"
@@ -868,6 +871,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                   {p2pWallets.map((wallet) => (
                     <div
                       key={wallet.wallet_id}
+                      data-testid={`transfer-btn-wallet-${wallet.wallet_id ?? wallet.currency}`}
                       className="cursor-pointer"
                       onClick={() => {
                         handleWalletSelect(wallet, type)
@@ -892,6 +896,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                   {tradingWallets.map((wallet) => (
                     <div
                       key={wallet.wallet_id}
+                      data-testid={`transfer-btn-wallet-${wallet.wallet_id ?? wallet.currency}`}
                       className="cursor-pointer"
                       onClick={() => {
                         handleWalletSelect(wallet, type)
@@ -924,6 +929,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
 
     return (
       <div
+        data-testid="transfer-sheet-confirm"
         className="fixed inset-0 bg-black/50 z-50 hidden md:flex items-center justify-center"
         onClick={() => setShowDesktopConfirmPopup(false)}
       >
@@ -932,6 +938,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
           onClick={(e) => e.stopPropagation()}
         >
           <Button
+            data-testid="transfer-sheet-confirm-btn-close"
             variant="ghost"
             size="default"
             className="absolute top-4 end-4 min-w-0 px-0"
@@ -1119,6 +1126,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
             </div>
             <div className="space-y-2 mt-12">
               <Button
+                data-testid="transfer-btn-confirm"
                 onClick={handleConfirmTransfer}
                 disabled={isSubmitting}
                 className="w-full h-12 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
@@ -1142,14 +1150,14 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
     const hasTransferFee = transferFeeCalculation !== null
 
     return (
-      <div className="fixed inset-0 bg-black/50 z-50 md:hidden" onClick={() => setShowMobileConfirmSheet(false)}>
+      <div data-testid="transfer-sheet-confirm" className="fixed inset-0 bg-black/50 z-50 md:hidden" onClick={() => setShowMobileConfirmSheet(false)}>
         <div
           className="absolute bottom-0 inset-x-0 bg-white rounded-t-2xl max-h-[80vh] overflow-hidden"
           onClick={(e) => e.stopPropagation()}
         >
           <div className="pt-2 px-4 pb-8">
             <div className="flex justify-center mb-10">
-              <div className="w-12 h-1 bg-gray-300 rounded-full"></div>
+              <div data-testid="transfer-sheet-confirm-grip" className="w-12 h-1 bg-gray-300 rounded-full"></div>
             </div>
             <h1 className="text-slate-1200 text-center text-[20px] font-extrabold mb-8 ms-4 ">
               {t("wallet.reviewAndConfirm")}
@@ -1329,6 +1337,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
             </div>
             <div className="space-y-3 mt-8">
               <Button
+                data-testid="transfer-btn-confirm"
                 onClick={handleConfirmTransfer}
                 disabled={isSubmitting}
                 className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
@@ -1406,9 +1415,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
 
   if (step === "enterAmount") {
     return (
-      <div className="absolute inset-0 flex flex-col h-full p-4 md:pt-5">
+      <div data-testid="transfer-container" className="absolute inset-0 flex flex-col h-full p-4 md:pt-5">
         <div className="flex justify-end items-center mb-6 md:max-w-[608px] md:mx-auto md:w-full">
-          <Button variant="ghost" size="sm" className="px-0" onClick={() => { track("ek_close_transfer"); onClose() }} aria-label="Close">
+          <Button data-testid="transfer-btn-close" variant="ghost" size="sm" className="px-0" onClick={() => { track("ek_close_transfer"); onClose() }} aria-label="Close">
             <Image src="/icons/close-circle-secondary.png" alt={t("common.close")} width={32} height={32} />
           </Button>
         </div>
@@ -1418,6 +1427,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
           </h1>
           <div className="relative mb-6 px-2">
             <div
+              data-testid={sourceWalletData ? "transfer-btn-account-from" : "transfer-btn-select-from"}
               className="bg-grayscale-500 p-4 px-6 flex items-center gap-1 rounded-2xl cursor-pointer h-[100px] relative"
               onClick={() => {
                 track("ek_from_wallet_transfer")
@@ -1479,6 +1489,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
             </div>
             <div className="h-2"></div>
             <div
+              data-testid={destinationWalletData ? "transfer-btn-account-to" : "transfer-btn-select-to"}
               className="bg-grayscale-500 p-4 px-6 flex items-center gap-1 rounded-2xl cursor-pointer h-[100px] relative"
               onClick={() => {
                 track("ek_to_wallet_transfer")
@@ -1541,6 +1552,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
             </div>
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
               <Button
+                data-testid="transfer-btn-swap"
                 variant="ghost"
                 size="sm"
                 onClick={handleInterchange}
@@ -1555,6 +1567,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
             <div className="flex gap-2 items-center">
               <div className="relative flex-1">
                 <Input
+                  data-testid="transfer-input-amount"
                   type="number"
                   placeholder="0.00"
                   value={transferAmount || ""}
@@ -1606,10 +1619,11 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
               )}
             </div>
             {transferAmount && !isAmountValid(transferAmount) && (
-              <p className="text-red-500 text-sm mt-1">{getAmountErrorMessage()}</p>
+              <p data-testid="transfer-error-amount" className="text-red-500 text-sm mt-1">{getAmountErrorMessage()}</p>
             )}
             <div className="flex gap-2 mt-6">
               <Button
+                data-testid="transfer-btn-pct-25"
                 className={`flex-1 font-normal ${selectedPercentage === 25
                   ? "bg-grayscale-200 text-slate-1200 border-slate-1200 hover:bg-grayscale-200"
                   : "text-grayscale-600 border-grayscale-200 hover:bg-transparent"
@@ -1621,6 +1635,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                 25%
               </Button>
               <Button
+                data-testid="transfer-btn-pct-50"
                 className={`flex-1 font-normal ${selectedPercentage === 50
                   ? "bg-grayscale-200 text-slate-1200 border-slate-1200 hover:bg-grayscale-200"
                   : "text-grayscale-600 border-grayscale-200 hover:bg-transparent"
@@ -1632,6 +1647,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                 50%
               </Button>
               <Button
+                data-testid="transfer-btn-pct-75"
                 className={`flex-1 font-normal ${selectedPercentage === 75
                   ? "bg-grayscale-200 text-slate-1200 border-slate-1200 hover:bg-grayscale-200"
                   : "text-grayscale-600 border-grayscale-200 hover:bg-transparent"
@@ -1643,6 +1659,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                 75%
               </Button>
               <Button
+                data-testid="transfer-btn-pct-100"
                 className={`flex-1 font-normal ${selectedPercentage === 100
                   ? "bg-grayscale-200 text-slate-1200 border-slate-1200 hover:bg-grayscale-200"
                   : "text-grayscale-600 border-grayscale-200 hover:bg-transparent"
@@ -1704,6 +1721,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
 
             <div className="hidden md:block absolute top-full end-0 mt-6">
               <Button
+                data-testid="transfer-btn-submit"
                 onClick={handleTransferClick}
                 disabled={
                   !transferAmount ||
@@ -1721,6 +1739,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
           <div className="flex-1"></div>
           <div className="mt-auto md:hidden">
             <Button
+              data-testid="transfer-btn-submit"
               onClick={handleTransferClick}
               disabled={
                 !transferAmount ||
@@ -1770,24 +1789,27 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
             <p className="text-white text-center text-base font-normal">{transferText}</p>
             <div className="hidden md:flex gap-4 mt-6">
               <Button
+                data-testid="transfer-success-btn-details"
                 onClick={() => { track("ek_view_details_transfer_successful"); handleViewDetails() }}
                 className="w-[276px] h-12 px-7 flex justify-center items-center gap-2 bg-transparent border border-white rounded-3xl text-white text-base font-extrabold hover:bg-white/10"
               >
                 {t("wallet.viewDetails")}
               </Button>
-              <Button onClick={() => { track("ek_got_it_transfer_successful"); handleDoneClick() }} className="w-[276px] h-12 px-7 flex justify-center items-center gap-2">
+              <Button data-testid="transfer-success-btn-done" onClick={() => { track("ek_got_it_transfer_successful"); handleDoneClick() }} className="w-[276px] h-12 px-7 flex justify-center items-center gap-2">
                 {t("wallet.gotIt")}
               </Button>
             </div>
           </div>
           <div className="block md:hidden w-full space-y-3">
             <Button
+              data-testid="transfer-success-btn-done"
               onClick={() => { track("ek_got_it_transfer_successful"); handleDoneClick() }}
               className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
             >
               {t("wallet.gotIt")}
             </Button>
             <Button
+              data-testid="transfer-success-btn-details"
               onClick={() => { track("ek_view_details_transfer_successful"); handleViewDetails() }}
               className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2 bg-transparent border border-white rounded-3xl text-white text-base font-extrabold hover:bg-white/10"
             >
@@ -1810,43 +1832,43 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
     if (transferRejectionCta === "contact_us") {
       return (
         <div className="hidden md:flex justify-center mt-6">
-          <Button onClick={handleOpenLiveChat} className={primary}>{t("wallet.contactUs")}</Button>
+          <Button data-testid="transfer-error-btn-contact" onClick={handleOpenLiveChat} className={primary}>{t("wallet.contactUs")}</Button>
         </div>
       )
     }
     if (transferRejectionCta === "got_it") {
       return (
         <div className="hidden md:flex justify-center mt-6">
-          <Button onClick={handleDoneClick} className={primary}>{t("wallet.gotIt")}</Button>
+          <Button data-testid="transfer-error-btn-cancel" onClick={handleDoneClick} className={primary}>{t("wallet.gotIt")}</Button>
         </div>
       )
     }
     if (transferRejectionCta === "deposit_now") {
       return (
         <div className="hidden md:flex justify-center mt-6">
-          <Button onClick={handleDoneClick} className={primary}>{t("wallet.depositNow")}</Button>
+          <Button data-testid="transfer-error-btn-retry" onClick={handleDoneClick} className={primary}>{t("wallet.depositNow")}</Button>
         </div>
       )
     }
     if (transferRejectionCta === "change_method" || transferRejectionCta === "make_changes") {
       return (
         <div className="hidden md:flex justify-center mt-6">
-          <Button onClick={handleDoneClick} className={primary}>{t("wallet.tryAgain")}</Button>
+          <Button data-testid="transfer-error-btn-retry" onClick={handleDoneClick} className={primary}>{t("wallet.tryAgain")}</Button>
         </div>
       )
     }
     if (transferRejectionCta === "got_it_contact_us") {
       return (
         <div className="hidden md:flex gap-4 mt-6">
-          <Button onClick={handleDoneClick} className={secondary}>{t("wallet.gotIt")}</Button>
-          <Button onClick={handleOpenLiveChat} className={primary}>{t("wallet.contactUs")}</Button>
+          <Button data-testid="transfer-error-btn-cancel" onClick={handleDoneClick} className={secondary}>{t("wallet.gotIt")}</Button>
+          <Button data-testid="transfer-error-btn-contact" onClick={handleOpenLiveChat} className={primary}>{t("wallet.contactUs")}</Button>
         </div>
       )
     }
     return (
       <div className="hidden md:flex gap-4 mt-6">
-        <Button onClick={() => { track("ek_not_now_transfer_unsuccessful"); handleDoneClick() }} className={secondary}>{t("wallet.notNow")}</Button>
-        <Button onClick={() => { track("ek_try_again_transfer_unsuccessful"); toEnterAmount() }} className={primary}>{t("wallet.tryAgain")}</Button>
+        <Button data-testid="transfer-error-btn-cancel" onClick={() => { track("ek_not_now_transfer_unsuccessful"); handleDoneClick() }} className={secondary}>{t("wallet.notNow")}</Button>
+        <Button data-testid="transfer-error-btn-retry" onClick={() => { track("ek_try_again_transfer_unsuccessful"); toEnterAmount() }} className={primary}>{t("wallet.tryAgain")}</Button>
       </div>
     )
   }
@@ -1858,43 +1880,43 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
     if (transferRejectionCta === "contact_us") {
       return (
         <div className="block md:hidden w-full space-y-3">
-          <Button onClick={handleOpenLiveChat} className={primary}>{t("wallet.contactUs")}</Button>
+          <Button data-testid="transfer-error-btn-contact" onClick={handleOpenLiveChat} className={primary}>{t("wallet.contactUs")}</Button>
         </div>
       )
     }
     if (transferRejectionCta === "got_it") {
       return (
         <div className="block md:hidden w-full space-y-3">
-          <Button onClick={handleDoneClick} className={primary}>{t("wallet.gotIt")}</Button>
+          <Button data-testid="transfer-error-btn-cancel" onClick={handleDoneClick} className={primary}>{t("wallet.gotIt")}</Button>
         </div>
       )
     }
     if (transferRejectionCta === "deposit_now") {
       return (
         <div className="block md:hidden w-full space-y-3">
-          <Button onClick={handleDoneClick} className={primary}>{t("wallet.depositNow")}</Button>
+          <Button data-testid="transfer-error-btn-retry" onClick={handleDoneClick} className={primary}>{t("wallet.depositNow")}</Button>
         </div>
       )
     }
     if (transferRejectionCta === "change_method" || transferRejectionCta === "make_changes") {
       return (
         <div className="block md:hidden w-full space-y-3">
-          <Button onClick={handleDoneClick} className={primary}>{t("wallet.tryAgain")}</Button>
+          <Button data-testid="transfer-error-btn-retry" onClick={handleDoneClick} className={primary}>{t("wallet.tryAgain")}</Button>
         </div>
       )
     }
     if (transferRejectionCta === "got_it_contact_us") {
       return (
         <div className="block md:hidden w-full space-y-3">
-          <Button onClick={handleOpenLiveChat} className={primary}>{t("wallet.contactUs")}</Button>
-          <Button onClick={handleDoneClick} className={secondary}>{t("wallet.gotIt")}</Button>
+          <Button data-testid="transfer-error-btn-contact" onClick={handleOpenLiveChat} className={primary}>{t("wallet.contactUs")}</Button>
+          <Button data-testid="transfer-error-btn-cancel" onClick={handleDoneClick} className={secondary}>{t("wallet.gotIt")}</Button>
         </div>
       )
     }
     return (
       <div className="block md:hidden w-full space-y-3">
-        <Button onClick={() => { track("ek_try_again_transfer_unsuccessful"); toEnterAmount() }} className={primary}>{t("wallet.tryAgain")}</Button>
-        <Button onClick={() => { track("ek_not_now_transfer_unsuccessful"); handleDoneClick() }} className={secondary}>{t("wallet.notNow")}</Button>
+        <Button data-testid="transfer-error-btn-retry" onClick={() => { track("ek_try_again_transfer_unsuccessful"); toEnterAmount() }} className={primary}>{t("wallet.tryAgain")}</Button>
+        <Button data-testid="transfer-error-btn-cancel" onClick={() => { track("ek_not_now_transfer_unsuccessful"); handleDoneClick() }} className={secondary}>{t("wallet.notNow")}</Button>
       </div>
     )
   }

@@ -21,7 +21,7 @@ export default function AdUpdatedConfirmation({ isOpen, onConfirm, onCancel }: A
       <p className="text-grayscale-100 text-base">
         {t("order.adUpdatedDuringOrderMessage")}
       </p>
-      <Button onClick={onConfirm} className="w-full">
+      <Button data-testid="ad-updated-btn-confirm" onClick={onConfirm} className="w-full">
         {t("order.reviewChanges")}
       </Button>
     </div>
@@ -32,7 +32,7 @@ export default function AdUpdatedConfirmation({ isOpen, onConfirm, onCancel }: A
   if (isMobile) {
     return (
       <Drawer open={isOpen} onOpenChange={(open) => !open && onCancel()}>
-        <DrawerContent className="px-6 pb-8">
+        <DrawerContent data-testid="ad-updated-modal" className="px-6 pb-8">
           <DrawerTitle className="text-2xl font-bold my-4">{t("order.adUpdatedTitle")}</DrawerTitle>
           {content}
         </DrawerContent>
@@ -42,7 +42,7 @@ export default function AdUpdatedConfirmation({ isOpen, onConfirm, onCancel }: A
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onCancel()}>
-      <DialogContent className="p-[32px] sm:rounded-[32px]">
+      <DialogContent data-testid="ad-updated-modal" className="p-[32px] sm:rounded-[32px]">
         <DialogTitle className="font-bold text-2xl mb-4">{t("order.adUpdatedTitle")}</DialogTitle>
         {content}
       </DialogContent>

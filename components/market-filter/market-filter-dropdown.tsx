@@ -110,6 +110,7 @@ export default function MarketFilterDropdown({
             checked={filters.fromFollowing}
             onCheckedChange={(checked) => handleFilterChange("fromFollowing", checked as boolean)}
             className="shrink-0 border-2 border-grayscale-text-muted data-[state=checked]:bg-black"
+            data-testid="market-filter-checkbox-following"
           />
           <label htmlFor="from-following" className="flex-1 min-w-0 cursor-pointer text-start text-sm text-grayscale-600">
             {t("filter.adsFromFollowing")}
@@ -121,13 +122,13 @@ export default function MarketFilterDropdown({
           <h4 className="text-base font-normal text-grayscale-text-muted mb-2">{t("filter.sortBy")}</h4>
           <RadioGroup value={sortBy} onValueChange={handleSortByChange} className="gap-4">
             <div className={CHECKBOX_LABEL_ROW}>
-              <RadioGroupItem value="trade_band_rank" id="trade_band_rank" className="shrink-0 border-grayscale-100 text-black" />
+              <RadioGroupItem value="trade_band_rank" id="trade_band_rank" className="shrink-0 border-grayscale-100 text-black" data-testid="market-filter-radio-sort-tier" />
               <Label htmlFor="trade_band_rank" className="flex-1 min-w-0 cursor-pointer text-start text-sm font-normal text-grayscale-600">
                 {t("filter.tierLevelHighLow")}
               </Label>
             </div>
             <div className={CHECKBOX_LABEL_ROW}>
-              <RadioGroupItem value="exchange_rate" id="exchange_rate" className="shrink-0 border-grayscale-100 text-black" />
+              <RadioGroupItem value="exchange_rate" id="exchange_rate" className="shrink-0 border-grayscale-100 text-black" data-testid="market-filter-radio-sort-rate" />
               <Label htmlFor="exchange_rate" className="flex-1 min-w-0 cursor-pointer text-start text-sm font-normal text-grayscale-600">
                 {activeTab === "sell" ? t("filter.exchangeRateLowHigh") : t("filter.exchangeRateHighLow")}
               </Label>
@@ -137,6 +138,7 @@ export default function MarketFilterDropdown({
                 value="user_rating_average_lifetime"
                 id="user_rating_average_lifetime"
                 className="shrink-0 border-grayscale-100 text-black"
+                data-testid="market-filter-radio-sort-rating"
               />
               <Label
                 htmlFor="user_rating_average_lifetime"
@@ -150,13 +152,14 @@ export default function MarketFilterDropdown({
       </div>
       {isMobile && (
         <div className="flex flex-col md:flex-row gap-3 mt-6">
-          <Button variant="outline" onClick={handleReset} className="rounded-full flex-1 bg-transparent" size="default">
+          <Button variant="outline" onClick={handleReset} className="rounded-full flex-1 bg-transparent" size="default" data-testid="market-filter-btn-reset">
             {t("filter.reset")}
           </Button>
           <Button
             onClick={handleApply}
             className={`flex-1 rounded-full text-white hover:bg-gray-800 order-first`}
             size="default"
+            data-testid="market-filter-btn-apply"
           >
             {t("filter.apply")}
           </Button>
@@ -169,6 +172,7 @@ export default function MarketFilterDropdown({
     <div
       className={cn("relative w-fit", disabled && "pointer-events-none opacity-60 cursor-not-allowed")}
       aria-disabled={disabled || undefined}
+      data-testid="market-filter-btn-trigger"
     >
       {trigger}
       {hasActiveFilters && (
@@ -185,7 +189,7 @@ export default function MarketFilterDropdown({
     return (
       <Drawer open={isOpen} onOpenChange={handleOpenChange}>
         <DrawerTrigger asChild>
-          <div className="relative">
+          <div className="relative" data-testid="market-filter-btn-trigger">
             {trigger}
             {hasActiveFilters && (
               <div className="absolute top-[5px] right-[12px] w-2 h-2 bg-red-500 rounded-full"></div>
@@ -205,7 +209,7 @@ export default function MarketFilterDropdown({
   return (
     <Popover open={isOpen} onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild>
-        <div className="relative w-fit">
+        <div className="relative w-fit" data-testid="market-filter-btn-trigger">
           {trigger}
           {hasActiveFilters && <div className="absolute top-[5px] right-[12px] w-2 h-2 bg-red-500 rounded-full"></div>}
         </div>

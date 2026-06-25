@@ -253,7 +253,7 @@ export default function OrderChat({
   }
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full" data-testid="order-chat-container">
       <div className="flex items-center p-4 border-b flex-shrink-0">
         {onNavigateToOrderDetails && (
           <Button
@@ -261,6 +261,7 @@ export default function OrderChat({
             size="sm"
             onClick={onNavigateToOrderDetails}
             className="me-[16px] bg-grayscale-300 px-1"
+            data-testid="order-chat-btn-back"
           >
             <Image src="/icons/arrow-left-icon.png" alt={t("common.back")} width={24} height={24} className="rtl:rotate-180" />
           </Button>
@@ -319,7 +320,7 @@ export default function OrderChat({
                     </div>
                   </div>
                   {dateMessages.map((msg) => (
-                    <div key={msg.id} dir="ltr" className={`flex ${msg.sender_is_self ? "justify-end" : "justify-start"}`}>
+                    <div key={msg.id} dir="ltr" className={`flex ${msg.sender_is_self ? "justify-end" : "justify-start"}`} data-testid={`order-chat-msg-${msg.id}`}>
                       <div className="max-w-[80%] rounded-lg pb-[16px]">
                         {msg.attachment && (
                           <div className={`flex items-start ${msg.sender_is_self ? "justify-end" : ""}`}>
@@ -336,7 +337,7 @@ export default function OrderChat({
                                 {msg.rejected ? (
                                   <Image src="/icons/image-unavailable.svg" alt={t("common.error")} width={40} height={40} />
                                 ) : (
-                                  <a href={msg.attachment.url} target="_blank" download rel="noreferrer">
+                                  <a href={msg.attachment.url} target="_blank" download rel="noreferrer" data-testid={`order-chat-link-download-${msg.id}`}>
                                     {msg.attachment.name}
                                   </a>
                                 )}
@@ -405,6 +406,7 @@ export default function OrderChat({
                 placeholder={t("chat.enterMessage")}
                 disabled={isSending}
                 className="w-full rounded-[8px] pe-12 resize-none min-h-[56px] placeholder:text[#0000003D]"
+                data-testid="order-chat-input-message"
               />
               {message.trim() ? (
                 <Button
@@ -413,6 +415,7 @@ export default function OrderChat({
                   variant="ghost"
                   size="sm"
                   disabled={isSending}
+                  data-testid="order-chat-btn-send"
                 >
                   <Image src="/icons/send-message.png" alt={t("common.sendMessage")} width={20} height={20} className="h-5 w-5" />
                 </Button>
@@ -422,6 +425,7 @@ export default function OrderChat({
                   onClick={() => fileInputRef.current?.click()}
                   variant="ghost"
                   size="sm"
+                  data-testid="order-chat-btn-attach"
                 >
                   <Image src="/icons/paperclip-icon.png" alt="Attach file" width={20} height={20} className="h-5 w-5" />
                 </Button>
@@ -432,6 +436,7 @@ export default function OrderChat({
                 onChange={handleFileSelect}
                 className="hidden"
                 accept="image/*,application/pdf"
+                data-testid="order-chat-input-file"
               />
             </div>
             <div className="flex justify-between items-center">

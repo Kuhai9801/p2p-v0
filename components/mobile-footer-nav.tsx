@@ -65,10 +65,11 @@ export default function MobileFooterNav() {
   const isWalletActive = pathname.startsWith("/wallet")
 
   return (
-    <div className="fixed bottom-0 inset-x-0 bg-white border-t md:hidden z-40">
+    <div data-testid="footer-nav-container" className="fixed bottom-0 inset-x-0 bg-white border-t md:hidden z-40">
       <div className={cn("grid grid-cols-4 min-h-16 relative", showWallet && "grid-cols-5")}>
         <Link
           href={getHomeUrl(isV1Signup, "home")}
+          data-testid="footer-nav-link-home"
           className="flex flex-col items-center justify-center px-1 text-center max-w-full py-2 text-slate-1200"
         >
           <div className="h-5 w-5 flex items-center justify-center flex-shrink-0">
@@ -80,6 +81,7 @@ export default function MobileFooterNav() {
         </Link>
         <Link
           href="/"
+          data-testid="footer-nav-link-markets"
           className={cn("flex flex-col items-center justify-center px-1 text-center max-w-full py-2 relative", {
             "text-primary": isMarketActive,
             "text-slate-1200": !isMarketActive,
@@ -96,6 +98,7 @@ export default function MobileFooterNav() {
         </Link>
         <Link
           href="/orders"
+          data-testid="footer-nav-link-orders"
           className={cn("flex flex-col items-center justify-center px-1 text-center max-w-full py-2", {
             "text-primary": isOrdersActive,
             "text-slate-1200": !isOrdersActive,
@@ -108,6 +111,7 @@ export default function MobileFooterNav() {
         </Link>
         <Link
           href="/ads"
+          data-testid="footer-nav-link-ads"
           className={cn("flex flex-col items-center justify-center px-1 text-center max-w-full py-2", {
             "text-primary": isAdsActive,
             "text-slate-1200": !isAdsActive,
@@ -121,6 +125,7 @@ export default function MobileFooterNav() {
         {showWallet && (
           <Link
             href="/wallet"
+            data-testid="footer-nav-link-wallet"
             className={cn("flex flex-col items-center justify-center px-1 text-center max-w-full py-2", {
               "text-primary": isWalletActive,
               "text-slate-1200": !isWalletActive,

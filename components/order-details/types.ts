@@ -8,4 +8,7 @@ export interface OrderDetailItemProps {
   label: string
   value: string
   testId?: string
+  hasCopy?: boolean
+  isBlockLayout?: boolean
+  copyTestId?: string
 }

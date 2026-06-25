@@ -92,6 +92,7 @@ export default function RiskWarningModal({
         onClick={onContinue}
         variant="destructive"
         className="w-full"
+        data-testid="risk-warning-btn-continue"
       >
         {t("market.riskWarning.continueAnyway")}
       </Button>
@@ -99,6 +100,7 @@ export default function RiskWarningModal({
         onClick={onClose}
         variant="outline"
         className="w-full hover:bg-slate-50"
+        data-testid="risk-warning-btn-cancel"
       >
         {t("market.riskWarning.goBack")}
       </Button>
@@ -116,7 +118,7 @@ export default function RiskWarningModal({
   if (isMobile) {
     return (
       <Drawer open={isOpen} onOpenChange={(open) => !open && onClose()}>
-        <DrawerContent dir={dir} className="px-6 pb-8">
+        <DrawerContent dir={dir} className="px-6 pb-8" data-testid="risk-warning-modal">
           <DrawerTitle className="my-4 text-2xl font-bold text-start">{title}</DrawerTitle>
           {bodyContent}
         </DrawerContent>
@@ -126,12 +128,13 @@ export default function RiskWarningModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent dir={dir} className="p-8 sm:rounded-2xl">
+      <DialogContent dir={dir} className="p-8 sm:rounded-2xl" data-testid="risk-warning-modal">
         <div className="mb-2 flex items-start justify-between gap-4">
           <DialogTitle className="flex-1 text-start text-2xl font-bold">{title}</DialogTitle>
           <DialogClose
             aria-label={t("market.riskWarning.goBack")}
             className="shrink-0 rounded-full p-2 hover:bg-slate-100 focus:outline-none focus-visible:ring-2"
+            data-testid="risk-warning-btn-close"
           >
             <X size={20} />
           </DialogClose>

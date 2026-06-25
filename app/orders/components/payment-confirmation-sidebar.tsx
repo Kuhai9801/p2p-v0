@@ -134,6 +134,7 @@ export const PaymentConfirmationSidebar = ({
     <>
       <div className="fixed inset-0 z-40 bg-black/80" onClick={onClose} />
       <div
+        data-testid="order-details-sheet-confirm-payment"
         className={`fixed inset-y-0 end-0 z-50 bg-white shadow-xl flex flex-col ${
           isMobile ? "inset-0 w-full" : "w-full"
         }`}
@@ -202,6 +203,7 @@ export const PaymentConfirmationSidebar = ({
               onClick={handleSubmit}
               disabled={!selectedFile || isLoading || isUploadLoading}
               className="w-full md:w-auto"
+              data-testid="order-details-btn-confirm-payment"
             >
               {isLoading || isUploadLoading ? (
                 <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />

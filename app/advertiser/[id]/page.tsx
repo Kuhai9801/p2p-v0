@@ -459,7 +459,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
 
   if (error && !profile) {
     return (
-      <div className="container mx-auto px-4 py-8 pt-20">
+      <div data-testid="advertiser-error-load" className="container mx-auto px-4 py-8 pt-20">
         <div className="text-center py-8">
           <p>{error}</p>
           <Button onClick={handleBack} className="mt-4 text-white">
@@ -476,7 +476,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
         <div className="flex flex-col md:flex-row justify-between">
           <div className="container mx-auto pb-6">
             <div className="bg-slate-75 p-6 rounded-none md:rounded-3xl flex flex-col md:items-start gap-4 mx-[-24px] mt-[-24px] md:mx-0 md:mt-0">
-              <Button variant="ghost" onClick={handleBack} size="sm" className="bg-grayscale-500 px-1 w-fit">
+              <Button data-testid="advertiser-btn-back" variant="ghost" onClick={handleBack} size="sm" className="bg-grayscale-500 px-1 w-fit">
                 <Image src="/icons/arrow-left-icon.png" alt={t("common.back")} width={24} height={24} className="rtl:rotate-180" />
               </Button>
               <div className="flex-1 w-full">
@@ -485,6 +485,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                     <div className="relative h-[56px] w-[56px] bg-grayscale-500 rounded-full flex items-center justify-center">
                       <Image src="/icons/user-icon-black.png" alt={t("common.user")} width={32} height={32} />
                       <div
+                        data-testid="advertiser-badge-online-status"
                         className={`absolute bottom-0 right-1 h-3 w-3 rounded-full border-2 border-white ${profile?.is_online ? "bg-buy" : "bg-gray-400"
                           }`}
                       />
@@ -492,27 +493,31 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                   </div>
                   <div className="flex-1">
                     <div className="flex gap-2 items-center">
-                      <h2 className="text-lg font-bold">{profile?.nickname}</h2>
-                      <VerifiedBadge />
+                      <h2 data-testid="advertiser-text-nickname" className="text-lg font-bold">{profile?.nickname}</h2>
+                      <span data-testid="advertiser-badge-verified"><VerifiedBadge /></span>
                       {profile.trade_band && (
-                        <TradeBandBadge
-                          tradeBand={profile.trade_band}
-                          showLearnMore={true}
-                          size={18}
-                        />
+                        <span data-testid="advertiser-badge-trade-band">
+                          <TradeBandBadge
+                            tradeBand={profile.trade_band}
+                            showLearnMore={true}
+                            size={18}
+                          />
+                        </span>
                       )}
                       {IS_CLOSED_GROUP_ENABLED && isGroupMember &&
-                        <ClosedGroupBadge />
+                        <span data-testid="advertiser-badge-closed-group"><ClosedGroupBadge /></span>
                       }
                     </div>
                     <div className="flex items-center text-xs text-grayscale-600 mt-2">
                       {!profile?.is_online && profile?.last_online_at && (
                         <>
-                          <PresenceLastSeen
-                            isOnline={profile.is_online}
-                            lastOnlineAt={profile.last_online_at}
-                            className="text-xs text-grayscale-600 me-[8px]"
-                          />
+                          <span data-testid="advertiser-text-last-seen">
+                            <PresenceLastSeen
+                              isOnline={profile.is_online}
+                              lastOnlineAt={profile.last_online_at}
+                              className="text-xs text-grayscale-600 me-[8px]"
+                            />
+                          </span>
                           <span className="opacity-[0.08]">|</span>
                         </>
                       )}
@@ -523,7 +528,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                     <div className="flex items-center text-xs text-grayscale-600 mt-2 gap-2">
                       <div className="flex items-center">
                         <Image src="/icons/thumbs-up.png" alt={t("common.recommended")} width={24} height={24} className="me-1" />
-                        <span className="me-[8px]">
+                        <span data-testid="advertiser-text-recommendation" className="me-[8px]">
                           {profile?.statistics_lifetime?.recommend_count > 0
                             ? t("advertiser.recommendedBy", {
                               count: profile?.statistics_lifetime?.recommend_count,
@@ -535,7 +540,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                       <span className="opacity-[0.08]">|</span>
                       <div className="flex items-center">
                         <Image src="/icons/star-rating.png" alt={t("common.star")} width={24} height={24} className="me-1" />
-                        <span>
+                        <span data-testid="advertiser-text-rating">
                           {profile?.statistics_lifetime?.rating_count > 0
                             ? profile?.statistics_lifetime?.rating_average
                             : t("profile.notRatedYet")}
@@ -548,23 +553,26 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                       {!isBlocked && (
                         <>
                           {isFollowing ? (
-                            <FollowDropdown
-                              isFollowing={isFollowing}
-                              isGroupMember={isGroupMember}
-                              isLoading={isFollowLoading}
-                              onUnfollow={toggleFollow}
-                              onAddToClosedGroup={handleAddToClosedGroup}
-                              onRemoveFromClosedGroup={handleRemoveFromClosedGroup}
-                              nickname={profile?.nickname}
-                            />
+                            <span data-testid="advertiser-btn-unfollow-trigger">
+                              <FollowDropdown
+                                isFollowing={isFollowing}
+                                isGroupMember={isGroupMember}
+                                isLoading={isFollowLoading}
+                                onUnfollow={toggleFollow}
+                                onAddToClosedGroup={handleAddToClosedGroup}
+                                onRemoveFromClosedGroup={handleRemoveFromClosedGroup}
+                                nickname={profile?.nickname}
+                              />
+                            </span>
                           ) : (
-                            <Button onClick={toggleFollow} variant="outline" size="sm" disabled={isFollowLoading}>
+                            <Button data-testid="advertiser-btn-follow" onClick={toggleFollow} variant="outline" size="sm" disabled={isFollowLoading}>
                               {t("advertiser.follow")}
                             </Button>
                           )}
                         </>
                       )}
                       <Button
+                        data-testid={isBlocked ? "advertiser-btn-unblock" : "advertiser-btn-block"}
                         variant="ghost"
                         size="sm"
                         className="underline"
@@ -620,24 +628,27 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                           <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
                             {adverts.map((ad) => (
                               <TableRow
+                                data-testid={`advertiser-row-ad-${ad.id}`}
                                 className="grid grid-col gap-2 border-b mb-[16px] py-4 lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] lg:py-0"
                                 key={ad.id}
                               >
                                 <TableCell className="p-0 lg:py-4 lg:px-4 align-middle text-base whitespace-nowrap row-start-1">
                                   <div className="font-bold">
-                                    <ExchangeRateDisplay
-                                      rate={ad.effective_rate_display}
-                                      paymentCurrency={ad.payment_currency}
-                                      accountCurrency={ad.account_currency}
-                                      mutedClassName="text-xs font-normal text-black opacity-[0.48]"
-                                    />
+                                    <span data-testid={`advertiser-text-rate-${ad.id}`}>
+                                      <ExchangeRateDisplay
+                                        rate={ad.effective_rate_display}
+                                        paymentCurrency={ad.payment_currency}
+                                        accountCurrency={ad.account_currency}
+                                        mutedClassName="text-xs font-normal text-black opacity-[0.48]"
+                                      />
+                                    </span>
                                   </div>
                                   {ad.exchange_rate_type === "floating" && (
                                     <div className="text-xs text-slate-500">0.1%</div>
                                   )}
                                 </TableCell>
                                 <TableCell className="p-0 lg:py-4 lg:px-4 align-middle whitespace-nowrap row-start-2">
-                                  <div>
+                                  <div data-testid={`advertiser-text-limits-${ad.id}`}>
                                     {isMobile && <span>{t("market.tradeLimitsLabel")} </span>}
                                     {ad.minimum_order_amount} - {ad.actual_maximum_order_amount} {ad.account_currency}
                                   </div>
@@ -666,6 +677,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                                 <TableCell className="px-0 py-2 lg:py-4 lg:px-4 text-right align-middle whitespace-nowrap row-start-4">
                                   {userId != ad.user.id && (
                                     <Button
+                                      data-testid={`advertiser-btn-trade-${ad.id}`}
                                       variant={ad.type === "buy" ? "destructive" : "secondary"}
                                       size="sm"
                                       onClick={() => handleOrderClick(ad, ad.type === "buy" ? "buy" : "sell")}
@@ -688,11 +700,13 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                       )}
                     </>
                   ) : (
-                    <EmptyState
-                      title={t("advertiser.noAdsYet")}
-                      description={t("advertiser.noActiveAds")}
-                      redirectToAds={false}
-                    />
+                    <div data-testid="advertiser-empty-ads">
+                      <EmptyState
+                        title={t("advertiser.noAdsYet")}
+                        description={t("advertiser.noActiveAds")}
+                        redirectToAds={false}
+                      />
+                    </div>
                   )}
                 </div>
               </>
