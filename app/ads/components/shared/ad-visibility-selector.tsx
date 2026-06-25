@@ -33,6 +33,7 @@ export default function AdVisibilitySelector({ value, onValueChange, onEditClose
     >
       <Label
         htmlFor="everyone"
+        data-testid="ad-form-radio-visibility-everyone"
         className={`font-normal flex items-center justify-between p-4 gap-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${value === "everyone"
           ? "border-black"
           : "border-grayscale-500"}`}
@@ -49,6 +50,7 @@ export default function AdVisibilitySelector({ value, onValueChange, onEditClose
 
       <Label
           htmlFor="closed-group"
+          data-testid="ad-form-radio-visibility-closed-group"
           className={`font-normal flex items-center justify-between p-4 gap-4 rounded-lg border transition-colors bg-grayscale-500 ${value === "closed-group" ? "border-black" : "border-grayscale-500"} ${closedGroupDisabled ? "opacity-50 cursor-not-allowed pointer-events-none" : "cursor-pointer"}`}
         >
           <Image src="/icons/closed-group.svg" alt={t("adForm.visibilityClosedGroup")} width={32} height={32} />

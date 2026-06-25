@@ -59,6 +59,7 @@ const AnnouncementCarousel = memo(function AnnouncementCarousel({
             <button
               key={index}
               type="button"
+              data-testid={`announcement-dot-${index}`}
               aria-label={`Go to slide ${index + 1}`}
               className={`h-2 rounded-full transition-all ${
                 currentSlide === index
@@ -129,11 +130,11 @@ const AnnouncementContent = memo(function AnnouncementContent({
 
       {/* CTA area */}
       <div className={`flex flex-col gap-2 ${isModal ? "px-8 pb-8 pt-2" : "px-6 pb-8 pt-2"}`}>
-        <Button className="w-full" onClick={onDismiss}>
+        <Button data-testid="announcement-btn-primary" className="w-full" onClick={onDismiss}>
           {t(keys.primaryCta)}
         </Button>
         {"secondaryCta" in keys && (
-          <Button className="w-full" variant="outline" onClick={onDismiss}>
+          <Button data-testid="announcement-btn-secondary" className="w-full" variant="outline" onClick={onDismiss}>
             {t((keys as typeof ANNOUNCEMENT_TRANSLATION_KEYS.whatsComing).secondaryCta)}
           </Button>
         )}
@@ -151,6 +152,7 @@ export function P2PAnnouncement({ kind, onDismiss }: P2PAnnouncementProps) {
     return (
       <Drawer open dismissible={false}>
         <DrawerContent
+          data-testid="announcement-modal"
           hideHandle
           className="gap-0 max-h-none overflow-hidden rounded-t-2xl border-0 p-0"
         >
@@ -165,7 +167,7 @@ export function P2PAnnouncement({ kind, onDismiss }: P2PAnnouncementProps) {
 
   return (
     <Dialog open onOpenChange={(open) => { if (!open) onDismiss() }}>
-      <DialogContent className="gap-0 p-0 max-w-md rounded-2xl overflow-hidden">
+      <DialogContent data-testid="announcement-modal" className="gap-0 p-0 max-w-md rounded-2xl overflow-hidden">
         <DialogTitle className="sr-only">
           {t(keys.title)}
         </DialogTitle>

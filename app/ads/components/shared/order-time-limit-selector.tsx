@@ -34,7 +34,7 @@ export default function OrderTimeLimitSelector({
   }
 
   return (
-    <div className={cn("flex items-center gap-2", className)}>
+    <div className={cn("flex items-center gap-2", className)} data-testid="ad-form-select-time-limit">
       {TIME_LIMIT_OPTIONS.map((option) => {
         const isSelected = option === value
         return (

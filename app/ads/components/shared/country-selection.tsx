@@ -70,7 +70,7 @@ export default function CountrySelection({ countries, selectedCountries, onCount
 
   const getDisplayText = () => {
     if (isAllSelected) {
-      return t("common.selectedAll")
+      return t("common.allCountries")
     }
     return `${t("common.selectedCount")} (${selectedCountries.length})`
   }
@@ -107,7 +107,7 @@ export default function CountrySelection({ countries, selectedCountries, onCount
         )}
       </div>
 
-      <div ref={scrollContainerRef} className="space-y-4 px-1 max-h-[300px] md:max-h-[240px] overflow-y-auto">
+      <div ref={scrollContainerRef} className="space-y-4 px-1 max-h-[300px] md:max-h-[240px] overflow-y-auto" data-testid="ad-form-list-countries">
         <div className={cn(CHECKBOX_LABEL_ROW, "mb-1")}>
           <Checkbox
             id="all-countries"
@@ -130,6 +130,7 @@ export default function CountrySelection({ countries, selectedCountries, onCount
               onCheckedChange={() => handleCountryToggle(country.code)}
               disabled={false}
               className="shrink-0 data-[state=checked]:bg-black"
+              data-testid={`ad-form-checkbox-country-${country.code}`}
             />
             <label htmlFor={country.code} className="flex-1 min-w-0 text-sm cursor-pointer text-start">
               {country.name}

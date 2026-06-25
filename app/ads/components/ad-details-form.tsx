@@ -409,6 +409,7 @@ export default function AdDetailsForm({
                     variant="outline"
                     className="min-h-[48px] gap-2 min-w-[96px] w-full h-[56px] max-h-[56px] rounded-lg justify-between px-4 border border-gray-200 hover:bg-transparent font-normal bg-transparent"
                     disabled
+                    data-testid="ad-form-select-account-currency"
                   >
                     <div className="flex items-center gap-2">
                       {currencyFlagMapper[buyCurrency as keyof typeof currencyFlagMapper] && (
@@ -451,6 +452,7 @@ export default function AdDetailsForm({
                   <Button
                     variant="outline"
                     className="min-h-[48px] gap-2 min-w-[96px] w-full h-[56px] max-h-[56px] rounded-lg justify-between px-4 border border-gray-200 hover:bg-transparent font-normal bg-transparent"
+                    data-testid="ad-form-select-payment-currency"
                   >
                     <div className="flex items-center gap-2">
                       {currencyFlagMapper[forCurrency as keyof typeof currencyFlagMapper] && (
@@ -521,7 +523,7 @@ export default function AdDetailsForm({
                     error={touched.fixedRate && !!formErrors.fixedRate}
                   />
                   {touched.fixedRate && formErrors.fixedRate && (
-                    <p className="text-destructive text-xs mt-1 ms-4">{formErrors.fixedRate}</p>
+                    <p className="text-destructive text-xs mt-1 ms-4" data-testid="ad-form-error-rate">{formErrors.fixedRate}</p>
                   )}
                 </div>
               ) : (
@@ -594,6 +596,7 @@ export default function AdDetailsForm({
           <h3 className="text-lg font-bold leading-6 tracking-normal mb-4">{t("adForm.amountAndOrderLimit")}</h3>
           <div className="mb-4">
             <CurrencyInput
+              data-testid="ad-form-input-total-amount"
               value={totalAmount}
               onValueChange={(value) => {
                 if (value === "") {
@@ -626,6 +629,7 @@ export default function AdDetailsForm({
           <div className="flex flex-col md:flex-row md:items-baseline gap-4">
             <div>
               <CurrencyInput
+                data-testid="ad-form-input-min-amount"
                 value={minAmount}
                 onValueChange={(value) => {
                   if (value === "") {
@@ -651,12 +655,13 @@ export default function AdDetailsForm({
                 currency={buyCurrency}
               />
               {touched.minAmount && formErrors.minAmount && (
-                <p className="text-destructive text-xs mt-1 ms-4">{formErrors.minAmount}</p>
+                <p className="text-destructive text-xs mt-1 ms-4" data-testid="ad-form-error-amount">{formErrors.minAmount}</p>
               )}
             </div>
             <div className="text-xl hidden md:block">~</div>
             <div>
               <CurrencyInput
+                data-testid="ad-form-input-max-amount"
                 value={maxAmount}
                 onValueChange={(value) => {
                   if (value === "") {
@@ -682,7 +687,7 @@ export default function AdDetailsForm({
                 currency={buyCurrency}
               />
               {touched.maxAmount && formErrors.maxAmount && (
-                <p className="text-destructive text-xs mt-1 ms-4">{formErrors.maxAmount}</p>
+                <p className="text-destructive text-xs mt-1 ms-4" data-testid="ad-form-error-amount">{formErrors.maxAmount}</p>
               )}
             </div>
           </div>

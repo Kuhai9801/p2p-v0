@@ -18,6 +18,7 @@ export default function BalanceItem({ currency, amount, label, onClick }: Balanc
   return (
     <div
       onClick={onClick}
+      data-testid={`wallet-card-balance-${currency}`}
       className="flex items-center justify-between h-[72px] w-full cursor-pointer transition-colors relative"
     >
       <div className="flex items-center gap-4 ps-0">
@@ -48,7 +49,7 @@ export default function BalanceItem({ currency, amount, label, onClick }: Balanc
         <div className="text-slate-1200 text-base font-normal">{label || currency}</div>
       </div>
 
-      <div className="text-slate-1200 text-base font-normal pe-6">
+      <div data-testid={`wallet-text-balance-${currency}`} className="text-slate-1200 text-base font-normal pe-6">
         {displayAmount} {currency}
       </div>
 

@@ -76,12 +76,14 @@ export default function FollowDropdown({
         <DropdownMenuContent align="end" className="p-2 w-[280px]">
           {isClosedGroupEnabled && (
             isGroupMember ? (<DropdownMenuItem
+              data-testid="advertiser-btn-remove-closed-group"
               onClick={handleRemoveFromClosedGroup}
               className="flex items-center gap-2 py-3 px-4 cursor-pointer"
             >
               <Image src="/icons/star.svg" alt={t("advertiser.removeFromClosedGroup")} width={16} height={24} />
               <span className="text-base text-grayscale-600">{t("advertiser.removeFromClosedGroup")}</span>
             </DropdownMenuItem>) : (<DropdownMenuItem
+              data-testid="advertiser-btn-add-closed-group"
               onClick={handleAddToClosedGroup}
               className="flex items-center gap-2 py-3 px-4 cursor-pointer"
             >
@@ -91,6 +93,7 @@ export default function FollowDropdown({
             )
           )}
           <DropdownMenuItem
+            data-testid="advertiser-btn-unfollow"
             onClick={handleUnfollow}
             className="flex items-center gap-2 py-3 px-4 cursor-pointer"
           >
@@ -122,6 +125,7 @@ export default function FollowDropdown({
           <div>
             {isClosedGroupEnabled && (
               isGroupMember ? (<Button
+                data-testid="advertiser-btn-remove-closed-group"
                 onClick={handleRemoveFromClosedGroup}
                 className="w-full gap-3 py-3 text-left font-normal flex justify-start px-0"
                 variant="ghost"
@@ -129,6 +133,7 @@ export default function FollowDropdown({
                 <Image src="/icons/star.svg" alt={t("advertiser.removeFromClosedGroup")} width={16} height={24} />
                 <span className="text-base text-grayscale-600">{t("advertiser.removeFromClosedGroup")}</span>
               </Button>) : (<Button
+                data-testid="advertiser-btn-add-closed-group"
                 onClick={handleAddToClosedGroup}
                 className="w-full gap-3 py-3 text-left font-normal flex justify-start px-0"
                 variant="ghost"
@@ -138,6 +143,7 @@ export default function FollowDropdown({
               </Button>)
             )}
             <Button
+              data-testid="advertiser-btn-unfollow"
               onClick={handleUnfollow}
               className="w-full gap-3 py-3 text-left font-normal flex justify-start px-0"
               variant="ghost"

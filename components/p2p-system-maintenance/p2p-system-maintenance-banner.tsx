@@ -29,6 +29,7 @@ export function P2PSystemMaintenanceBanner({
 
   return (
     <Alert
+      data-testid="maintenance-banner"
       role="alert"
       aria-live="polite"
       className={cn(
@@ -58,6 +59,7 @@ export function P2PSystemMaintenanceBanner({
             {prefix}
             <button
               type="button"
+              data-testid="maintenance-link-livechat"
               onClick={openLiveChat}
               className={cn(
                 "font-bold underline underline-offset-2",

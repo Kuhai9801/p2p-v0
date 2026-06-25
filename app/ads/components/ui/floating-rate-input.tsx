@@ -126,7 +126,7 @@ export function FloatingRateInput({
               </Button>
             </div>
           </div>
-          {error && <p className="text-destructive text-xs mt-1 ms-4">{errorMsg}</p>}
+          {error && <p className="text-destructive text-xs mt-1 ms-4" data-testid="ad-form-error-rate">{errorMsg}</p>}
           <div className="text-xs text-grayscale-text-muted ms-4 mt-1 text-start">
             {t("adForm.currentMarketPrice")}{" "}
             {marketPrice ? (

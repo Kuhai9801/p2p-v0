@@ -110,13 +110,16 @@ export default function ProfilePage() {
   if (isDisabled) {
     return (
       <div className="flex flex-col h-screen overflow-hidden px-3">
-        <P2PAccessRemoved />
+        <div data-testid="profile-msg-access-removed">
+          <P2PAccessRemoved />
+        </div>
       </div>
     )
   }
 
   return (
     <>
+      {showKycPopup && <div data-testid="profile-alert-kyc" aria-hidden="true" className="hidden" />}
       <div className="md:px-3 overflow-x-hidden overflow-y-auto h-full">
         <div className="flex flex-col md:flex-row gap-6 h-full">
           <div className="flex-1 order-1 h-full">
@@ -131,7 +134,11 @@ export default function ProfilePage() {
               isLoading={isLoading}
               tradeBand={userData?.trade_band}
             />
-            {tempBanUntil && !isMaintenanceActive && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
+            {tempBanUntil && !isMaintenanceActive && (
+              <div data-testid="profile-alert-temp-ban">
+                <TemporaryBanAlert tempBanUntil={tempBanUntil} />
+              </div>
+            )}
             <div className="md:w-[50%] flex flex-col gap-6 order-2 my-4 px-3 md:px-0">
               <TradeLimits
                 buyLimit={userData?.tradeLimits?.buy}

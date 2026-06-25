@@ -58,12 +58,14 @@ export default function RateChangeConfirmation({
       </div>
       <div className="flex flex-col gap-3">
         <Button
+          data-testid="rate-change-btn-confirm"
           onClick={onConfirm}
           className="w-full"
         >
           {t("order.confirmAndContinue")}
         </Button>
         <Button
+          data-testid="rate-change-btn-cancel"
           onClick={onCancel}
           variant="outline"
           className="w-full hover:bg-slate-50"
@@ -79,7 +81,7 @@ export default function RateChangeConfirmation({
   if (isMobile) {
     return (
       <Drawer open={isOpen} onOpenChange={(open) => !open && onCancel()}>
-        <DrawerContent className="px-6 pb-8">
+        <DrawerContent data-testid="rate-change-modal" className="px-6 pb-8">
           <DrawerTitle className="text-2xl font-bold my-4">{t("order.rateUpdatedTitle")}</DrawerTitle>
           {content}
         </DrawerContent>
@@ -89,7 +91,7 @@ export default function RateChangeConfirmation({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onCancel()}>
-      <DialogContent className="p-[32px] sm:rounded-[32px]">
+      <DialogContent data-testid="rate-change-modal" className="p-[32px] sm:rounded-[32px]">
         <DialogTitle className="font-bold text-2xl mb-4">{t("order.rateUpdatedTitle")}</DialogTitle>
         {content}
       </DialogContent>

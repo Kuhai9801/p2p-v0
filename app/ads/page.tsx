@@ -234,6 +234,7 @@ export default function AdsPage() {
           onCheckedChange={handleHideMyAds}
           className="data-[state=checked]:bg-completed-icon"
           disabled={!!tempBanUntil}
+          data-testid="ads-switch-hide-ads"
         />
         <label htmlFor="hide-ads" className="text-sm text-grayscale-600 cursor-pointer ms-2 whitespace-nowrap">
           {t("myAds.hideMyAds")}
@@ -241,13 +242,15 @@ export default function AdsPage() {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Image
-                src="/icons/info-circle.svg"
-                alt={t("common.info")}
-                width={24}
-                height={24}
-                className="ms-1 cursor-pointer flex-shrink-0"
-              />
+              <button type="button" data-testid="ads-btn-hide-ads-info" className="flex items-center">
+                <Image
+                  src="/icons/info-circle.svg"
+                  alt={t("common.info")}
+                  width={24}
+                  height={24}
+                  className="ms-1 cursor-pointer flex-shrink-0"
+                />
+              </button>
             </TooltipTrigger>
             <TooltipContent>
               <p className="text-white">{t("myAds.hideMyAdsTooltip")}</p>
@@ -266,7 +269,11 @@ export default function AdsPage() {
           <div className="relative z-10 w-[calc(100%+24px)] md:w-full h-[80px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl text-white text-xl font-bold -m-3 mb-4 md:mx-0 md:mt-0">
             {t("myAds.title")}
           </div>
-          {tempBanUntil && !isMaintenanceActive && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
+          {tempBanUntil && !isMaintenanceActive && (
+            <div data-testid="ads-alert-temp-ban">
+              <TemporaryBanAlert tempBanUntil={tempBanUntil} />
+            </div>
+          )}
           <div className="flex flex-wrap items-center justify-between gap-3 my-6">
             {!isMaintenanceActive && userAdverts.length > 0 && (
               <Button
@@ -274,6 +281,7 @@ export default function AdsPage() {
                 size="sm"
                 className="font-bold text-base leading-4 tracking-[0%] text-center whitespace-nowrap"
                 disabled={!!tempBanUntil}
+                data-testid="ads-btn-create"
               >
                 <Image src="/icons/plus-white.png" alt={t("common.plus")} className="me-1" height={22} width={13} />
                 {t("myAds.createAd")}
@@ -283,7 +291,7 @@ export default function AdsPage() {
           </div>
         </div>
 
-        <div ref={scrollContainerRef} className="flex-1 overflow-y-auto overflow-x-hidden container mx-auto p-0">
+        <div ref={scrollContainerRef} className="flex-1 overflow-y-auto overflow-x-hidden container mx-auto p-0" data-testid="ads-table-container">
           {queryError ? (
             <div className="text-center py-8 text-red-500">{t("myAds.errorLoadingAds")}</div>
           ) : (
@@ -300,10 +308,11 @@ export default function AdsPage() {
               <div className="w-6 h-6 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
             </div>
           )}
-          <div ref={sentinelRef} className="h-1" />
+          <div ref={sentinelRef} className="h-1" data-testid="ads-sentinel-load-more" />
         </div>
 
         {statusData && statusData.showStatusModal && !loading && !errorModal.show && isMobile && (
+          <div data-testid="ads-modal-create-success">
           <StatusBottomSheet
             isOpen
             onClose={handleCloseStatusModal}
@@ -318,6 +327,7 @@ export default function AdsPage() {
             adId={statusData.id}
             isUpdate={statusData.success === "update"}
           />
+          </div>
         )}
       </div>
     </>

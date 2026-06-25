@@ -30,10 +30,10 @@ export default function BlockConfirmation({
       </div>
 
       <div className="space-y-3">
-        <Button onClick={onConfirm} disabled={isLoading} className="w-full rounded-full">
+        <Button data-testid="block-confirm-btn-block" onClick={onConfirm} disabled={isLoading} className="w-full rounded-full">
           {t("profile.block")}
         </Button>
-        <Button onClick={onClose} variant="outline" disabled={isLoading} className="w-full rounded-full bg-transparent">
+        <Button data-testid="block-confirm-btn-cancel" onClick={onClose} variant="outline" disabled={isLoading} className="w-full rounded-full bg-transparent">
           {t("common.cancel")}
         </Button>
       </div>
@@ -43,7 +43,7 @@ export default function BlockConfirmation({
   if (isMobile) {
     return (
       <Sheet open={isOpen} onOpenChange={onClose}>
-        <SheetContent side="bottom" className="rounded-t-2xl">
+        <SheetContent data-testid="block-confirm-modal" side="bottom" className="rounded-t-2xl">
           <SheetHeader className="pb-4">
             <SheetTitle className="text-xl font-bold text-start">{t("profile.blockUser", { nickname })}</SheetTitle>
           </SheetHeader>
@@ -55,7 +55,7 @@ export default function BlockConfirmation({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md rounded-4xl">
+      <DialogContent data-testid="block-confirm-modal" className="sm:max-w-md rounded-4xl">
         <DialogTitle className="text-start font-bold">{t("profile.blockUser", { nickname })}</DialogTitle>
         <div className="relative">{content}</div>
       </DialogContent>

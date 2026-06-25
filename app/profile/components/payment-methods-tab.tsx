@@ -193,6 +193,8 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
       description: t("profile.deletePaymentMethodDescription"),
       cancelText: t("common.no"),
       confirmText: t("common.yes") + ", " + t("common.delete").toLowerCase(),
+      confirmTestId: "profile-btn-confirm-delete-payment",
+      cancelTestId: "profile-btn-cancel-delete-payment",
       onConfirm: () => {
         confirmDeletePaymentMethod(id)
       },
@@ -292,6 +294,7 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
       <div className="flex flex-col items-center justify-center py-8">
         <p className="text-red-500 mb-4">{errorMessage}</p>
         <Button
+          data-testid="profile-btn-retry-payment"
           onClick={() => refetch()}
           variant="primary"
           className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded"
@@ -322,6 +325,7 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
             {bankTransfers.map((method) => (
               <Card
                 key={method.id}
+                data-testid={`profile-card-payment-${method.id}`}
                 variant="default"
                 className="overflow-hidden shadow-none border-0 border-b rounded-none"
               >
@@ -338,7 +342,7 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
                     </div>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="sm" className="p-1 h-auto w-auto flex-shrink-0">
+                        <Button data-testid={`profile-btn-edit-payment-${method.id}`} variant="ghost" size="sm" className="p-1 h-auto w-auto flex-shrink-0">
                           <Image src="/icons/vertical.svg" alt={t("common.options")} width={24} height={24} />
                         </Button>
                       </DropdownMenuTrigger>
@@ -351,6 +355,7 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
                           {t("profile.edit")}
                         </DropdownMenuItem>
                         <DropdownMenuItem
+                          data-testid={`profile-btn-delete-payment-${method.id}`}
                           className="flex items-center gap-2 text-destructive focus:text-destructive px-[16px] py-[8px]"
                           onSelect={() => handleDeletePaymentMethod(method.id, method.name)}
                         >
@@ -373,6 +378,7 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
             {eWallets.map((method) => (
               <Card
                 key={method.id}
+                data-testid={`profile-card-payment-${method.id}`}
                 variant="default"
                 className="overflow-hidden shadow-none border-0 border-b rounded-none"
               >
@@ -389,7 +395,7 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
                     </div>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="sm" className="p-1 h-auto w-auto flex-shrink-0">
+                        <Button data-testid={`profile-btn-edit-payment-${method.id}`} variant="ghost" size="sm" className="p-1 h-auto w-auto flex-shrink-0">
                           <Image src="/icons/vertical.svg" alt={t("common.options")} width={24} height={24} />
                         </Button>
                       </DropdownMenuTrigger>
@@ -402,6 +408,7 @@ export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethods
                           {t("profile.edit")}
                         </DropdownMenuItem>
                         <DropdownMenuItem
+                          data-testid={`profile-btn-delete-payment-${method.id}`}
                           className="flex items-center gap-2 text-destructive focus:text-destructive px-[16px] py-[8px]"
                           onSelect={() => handleDeletePaymentMethod(method.id, method.name)}
                         >

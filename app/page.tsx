@@ -490,13 +490,16 @@ export default function BuySellPage() {
             <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div className="w-[calc(100%+24px)] md:w-full flex flex-row items-end gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -mx-3 mb-4 md:m-0">
                 <div className="flex flex-col items-start w-full md:w-auto">
-                  <BalanceSection balance={balance} currency={balanceCurrency} isLoading={isLoadingBalance} />
+                  <div data-testid="markets-text-balance">
+                    <BalanceSection balance={balance} currency={balanceCurrency} isLoading={isLoadingBalance} />
+                  </div>
                   <Tabs value={activeTab} onValueChange={(value) => { if (value === "sell") track("ek_buy_markets"); else track("ek_sell_markets"); setActiveTab(value as "buy" | "sell") }}>
                     <TabsList className="w-auto bg-transparent p-0 gap-4 rtl:w-full rtl:justify-end">
                       <TabsTrigger
                         className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none px-0"
                         value="sell"
                         variant="underline"
+                        data-testid="markets-tab-buy"
                       >
                         {t("market.buyTab")}
                       </TabsTrigger>
@@ -504,6 +507,7 @@ export default function BuySellPage() {
                         className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none px-0"
                         value="buy"
                         variant="underline"
+                        data-testid="markets-tab-sell"
                       >
                         {t("market.sellTab")}
                       </TabsTrigger>
@@ -668,7 +672,7 @@ export default function BuySellPage() {
               <EmptyState title={t("market.noAdsMaintenanceTitle")} route={null} />
             </div>
           ) : isLoading || (adverts.length === 0 && !currency) ? (
-            <div className="md:block">
+            <div className="md:block" data-testid="markets-skeleton-ads">
               <Table>
                 <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
                   <TableRow className="text-xs">
@@ -723,7 +727,7 @@ export default function BuySellPage() {
               {error.message || t("market.failedToLoadAdvertisements")}
             </div>
           ) : adverts.length === 0 ? (
-            <div className="h-full">
+            <div className="h-full" data-testid="markets-empty-state">
               <EmptyState
                 title={t("market.noAdsTitle", { currency: currency })}
                 description={t("market.noAdsDescription", { currency: currency })}
@@ -749,12 +753,13 @@ export default function BuySellPage() {
                     <TableHead className="text-end py-4 px-4 lg:pe-0"></TableHead>
                   </TableRow>
                 </TableHeader>
-                <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
+                <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm" data-testid="markets-list-ads">
 
                   {adverts.map((ad) => (
                     <TableRow
                       className="grid grid-cols-[1fr_auto] lg:flex flex-col border-b lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] py-3 lg:p-0"
                       key={ad.id}
+                      data-testid={`markets-card-ad-${ad.id}`}
                     >
                       <TableCell className="p-2 lg:p-4 lg:ps-0 align-top row-start-1 col-span-full whitespace-nowrap">
                         <div className="flex items-center">
@@ -770,6 +775,7 @@ export default function BuySellPage() {
                               <button
                                 onClick={() => handleAdvertiserClick(ad.user?.id || 0)}
                                 className="hover:underline cursor-pointer"
+                                data-testid={`markets-link-advertiser-${ad.advertiser_id ?? ad.user?.id}`}
                               >
                                 {ad.user?.nickname}
                               </button>
@@ -856,7 +862,7 @@ export default function BuySellPage() {
                         }
                       </TableCell>
                       <TableCell className="p-2 pt-0 lg:p-4 align-top row-start-2 col-span-full text-start">
-                        <div className="font-bold text-base flex items-center justify-start text-start">
+                        <div className="font-bold text-base flex items-center justify-start text-start" data-testid={`markets-text-rate-${ad.id}`}>
                           <ExchangeRateDisplay
                             rate={ad.effective_rate_display}
                             paymentCurrency={ad.payment_currency}
@@ -864,7 +870,7 @@ export default function BuySellPage() {
                             mutedClassName="text-xs text-slate-500 font-normal"
                           />
                         </div>
-                        <div className="mt-1 text-xs">{`${t("market.orderLimits")}: ${ad.minimum_order_amount || "N/A"} - ${ad.actual_maximum_order_amount || "N/A"
+                        <div className="mt-1 text-xs" data-testid={`markets-text-limits-${ad.id}`}>{`${t("market.orderLimits")}: ${ad.minimum_order_amount || "N/A"} - ${ad.actual_maximum_order_amount || "N/A"
                           }  ${ad.account_currency}`}</div>
                         {isMobile && <div className="flex w-full items-center justify-start text-start text-xs text-slate-500 mt-2">
                           <TooltipProvider>
@@ -909,6 +915,7 @@ export default function BuySellPage() {
                             size="sm"
                             onClick={() => handleOrderClick(ad)}
                             disabled={!!tempBanUntil || isMaintenanceActive}
+                            data-testid={ad.type === "buy" ? `markets-btn-sell-${ad.id}` : `markets-btn-buy-${ad.id}`}
                           >
                             {ad.type === "buy" ? t("common.sell") : t("common.buy")} {ad.account_currency}
                           </Button>
@@ -925,7 +932,7 @@ export default function BuySellPage() {
               <div className="w-6 h-6 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
             </div>
           )}
-          <div ref={sentinelRef} className="h-1" />
+          <div ref={sentinelRef} className="h-1" data-testid="markets-sentinel-load-more" />
         </div>
 
         <div className="flex-shrink-0">

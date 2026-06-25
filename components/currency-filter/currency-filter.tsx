@@ -103,6 +103,7 @@ export function CurrencyFilter({
           className="text-sm font-normal text-start placeholder:text-grayscale-text-placeholder ps-10 pe-10 h-14 md:h-8 border-0 focus:border-0 bg-grayscale-500 rounded-lg"
           autoComplete="off"
           autoFocus
+          data-testid="currency-filter-input-search"
         />
         {searchQuery && (
           <Button
@@ -110,6 +111,7 @@ export function CurrencyFilter({
             size="sm"
             onClick={() => setSearchQuery("")}
             className="absolute end-0 md:end-4 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
+            data-testid="currency-filter-btn-clear"
           >
             <Image src="/icons/clear-search-icon.png" alt={t("common.clearSearch")} width={24} height={24} />
           </Button>
@@ -138,6 +140,7 @@ export function CurrencyFilter({
                   "px-4 h-12 flex items-center gap-2 rounded-sm cursor-pointer transition-colors text-base font-normal",
                   selectedCurrency === currency.code ? "bg-black text-white" : "text-black/[0.72] hover:bg-gray-50",
                 )}
+                data-testid={`currency-filter-btn-${currency.symbol ?? currency.id ?? currency.code}`}
               >
                 {currencyFlagMapper[currency.code as keyof typeof currencyFlagMapper] && (
                   <Image
@@ -167,6 +170,7 @@ export function CurrencyFilter({
     ),
     disabled: disabled || trigger.props.disabled,
     "aria-disabled": disabled || undefined,
+    "data-testid": "currency-filter-btn-trigger",
   })
 
   if (disabled) {

@@ -178,6 +178,7 @@ export default function StatsTabs({ stats, isLoading, activeTab, maintenanceActi
           <div className="mx-[-12px]">
             <div className="font-bold text-[18px] mx-6 mt-6">{t("profile.aboutYou")}</div>
             <div
+              data-testid="profile-menu-stats"
               onClick={() => {
                 track("ek_my_stats_profile")
                 setShowStatsSidebar(true)
@@ -198,6 +199,7 @@ export default function StatsTabs({ stats, isLoading, activeTab, maintenanceActi
               <div className="fixed inset-y-0 end-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full">
                 <div className="flex items-center gap-4 px-4 py-3">
                   <Button
+                    data-testid="profile-btn-sidebar-back"
                     variant="ghost"
                     size="sm"
                     onClick={() => setShowStatsSidebar(false)}
@@ -214,6 +216,7 @@ export default function StatsTabs({ stats, isLoading, activeTab, maintenanceActi
             )}
             <Divider className="ms-[60px]" />
             <div
+              data-testid="profile-menu-payment-methods"
               onClick={() => {
                 track("ek_payment_methods_profile")
                 setShowPaymentMethodsSidebar(true)
@@ -234,6 +237,7 @@ export default function StatsTabs({ stats, isLoading, activeTab, maintenanceActi
               <div className="fixed inset-y-0 end-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full">
                 <div className="flex items-center gap-4 px-4 py-3">
                   <Button
+                    data-testid="profile-btn-sidebar-back"
                     variant="ghost"
                     size="sm"
                     onClick={() => setShowPaymentMethodsSidebar(false)}
@@ -254,6 +258,7 @@ export default function StatsTabs({ stats, isLoading, activeTab, maintenanceActi
                 {paymentMethodsCount > 0 && (
                   <div className="p-4">
                     <Button
+                      data-testid="profile-btn-add-payment"
                       onClick={handleShowAddPaymentMethod}
                       variant="outline"
                       className="w-full rounded-full bg-transparent"
@@ -267,6 +272,7 @@ export default function StatsTabs({ stats, isLoading, activeTab, maintenanceActi
             <Divider className="ms-[60px]" />
             <div className="font-bold text-[18px] mx-6 mt-6">{t("profile.settings")}</div>
             <div
+              data-testid="profile-menu-follows"
               onClick={() => {
                 track("ek_following_profile")
                 setShowFollowsSidebar(true)
@@ -287,6 +293,7 @@ export default function StatsTabs({ stats, isLoading, activeTab, maintenanceActi
               <div className="fixed inset-y-0 end-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full">
                 <div className="flex items-center gap-4 px-4 py-3">
                   <Button
+                    data-testid="profile-btn-sidebar-back"
                     variant="ghost"
                     size="sm"
                     onClick={() => setShowFollowsSidebar(false)}
@@ -305,6 +312,7 @@ export default function StatsTabs({ stats, isLoading, activeTab, maintenanceActi
               <>
                 <Divider className="ms-[60px]" />
                 <div
+                  data-testid="profile-menu-closed-group"
                   onClick={() => {
                     track("ek_closed_group_profile")
                     setShowClosedGroupSidebar(true)
@@ -326,6 +334,7 @@ export default function StatsTabs({ stats, isLoading, activeTab, maintenanceActi
               <div className="fixed inset-y-0 end-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full">
                 <div className="flex items-center gap-4 px-4 py-3">
                   <Button
+                    data-testid="profile-btn-sidebar-back"
                     variant="ghost"
                     size="sm"
                     onClick={() => setShowClosedGroupSidebar(false)}
@@ -342,6 +351,7 @@ export default function StatsTabs({ stats, isLoading, activeTab, maintenanceActi
             )}
             <Divider className="ms-[60px]" />
             <div
+              data-testid="profile-menu-blocked"
               onClick={() => {
                 track("ek_blocked_users_profile")
                 setShowBlockedSidebar(true)
@@ -362,6 +372,7 @@ export default function StatsTabs({ stats, isLoading, activeTab, maintenanceActi
               <div className="fixed inset-y-0 end-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full">
                 <div className="flex items-center gap-4 px-4 py-3">
                   <Button
+                    data-testid="profile-btn-sidebar-back"
                     variant="ghost"
                     size="sm"
                     onClick={() => setShowBlockedSidebar(false)}
@@ -378,6 +389,7 @@ export default function StatsTabs({ stats, isLoading, activeTab, maintenanceActi
             )}
             <Divider className="ms-[60px]" />
             <div
+              data-testid="profile-menu-counterparties"
               onClick={() => {
                 track("ek_trade_partners_profile")
                 setShowCounterpartiesSidebar(true)
@@ -398,6 +410,7 @@ export default function StatsTabs({ stats, isLoading, activeTab, maintenanceActi
               <div className="fixed inset-y-0 end-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full">
                 <div className="flex items-center gap-4 px-4 py-3">
                   <Button
+                    data-testid="profile-btn-sidebar-back"
                     variant="ghost"
                     size="sm"
                     onClick={() => setShowCounterpartiesSidebar(false)}
@@ -415,6 +428,7 @@ export default function StatsTabs({ stats, isLoading, activeTab, maintenanceActi
             <Divider className="ms-[60px]" />
             <div className="font-bold text-[18px] mx-6 mt-6">{t("profile.support")}</div>
             <div
+              data-testid="profile-menu-help"
               onClick={() => {
                 track("ek_help_centre_profile")
                 window.location.href = helpCentreUrl
@@ -435,6 +449,7 @@ export default function StatsTabs({ stats, isLoading, activeTab, maintenanceActi
               <>
                 <Divider className="ms-[60px]" />
                 <div
+                  data-testid="profile-menu-feedback"
                   onClick={() => setShowFeedbackDialog(true)}
                   className="grid grid-cols-[auto_1fr_1fr] items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors"
                 >
@@ -463,6 +478,7 @@ export default function StatsTabs({ stats, isLoading, activeTab, maintenanceActi
                     <TabsTrigger
                       key={tab.id}
                       value={tab.id}
+                      data-testid={`profile-tab-${tab.id === "payment" ? "payment-methods" : tab.id}`}
                       className="h-auto w-auto flex-none shrink-0 px-4 md:px-5 py-2.5 rounded-none leading-normal after:content-[''] after:absolute after:inset-x-0 after:bottom-0 after:h-[2px] after:transition-colors data-[state=active]:after:bg-black data-[state=active]:!shadow-none data-[state=active]:!bg-transparent data-[state=active]:text-foreground"
                     >
                       {tab.label}
@@ -513,7 +529,7 @@ export default function StatsTabs({ stats, isLoading, activeTab, maintenanceActi
               <div className="relative">
                 {paymentMethodsCount > 0 && (
                   <div className="flex justify-end mb-4">
-                    <Button variant="outline" size="sm" onClick={handleShowAddPaymentMethod}>
+                    <Button data-testid="profile-btn-add-payment" variant="outline" size="sm" onClick={handleShowAddPaymentMethod}>
                       <Image src="/icons/plus_icon.png" alt={t("common.addPayment")} width={14} height={24} className="me-1" />
                       {t("profile.addPaymentMethod")}
                     </Button>

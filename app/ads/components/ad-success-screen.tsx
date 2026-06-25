@@ -43,7 +43,7 @@ export default function AdSuccessScreen({ ad, onShareClick }: AdSuccessScreenPro
             <h1 className="text-2xl font-extrabold text-white mb-3">
               {t("myAds.adCreated")}
             </h1>
-            <p className="text-gray-300 text-base mb-8 opacity-72">
+            <p className="text-gray-300 text-base mb-8 opacity-72" data-testid="ad-form-text-created-id">
               {t("adForm.adCreatedSuccess", {
                 type: ad.type,
                 account_currency: ad.account_currency,
@@ -59,6 +59,7 @@ export default function AdSuccessScreen({ ad, onShareClick }: AdSuccessScreenPro
           <Button
             onClick={onShareClick}
             className="w-full rounded-full transition-colors"
+            data-testid="ad-form-btn-share"
           >
             {t("shareAdPage.shareAdTitle")}
           </Button>
@@ -69,6 +70,7 @@ export default function AdSuccessScreen({ ad, onShareClick }: AdSuccessScreenPro
             }}
             variant="outline"
             className="w-full text-white border-white hover:bg-transparent rounded-full transition-colors"
+            data-testid="ad-form-btn-done"
           >
             {t("navigation.goToMyAds")}
           </Button>

@@ -355,7 +355,7 @@ export default function WalletSummary({
       >
         {!isBalancesView && (
           <div className="flex justify-start items-center h-8 mb-6">
-            <button onClick={onBack} className="w-8 h-8 flex items-center justify-center" aria-label="Back to balances">
+            <button data-testid="wallet-btn-back" onClick={onBack} className="w-8 h-8 flex items-center justify-center" aria-label="Back to balances">
               <Image src="/icons/back-circle.png" alt={t("common.back")} width={32} height={32} />
             </button>
           </div>
@@ -423,7 +423,7 @@ export default function WalletSummary({
                     {propIsLoading ? (
                       <Skeleton className="h-7 w-32 bg-white/20" />
                     ) : (
-                      <p className="text-xl font-extrabold text-white">{`${formattedBalance} ${displayCurrency}`}</p>
+                      <p data-testid="wallet-text-total-balance" className="text-xl font-extrabold text-white">{`${formattedBalance} ${displayCurrency}`}</p>
                     )}
                   </>
                 ) : (
@@ -440,6 +440,7 @@ export default function WalletSummary({
             <div className={cn("flex items-center gap-[66px] px-[33px]", isMobile && "flex-row justify-center w-full")}>
               <div className="hidden flex-col items-center gap-2">
                 <Button
+                  data-testid="wallet-btn-deposit"
                   size="icon"
                   className="h-12 w-12 rounded-full bg-[#FF444F] hover:bg-[#E63946] text-white p-0"
                   onClick={handleDepositClick}
@@ -455,6 +456,7 @@ export default function WalletSummary({
               {!isBalancesView && (
                 <div className="flex flex-col items-center gap-2">
                   <Button
+                    data-testid="wallet-btn-buy"
                     size="icon"
                     className="h-12 w-12 rounded-full bg-[#FF444F] hover:bg-[#E63946] text-white p-0"
                     onClick={handleBuyClick}
@@ -470,6 +472,7 @@ export default function WalletSummary({
 
               <div className="flex flex-col items-center gap-2">
                 <Button
+                  data-testid="wallet-btn-transfer"
                   size="icon"
                   className="h-12 w-12 rounded-full p-0 bg-[#FF444F] hover:bg-[#E63946] text-white"
                   onClick={handleTransferClick}
@@ -486,6 +489,7 @@ export default function WalletSummary({
               {!isBalancesView && (
                 <div className="flex flex-col items-center gap-2">
                   <Button
+                    data-testid="wallet-btn-sell"
                     size="icon"
                     className="h-12 w-12 rounded-full text-white p-0 border border-slate-1200"
                     onClick={handleSellClick}

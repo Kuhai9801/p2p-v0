@@ -52,6 +52,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
     <RadioGroup value={value} onValueChange={handleSelect} disabled={disabled}>
       <Label
         htmlFor="fixed"
+        data-testid="ad-form-radio-price-fixed"
         className={`font-normal flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${value === "fixed"
           ? "border-black"
           : "border-grayscale-500"
@@ -68,6 +69,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
 
       <Label
         htmlFor="float"
+        data-testid="ad-form-radio-price-floating"
         className={`font-normal flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${value === "float"
           ? "border-black"
           : "border-grayscale-500"

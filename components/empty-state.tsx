@@ -75,7 +75,7 @@ export default function EmptyState({
         )}
       </div>
       {onAddPaymentMethod && (
-        <Button onClick={onAddPaymentMethod} className="mt-4">
+        <Button data-testid="profile-btn-empty-add-payment" onClick={onAddPaymentMethod} className="mt-4">
           {t("profile.addPaymentMethod")}
         </Button>
       )}
