@@ -4,6 +4,9 @@ on:
     push:
         branches:
             - 'main'
+        paths-ignore:
+            - 'playwright/**'
+            - 'playwright.config.ts'
 
 permissions:
     contents: read
