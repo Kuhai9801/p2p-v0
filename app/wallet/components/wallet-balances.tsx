@@ -23,7 +23,7 @@ export default function WalletBalances({ onBalanceClick, balances = [], isLoadin
 
   if (isLoading) {
     return (
-      <div className="w-full">
+      <div data-testid="wallet-skeleton" className="w-full">
         <div className="flex flex-col md:grid md:grid-cols-2 gap-4">
           {[1, 2].map((i) => (
             <div key={i} className="flex items-center justify-between h-[72px] w-full relative">
@@ -41,7 +41,7 @@ export default function WalletBalances({ onBalanceClick, balances = [], isLoadin
   }
 
   if (balances.length === 0) {
-    return <EmptyState title={t("wallet.noAssetsTitle")} description={t("wallet.noAssetsDescription")} />
+    return <div data-testid="wallet-empty-state"><EmptyState title={t("wallet.noAssetsTitle")} description={t("wallet.noAssetsDescription")} /></div>
   }
 
   return (

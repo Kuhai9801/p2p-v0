@@ -189,6 +189,7 @@ const FullPagePaymentSelection = ({
                     disabled={isDisabled}
                     onCheckedChange={() => !isDisabled && handleToggle(methodId)}
                     className="w-[14px] h-[14px] data-[state=checked]:bg-black border-2 border-grayscale-text-muted rounded-[2px]"
+                    data-testid={`ad-form-checkbox-payment-${methodId}`}
                   />
                 </div>
               </div>
@@ -207,7 +208,7 @@ const FullPagePaymentSelection = ({
   if (isMobile) {
     return (
       <Drawer open={isOpen} onOpenChange={onClose}>
-        <DrawerContent dir={dir} className="max-h-[90vh]">
+        <DrawerContent dir={dir} className="max-h-[90vh]" data-testid="ad-form-sheet-payment-methods">
           <DrawerHeader className="pb-[10px] text-start">
             <DrawerTitle className="text-[20px] font-bold text-start">{t("paymentMethod.title")}</DrawerTitle>
           </DrawerHeader>
@@ -219,7 +220,7 @@ const FullPagePaymentSelection = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent dir={dir} className="max-w-xl max-h-[90vh] flex flex-col p-8 rounded-[32px]">
+      <DialogContent dir={dir} className="max-w-xl max-h-[90vh] flex flex-col p-8 rounded-[32px]" data-testid="ad-form-sheet-payment-methods">
         <ModalHeaderRow
           asDialog
           title={t("paymentMethod.title")}
@@ -336,6 +337,7 @@ const PaymentSelectionContent = ({
                     onCheckedChange={() => !isDisabled && handlePaymentMethodToggle(methodId)}
                     disabled={isDisabled}
                     className="border-neutral-7 data-[state=checked]:bg-black data-[state=checked]:border-black w-[20px] h-[20px] rounded-sm border-[2px] disabled:opacity-30 disabled:cursor-not-allowed pointer-events-none"
+                    data-testid={`ad-form-checkbox-payment-${methodId}`}
                   />
                 </div>
               </div>
@@ -349,6 +351,7 @@ const PaymentSelectionContent = ({
             onClick={() => {
               handleAddPaymentMethodClick()
             }}
+            data-testid="ad-form-btn-add-payment"
           >
             <div className="flex items-center">
               <Image src="/icons/plus_icon.png" alt={t("common.plus")} width={14} height={24} className="me-2" />

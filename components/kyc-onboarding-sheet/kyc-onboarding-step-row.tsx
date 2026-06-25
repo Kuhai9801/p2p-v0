@@ -34,8 +34,8 @@ export function KycOnboardingStepRow({ step, statusLabels }: KycOnboardingStepRo
     (onboardingKycStepStatusIsDisplayable(displayStatus) || Boolean(step.expired))
 
   return (
-    <div className={cn("flex items-center gap-3")}>
-      <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center">
+    <div data-testid={`kyc-row-step-${step.id}`} className={cn("flex items-center gap-3")}>
+      <div data-testid={`kyc-icon-step-${step.id}`} className="flex h-6 w-6 flex-shrink-0 items-center justify-center">
         <Image
           src={step.icon || "/placeholder.svg"}
           alt=""

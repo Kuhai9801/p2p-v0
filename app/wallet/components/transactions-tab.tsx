@@ -231,7 +231,7 @@ export default function TransactionsTab({
                     const isTransfer = display.type === t("wallet.transfer")
 
                     return (
-                      <div key={transaction.transaction_id} className="relative">
+                      <div key={transaction.transaction_id} data-testid={`wallet-row-tx-${transaction.transaction_id}`} className="relative">
                         <div
                           className={`flex items-center justify-between min-h-[72px] py-3 cursor-pointer transition-colors ${"hover:bg-gray-50"
                             }`}
@@ -252,7 +252,7 @@ export default function TransactionsTab({
                             </div>
 
                             <div className="flex flex-col gap-1">
-                              <div className="text-slate-1200 text-base font-normal">{display.type}</div>
+                              <div data-testid={`wallet-badge-tx-type-${transaction.transaction_id}`} className="text-slate-1200 text-base font-normal">{display.type}</div>
                               {isTransfer && (
                                 <div className="text-xs font-normal text-grayscale-text-muted">
                                   {getTransferDestinationText(transaction)}
@@ -261,9 +261,14 @@ export default function TransactionsTab({
                             </div>
                           </div>
 
-                          <div className={`${display.amountColor} text-base font-normal me-6`}>
-                            {formatAmountWithDecimals(transaction.metadata.transaction_net_amount)}{" "}
-                            {transaction.metadata.transaction_currency}
+                          <div className="flex flex-col items-end me-6 gap-1">
+                            <div data-testid={`wallet-text-tx-amount-${transaction.transaction_id}`} className={`${display.amountColor} text-base font-normal`}>
+                              {formatAmountWithDecimals(transaction.metadata.transaction_net_amount)}{" "}
+                              {transaction.metadata.transaction_currency}
+                            </div>
+                            <div data-testid={`wallet-text-tx-date-${transaction.transaction_id}`} className="text-xs text-grayscale-text-muted">
+                              {formatDate(transaction.timestamp)}
+                            </div>
                           </div>
                         </div>
 
@@ -276,7 +281,7 @@ export default function TransactionsTab({
             ))}
 
             {filteredTransactions.length === 0 && !loading && (
-              <div className="text-center py-8 text-gray-500">
+              <div data-testid="wallet-empty-transactions" className="text-center py-8 text-gray-500">
                 {selectedCurrency
                   ? t("wallet.noTransactionsForCurrency")
                   : activeFilter === t("wallet.all")
@@ -290,7 +295,7 @@ export default function TransactionsTab({
             )}
 
             {filteredTransactions.length > 0 && (
-              <div className="text-center text-xs font-normal pt-0 text-grayscale-text-placeholder">
+              <div data-testid="wallet-sentinel-load-more" className="text-center text-xs font-normal pt-0 text-grayscale-text-placeholder">
                 {t("wallet.endOfTransaction")}
               </div>
             )}

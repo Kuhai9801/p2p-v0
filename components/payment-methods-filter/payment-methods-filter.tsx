@@ -175,6 +175,7 @@ export default function PaymentMethodsFilter({
                   onCheckedChange={() => handleMethodToggle(method.method)}
                   className="shrink-0 data-[state=checked]:bg-black"
                   disabled={isLoading}
+                  data-testid={`payment-filter-checkbox-${method.id ?? method.display_name}`}
                 />
                 <label htmlFor={method.method} className="flex-1 min-w-0 cursor-pointer text-start text-sm text-grayscale-600">
                   {method.display_name}
@@ -203,6 +204,7 @@ export default function PaymentMethodsFilter({
           className="h-14 rounded-lg border-0 bg-grayscale-500 text-sm font-normal text-start placeholder:text-grayscale-text-placeholder ps-10 pe-10 focus:border-0 md:h-8"
           autoComplete="off"
           autoFocus
+          data-testid="payment-filter-input-search"
         />
         {searchQuery && (
           <Button
@@ -210,6 +212,7 @@ export default function PaymentMethodsFilter({
             size="sm"
             onClick={() => setSearchQuery("")}
             className="absolute end-0 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
+            data-testid="payment-filter-btn-clear"
           >
             <Image src="/icons/clear-search-icon.png" alt={t("common.clearSearch")} width={24} height={24} />
           </Button>
@@ -228,6 +231,7 @@ export default function PaymentMethodsFilter({
               onCheckedChange={handleSelectAll}
               className="shrink-0 data-[state=checked]:bg-black"
               disabled={isLoading || filteredPaymentMethods.length === 0}
+              data-testid="payment-filter-checkbox-select-all"
             />
             <label htmlFor="select-all" className="flex-1 min-w-0 cursor-pointer text-start text-sm text-slate-1200">
               {t("paymentMethod.allPaymentMethod")}
@@ -260,10 +264,11 @@ export default function PaymentMethodsFilter({
             className="flex-1 bg-transparent"
             variant="outline"
             size={isMobile ? "default" : "sm"}
+            data-testid="payment-filter-btn-reset"
           >
             {t("paymentMethod.reset")}
           </Button>
-          <Button onClick={handleApply} className="flex-1" size={isMobile ? "default" : "sm"}>
+          <Button onClick={handleApply} className="flex-1" size={isMobile ? "default" : "sm"} data-testid="payment-filter-btn-apply">
             {t("paymentMethod.apply")}
           </Button>
         </div>
@@ -287,6 +292,7 @@ export default function PaymentMethodsFilter({
     ),
     disabled: disabled || trigger.props.disabled,
     "aria-disabled": disabled || undefined,
+    "data-testid": "payment-filter-btn-trigger",
   })
 
   if (disabled) {

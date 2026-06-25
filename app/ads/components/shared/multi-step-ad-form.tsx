@@ -800,6 +800,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger asChild>
+                              <button type="button" data-testid="ad-form-tooltip-time-limit" className="flex items-center">
                               <Image
                                 src="/icons/info-circle.svg"
                                 alt="Info"
@@ -807,6 +808,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                                 height={24}
                                 className="cursor-pointer"
                               />
+                              </button>
                             </TooltipTrigger>
                             <TooltipContent>
                               <p className="text-white">{t("adForm.orderTimeLimitTooltip")}</p>
@@ -824,6 +826,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger asChild>
+                              <button type="button" data-testid="ad-form-tooltip-countries" className="flex items-center">
                               <Image
                                 src="/icons/info-circle.svg"
                                 alt="Info"
@@ -831,6 +834,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                                 height={24}
                                 className="cursor-pointer"
                               />
+                              </button>
                             </TooltipTrigger>
                             <TooltipContent>
                               <p className="text-white">{t("adForm.audienceTooltip")}</p>
@@ -859,6 +863,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger asChild>
+                              <button type="button" data-testid="ad-form-tooltip-trade-band" className="flex items-center">
                               <Image
                                 src="/icons/info-circle.svg"
                                 alt="Info"
@@ -866,6 +871,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                                 height={24}
                                 className="cursor-pointer"
                               />
+                              </button>
                             </TooltipTrigger>
                             <TooltipContent>
                               <p className="text-white">
@@ -890,6 +896,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger asChild>
+                              <button type="button" data-testid="ad-form-tooltip-visibility" className="flex items-center">
                               <Image
                                 src="/icons/info-circle.svg"
                                 alt="Info"
@@ -897,6 +904,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                                 height={24}
                                 className="cursor-pointer"
                               />
+                              </button>
                             </TooltipTrigger>
                             <TooltipContent>
                               <p className="text-white">{t("adForm.adVisibilityTooltip")}</p>
@@ -919,6 +927,13 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                       onClick={handleButtonClick}
                       disabled={isButtonDisabled || isSubmitting}
                       className="w-full"
+                      data-testid={
+                        currentStep === 0
+                          ? "ad-form-btn-next-step1"
+                          : currentStep === 1
+                          ? "ad-form-btn-next-step2"
+                          : "ad-form-btn-submit"
+                      }
                     >
                       {isSubmitting ? (
                         <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
@@ -931,7 +946,18 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
               ) : (
                 <div className="hidden md:block w-full bg-white h-24 md:sticky md:bottom-0">
                   <div className="flex justify-end px-6 pt-6">
-                    <Button type="button" onClick={handleButtonClick} disabled={isButtonDisabled || isSubmitting}>
+                    <Button
+                      type="button"
+                      onClick={handleButtonClick}
+                      disabled={isButtonDisabled || isSubmitting}
+                      data-testid={
+                        currentStep === 0
+                          ? "ad-form-btn-next-step1"
+                          : currentStep === 1
+                          ? "ad-form-btn-next-step2"
+                          : "ad-form-btn-submit"
+                      }
+                    >
                       {isSubmitting ? (
                         <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
                       ) : (

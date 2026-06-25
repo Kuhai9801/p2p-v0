@@ -58,6 +58,7 @@ export function RateInput({
             placeholder=""
             className="w-full p-4 pt-6 border-0 focus:ring-0 focus:outline-none text-start text-gray-900 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-[56px]"
             aria-invalid={error}
+            data-testid="ad-form-input-rate"
           />
 
           <label

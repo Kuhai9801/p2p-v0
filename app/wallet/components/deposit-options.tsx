@@ -34,6 +34,7 @@ export default function DepositOptions({ onClose, onDirectDepositClick, selected
   return (
     <div className="space-y-0 mt-6">
       <div
+        data-testid="wallet-sidebar-btn-deposit"
         className="flex justify-center items-center gap-4 self-stretch cursor-pointer pl-0 md:pl-6 py-4"
         onClick={handleP2PTradingClick}
       >

@@ -31,6 +31,7 @@ export function AdActionsMenu({
         size="sm"
         className="hover:bg-transparent font-normal justify-start text-grayscale-600 my-1"
         onClick={() => onEdit(ad)}
+        data-testid={`ads-btn-edit-${ad.id}`}
       >
         <Image className="me-2" src="/icons/edit.svg" alt={t("common.edit")} width={14} height={16} />
         {t("myAds.edit")}
@@ -58,6 +59,7 @@ export function AdActionsMenu({
         size="sm"
         className="hover:bg-transparent font-normal justify-start my-1"
         onClick={() => onDelete(ad.id)}
+        data-testid={`ads-btn-delete-${ad.id}`}
       >
         <Image className="me-2" src="/icons/delete.svg" alt={t("common.delete")} width={14} height={16} />
         <span className="text-disputed-icon">{t("myAds.delete")}</span>

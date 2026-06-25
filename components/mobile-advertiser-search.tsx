@@ -179,6 +179,7 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
         <>
         <Sheet open={isOpen} onOpenChange={(open) => !open && handleClose()}>
             <SheetContent
+                data-testid="mobile-search-sheet"
                 side="top"
                 hideCloseButton
                 className="h-full w-full p-0 flex flex-col gap-0 rounded-none"
@@ -191,6 +192,7 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
                 {/* Header */}
                 <div className="flex items-center gap-3 px-4 py-3 flex-shrink-0">
                     <Button
+                        data-testid="mobile-search-btn-back"
                         variant="ghost"
                         size="sm"
                         onClick={handleBack}
@@ -207,6 +209,7 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
                             className="absolute start-3 top-1/2 -translate-y-1/2 z-10 pointer-events-none"
                         />
                         <Input
+                            data-testid="mobile-search-input"
                             variant="tertiary"
                             placeholder={t("market.searchAdvertiserNickname")}
                             value={searchInput}
@@ -216,6 +219,7 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
                         />
                         {searchInput && (
                             <Button
+                                data-testid="mobile-search-btn-clear"
                                 variant="ghost"
                                 size="icon"
                                 onClick={handleClear}
@@ -232,6 +236,7 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
                     <Tabs value={searchTab} onValueChange={(v) => { if (v === "sell") track("ek_buy_tab_markets_search"); else track("ek_sell_tab_markets_search"); setSearchTab(v as "buy" | "sell") }}>
                         <TabsList className="w-full bg-transparent p-0">
                             <TabsTrigger
+                                data-testid="mobile-search-tab-buy"
                                 value="sell"
                                 variant="underline"
                                 className="flex-1 data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:rounded-none after:bg-black data-[state=active]:after:w-full"
@@ -239,6 +244,7 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
                                 {t("market.buyTab")}
                             </TabsTrigger>
                             <TabsTrigger
+                                data-testid="mobile-search-tab-sell"
                                 value="buy"
                                 variant="underline"
                                 className="flex-1 data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:rounded-none after:bg-black data-[state=active]:after:w-full"
@@ -267,7 +273,7 @@ export default function MobileAdvertiserSearch({ isOpen, onClose }: MobileAdvert
                                     <div className="w-6 h-6 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
                                 </div>
                             )}
-                            <div ref={sentinelRef} className="h-1" />
+                            <div ref={sentinelRef} data-testid="mobile-search-sentinel-load-more" className="h-1" />
                         </>
                     ) : (
                         <div className="flex items-center justify-center h-full">

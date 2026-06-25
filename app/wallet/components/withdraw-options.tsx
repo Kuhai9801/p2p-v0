@@ -34,6 +34,7 @@ export default function WithdrawOptions({ onClose, onDirectWithdrawClick, select
   return (
     <div className="space-y-0 mt-6">
       <div
+        data-testid="wallet-sidebar-btn-withdraw"
         className="flex justify-center items-center gap-4 self-stretch cursor-pointer ps-0 md:ps-6 py-4"
         onClick={handleP2PTradingClick}
       >

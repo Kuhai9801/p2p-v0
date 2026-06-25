@@ -355,13 +355,15 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
 
   if (ads.length === 0) {
     return (
-      <EmptyState
-        icon="/icons/no-ads.svg"
-        title={t("myAds.noAdsTitle")}
-        description={t("myAds.noAdsDescription")}
-        redirectToAds={true}
-        route="ads"
-      />
+      <div data-testid="ads-empty-state">
+        <EmptyState
+          icon="/icons/no-ads.svg"
+          title={t("myAds.noAdsTitle")}
+          description={t("myAds.noAdsDescription")}
+          redirectToAds={true}
+          route="ads"
+        />
+      </div>
     )
   }
 
@@ -402,6 +404,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
               return (
                 <TableRow
                   key={index}
+                  data-testid={`ads-row-${ad.id}`}
                   className={cn(
                     "grid grid-cols-[2fr_1fr] lg:flex flex-col border-b lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] py-3 lg:p-0 text-slate-1200 gap-2",
                   )}
@@ -492,7 +495,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, isFetching =
                     {formatPaymentMethods(paymentMethods)}
                   </TableCell>
                   <TableCell className="p-2 lg:p-4 align-top row-start-1 col-span-full whitespace-nowrap flex gap-1">
-                    {getStatusBadge(isActive)}
+                    <span data-testid={`ads-badge-status-${ad.id}`}>{getStatusBadge(isActive)}</span>
                     {IS_CLOSED_GROUP_ENABLED && ad.is_private && (
                       <Image src="/icons/closed-group.svg" alt={t("common.closedGroup")} width={24} height={24} />
                     )}

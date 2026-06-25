@@ -18,10 +18,10 @@ export function TradeTypeSelector({ value, onChange }: TradeTypeSelectorProps) {
       onValueChange={(type) => onChange(type as "buy" | "sell")}
     >
       <TabsList className="w-full">
-        <TabsTrigger className="w-full data-[state=active]:text-slate-1200 text-grayscale-600" value="buy">
+        <TabsTrigger className="w-full data-[state=active]:text-slate-1200 text-grayscale-600" value="buy" data-testid="ad-form-radio-type-buy">
           {t("market.iWantToBuy")}
         </TabsTrigger>
-        <TabsTrigger className="w-full data-[state=active]:text-slate-1200 text-grayscale-600" value="sell">
+        <TabsTrigger className="w-full data-[state=active]:text-slate-1200 text-grayscale-600" value="sell" data-testid="ad-form-radio-type-sell">
           {t("market.iWantToSell")}
         </TabsTrigger>
       </TabsList>

@@ -40,6 +40,7 @@ export function KycOnboardingContentPanel({
     >
       {onClose && (
         <Button
+          data-testid="kyc-btn-close"
           onClick={onClose}
           variant="ghost"
           className="absolute end-4 top-4 hidden min-w-[48px] bg-slate-75 px-1 md:end-6 md:top-6 md:inline-flex"
@@ -64,7 +65,7 @@ export function KycOnboardingContentPanel({
         </div>
 
         {/* Bottom: CTA pinned to bottom */}
-        <Button className="w-full shrink-0 md:h-12 md:rounded-full" onClick={onButtonClick}>
+        <Button data-testid="kyc-btn-primary-cta" className="w-full shrink-0 md:h-12 md:rounded-full" onClick={onButtonClick}>
           {buttonLabel}
         </Button>
       </div>

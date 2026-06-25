@@ -50,11 +50,11 @@ export default function Header() {
   }, [shouldReopenSearchOnReturn, pathname, setShouldReopenSearchOnReturn])
 
   const navItems = [
-    { name: t("navigation.market"), href: "/" },
-    { name: t("navigation.orders"), href: "/orders" },
-    { name: t("navigation.myAds"), href: "/ads" },
-    { name: t("navigation.wallet"), href: "/wallet" },
-    { name: t("navigation.profile"), href: "/profile" },
+    { name: t("navigation.market"), href: "/", testId: "header-tab-markets" },
+    { name: t("navigation.orders"), href: "/orders", testId: "header-tab-orders" },
+    { name: t("navigation.myAds"), href: "/ads", testId: "header-tab-ads" },
+    { name: t("navigation.wallet"), href: "/wallet", testId: "header-tab-wallet" },
+    { name: t("navigation.profile"), href: "/profile", testId: "header-tab-profile" },
   ]
 
   // Hide header on advertiser page, order detail page, ad create/edit pages, wallet transaction list, and when viewing chat on mobile
@@ -64,9 +64,11 @@ export default function Header() {
 
   return (
     <>
-      <header className="relative z-20 flex justify-between items-center px-6 md:px-[24px] py-4 md:py-3 bg-slate-1200 -mb-px md:mb-0 h-14 md:h-auto">
+      <header data-testid="header-container" className="relative z-20 flex justify-between items-center px-6 md:px-[24px] py-4 md:py-3 bg-slate-1200 -mb-px md:mb-0 h-14 md:h-auto">
         <div className="flex items-center md:hidden">
-          <MobileSidebarTrigger />
+          <div data-testid="header-btn-mobile-sidebar">
+            <MobileSidebarTrigger />
+          </div>
         </div>
 
         <div className="hidden md:block">
@@ -82,6 +84,7 @@ export default function Header() {
                   prefetch
                   key={item.name}
                   href={item.href}
+                  data-testid={item.testId}
                   className={cn(
                     "inline-flex h-12 items-center border-b-2 px-4 text-sm",
                     isActive
@@ -113,6 +116,7 @@ export default function Header() {
           )}
           {userId && (
             <div
+              data-testid="header-btn-notifications"
               className="flex h-8 w-8 shrink-0 items-center justify-center text-slate-600 hover:text-slate-700"
               onClick={() => guardP2PNavigation(isMaintenanceActive, () => track("ek_notifications_markets"))}
             >

@@ -86,10 +86,15 @@ function TierRow({
   onSelect: () => void
   t: (key: string) => string
 }) {
+  const testId = option.value === null
+    ? "ad-form-radio-band-none"
+    : `ad-form-radio-band-${option.value}`
+
   return (
     <button
       type="button"
       onClick={onSelect}
+      data-testid={testId}
       className={cn(
         "w-full text-start rounded-lg p-4 bg-grayscale-500 transition-colors",
         "border-[1.5px]",

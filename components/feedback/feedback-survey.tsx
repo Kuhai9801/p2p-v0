@@ -31,6 +31,7 @@ function NpsScoreSelector({ selectedScore, onSelect, isSubmitting }: NpsScoreSel
       variant="ghost"
       size="icon"
       disabled={isSubmitting}
+      data-testid={`feedback-btn-score-${score}`}
       aria-label={`${score} out of 10`}
       onClick={() => onSelect(score)}
       className={cn(
@@ -119,6 +120,7 @@ export function FeedbackSurvey({ onSubmit, onClose, isSubmitting }: FeedbackSurv
 
         <div className="space-y-1">
           <Textarea
+            data-testid="feedback-input-text"
             placeholder={t("nps.tellUsMore")}
             value={reviewText}
             onChange={handleReviewChange}
@@ -129,7 +131,7 @@ export function FeedbackSurvey({ onSubmit, onClose, isSubmitting }: FeedbackSurv
           {validationError ? (
             <p className="text-xs text-error">{validationError}</p>
           ) : (
-            <p className="text-xs text-right text-grayscale-100">
+            <p data-testid="feedback-text-char-count" className="text-xs text-right text-grayscale-100">
               {reviewText.length}/{MAX_REVIEW_LENGTH}
             </p>
           )}
@@ -137,7 +139,7 @@ export function FeedbackSurvey({ onSubmit, onClose, isSubmitting }: FeedbackSurv
       </div>
 
       <div className="px-6 pb-6 space-y-2 md:px-8">
-        <Button onClick={handleSubmit} disabled={!canSubmit} className="w-full disabled:opacity-24">
+        <Button data-testid="feedback-btn-submit" onClick={handleSubmit} disabled={!canSubmit} className="w-full disabled:opacity-24">
           {isSubmitting ? (
             <Image src="/icons/spinner.png" alt="" width={20} height={20} className="animate-spin" />
           ) : (
@@ -145,6 +147,7 @@ export function FeedbackSurvey({ onSubmit, onClose, isSubmitting }: FeedbackSurv
           )}
         </Button>
         <Button
+          data-testid="feedback-btn-later"
           variant="ghost"
           onClick={onClose}
           disabled={isSubmitting}

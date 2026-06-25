@@ -18,6 +18,7 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
   const [selectedOption, setSelectedOption] = useState<string>("")
   const [confirmed, setConfirmed] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [apiError, setApiError] = useState<string | null>(null)
   const isMobile = useIsMobile()
   const { t } = useTranslations()
   const { showAlert } = useAlertDialog()
@@ -47,6 +48,7 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
             onCancel: () => handleClose(),
           })
         } else {
+          setApiError(error instanceof Error ? error.message : "An error occurred. Please try again.")
           console.error("Error submitting complaint:", error)
           onClose()
         }
@@ -59,6 +61,7 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
   const handleClose = () => {
     setSelectedOption("")
     setConfirmed(false)
+    setApiError(null)
     onClose()
   }
 
@@ -75,11 +78,12 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
       <div
         className={`fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col ${isMobile ? "inset-0 w-full" : "w-full"
           }`}
+        data-testid="complaint-form-container"
       >
         <div className="max-w-xl mx-auto flex flex-col w-full h-full">
           {/* Back button */}
           <div className="flex items-center px-4 py-3">
-            <Button variant="ghost" size="sm" onClick={handleClose} className="bg-grayscale-300 px-1">
+            <Button variant="ghost" size="sm" onClick={handleClose} className="bg-grayscale-300 px-1" data-testid="complaint-btn-back">
               <BackArrowIcon alt={t("order.goBack")} width={24} height={24} />
             </Button>
           </div>
@@ -121,6 +125,7 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
                       ? "border border-slate-1400"
                       : "border border-transparent",
                   )}
+                  data-testid={`complaint-btn-reason-${option.id}`}
                 >
                   <p className="text-slate-1200">{t(`complaint.${option.value}`)}</p>
                   <p className="text-xs text-grayscale-text-muted mt-0.5">{t(`complaint.${option.hintKey}`)}</p>
@@ -131,18 +136,20 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
 
           {/* Bottom: checkbox + label + submit */}
           <div className="p-4 flex flex-col md:flex-row md:items-center gap-3">
+            {apiError && <p className="text-error text-xs w-full" data-testid="complaint-error-api">{apiError}</p>}
             <div className="flex items-start gap-3 flex-1">
               <Checkbox
                 id="complaint-confirm"
                 checked={confirmed}
                 onCheckedChange={(v) => setConfirmed(v === true)}
                 className="shrink-0 mt-0.5 w-[20px] h-[20px] rounded-sm border border-grayscale-600 data-[state=checked]:bg-transparent data-[state=checked]:text-grayscale-600"
+                data-testid="complaint-checkbox-confirm"
               />
               <Label htmlFor="complaint-confirm" className="font-normal text-grayscale-600 text-sm cursor-pointer leading-snug">
                 {t("complaint.confirmCheckbox")}
               </Label>
             </div>
-            <Button onClick={handleSubmit} disabled={!canSubmit || isSubmitting} className="w-full md:w-auto shrink-0">
+            <Button onClick={handleSubmit} disabled={!canSubmit || isSubmitting} className="w-full md:w-auto shrink-0" data-testid="complaint-btn-submit">
               {isSubmitting ? (
                 <Image src="/icons/spinner.png" alt={t("common.loading")} width={20} height={20} className="animate-spin" />
               ) : (

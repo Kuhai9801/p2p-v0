@@ -229,16 +229,16 @@ export default function Sidebar({ className }: SidebarProps) {
   const navItems = [
     ...(!isDisabled
       ? [
-        { name: t("navigation.home"), href: homeUrl, icon: HomeIcon, selectedIcon: HomeIcon },
-        { name: t("navigation.market"), href: "/", icon: MarketIcon, selectedIcon: MarketSelectedIcon },
-        { name: t("navigation.orders"), href: "/orders", icon: OrdersIcon, selectedIcon: OrdersSelectedIcon },
-        { name: t("navigation.myAds"), href: "/ads", icon: AdsIcon, selectedIcon: AdsSelectedIcon },
+        { name: t("navigation.home"), href: homeUrl, icon: HomeIcon, selectedIcon: HomeIcon, testId: "sidebar-link-home" },
+        { name: t("navigation.market"), href: "/", icon: MarketIcon, selectedIcon: MarketSelectedIcon, testId: "sidebar-link-markets" },
+        { name: t("navigation.orders"), href: "/orders", icon: OrdersIcon, selectedIcon: OrdersSelectedIcon, testId: "sidebar-link-orders" },
+        { name: t("navigation.myAds"), href: "/ads", icon: AdsIcon, selectedIcon: AdsSelectedIcon, testId: "sidebar-link-ads" },
         ...(showWallet
-          ? [{ name: t("navigation.wallet"), href: "/wallet", icon: WalletIcon, selectedIcon: WalletSelectedIcon }]
+          ? [{ name: t("navigation.wallet"), href: "/wallet", icon: WalletIcon, selectedIcon: WalletSelectedIcon, testId: "sidebar-link-wallet" }]
           : []),
-        { name: t("navigation.profile"), href: "/profile", icon: ProfileIcon, selectedIcon: ProfileSelectedIcon },
-        { name: t("navigation.p2pHelpCentre"), href: helpCentreUrl, icon: GuideIcon, selectedIcon: GuideSelectedIcon },
-        { name: t("navigation.liveChat"), href: liveChatUrl, icon: LiveChatIcon, selectedIcon: LiveChatIcon },
+        { name: t("navigation.profile"), href: "/profile", icon: ProfileIcon, selectedIcon: ProfileSelectedIcon, testId: "sidebar-link-profile" },
+        { name: t("navigation.p2pHelpCentre"), href: helpCentreUrl, icon: GuideIcon, selectedIcon: GuideSelectedIcon, testId: "sidebar-link-help" },
+        { name: t("navigation.liveChat"), href: liveChatUrl, icon: LiveChatIcon, selectedIcon: LiveChatIcon, testId: "sidebar-btn-livechat" },
       ]
       : []),
   ]
@@ -267,11 +267,12 @@ export default function Sidebar({ className }: SidebarProps) {
   }
 
   return (
-    <div className={cn("w-[295px] flex flex-col border-e border-slate-200 me-[8px]", className)}>
+    <div data-testid="sidebar-container" className={cn("w-[295px] flex flex-col border-e border-slate-200 me-[8px]", className)}>
       <div className="flex flex-row justify-between items-center gap-4 p-4 pt-0">
         <Image src="/icons/deriv-p2p.png" alt={t("common.derivLogo")} width={128} height={24} />
         {userId && (
           <div
+            data-testid="sidebar-btn-notifications"
             className="hidden md:block text-slate-600 hover:text-slate-700"
             onClick={() => guardP2PNavigation(isMaintenanceActive, () => track("ek_notifications_markets"))}
           >
@@ -290,6 +291,7 @@ export default function Sidebar({ className }: SidebarProps) {
               className="absolute start-2 top-1/2 z-10 -translate-y-1/2 pointer-events-none"
             />
             <Input
+              data-testid="sidebar-input-search"
               variant="tertiary"
               placeholder={t("market.searchAdvertiserNickname")}
               value={searchInput}
@@ -307,6 +309,7 @@ export default function Sidebar({ className }: SidebarProps) {
             />
             {searchInput && (
               <Button
+                data-testid="sidebar-btn-search-clear"
                 variant="ghost"
                 size="sm"
                 onClick={handleClear}
@@ -321,6 +324,7 @@ export default function Sidebar({ className }: SidebarProps) {
                   <Tabs value={searchTab} onValueChange={(v) => { if (v === "sell") track("ek_buy_tab_markets_search"); else track("ek_sell_tab_markets_search"); setSearchTab(v as "buy" | "sell") }}>
                     <TabsList className="w-full bg-transparent p-0">
                       <TabsTrigger
+                        data-testid="sidebar-tab-search-buy"
                         value="sell"
                         variant="underline"
                         className="flex-1 data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:rounded-none after:bg-black data-[state=active]:after:w-full"
@@ -328,6 +332,7 @@ export default function Sidebar({ className }: SidebarProps) {
                         {t("market.buyTab")}
                       </TabsTrigger>
                       <TabsTrigger
+                        data-testid="sidebar-tab-search-sell"
                         value="buy"
                         variant="underline"
                         className="flex-1 data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:rounded-none after:bg-black data-[state=active]:after:w-full"
@@ -342,7 +347,7 @@ export default function Sidebar({ className }: SidebarProps) {
                 ) : searchResults.length > 0 ? (
                   <div ref={dropdownScrollContainerRef} className="max-h-[480px] overflow-y-auto">
                     {searchResults.map((ad) => (
-                      <div key={ad.id} className="border-b border-slate-100">
+                      <div key={ad.id} data-testid={`sidebar-card-search-${ad.user?.id}`} className="border-b border-slate-100">
                         {ad.user && <AdvertiserSearchResultCard ad={ad} onAdvertiserClick={handleAdvertiserClick} onBuySellClick={handleBuySellClick} />}
                       </div>
                     ))}
@@ -387,6 +392,7 @@ export default function Sidebar({ className }: SidebarProps) {
                 {(item.name === t("navigation.p2pHelpCentre") || item.name === t("navigation.market")) && <div className="my-3 border-b border-grayscale-200"></div>}
                 {item.name === t("navigation.liveChat") ? (
                   <button
+                    data-testid={item.testId}
                     onClick={handleLiveChat}
                     className="flex items-center gap-3 rounded-md py-4 text-sm w-full text-start"
                   >
@@ -394,6 +400,7 @@ export default function Sidebar({ className }: SidebarProps) {
                   </button>
                 ) : isExternal ? (
                   <a
+                    data-testid={item.testId}
                     href={item.href}
                     className="flex items-center gap-3 rounded-md py-4 text-sm"
                     rel="noopener noreferrer"
@@ -403,6 +410,7 @@ export default function Sidebar({ className }: SidebarProps) {
                 ) : (
                   <Link
                     prefetch
+                    data-testid={item.testId}
                     href={item.href}
                     className={cn("flex items-center gap-3 rounded-md py-4 text-sm", isActive ? "text-primary" : "")}
                   >
@@ -415,6 +423,7 @@ export default function Sidebar({ className }: SidebarProps) {
         </ul>
         {!userData?.feedback_exist && !isDisabled && (
           <button
+            data-testid="sidebar-btn-feedback"
             onClick={() => setShowFeedbackDialog(true)}
             className="hidden md:flex items-center gap-3 rounded-md py-4 text-sm w-full text-start"
           >
@@ -432,7 +441,7 @@ export default function Sidebar({ className }: SidebarProps) {
           onClick={() => track("ek_profile_markets")}
         >
           <div className="flex items-center gap-4">
-            <div className="w-8 h-8 rounded-full bg-grayscale-300 flex items-center justify-center text-xs font-extrabold text-slate-700 shrink-0">
+            <div data-testid="sidebar-avatar" className="w-8 h-8 rounded-full bg-grayscale-300 flex items-center justify-center text-xs font-extrabold text-slate-700 shrink-0">
               {getInitials()}
             </div>
             <div className="flex flex-col min-w-0 gap-1">

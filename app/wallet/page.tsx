@@ -185,14 +185,14 @@ export default function WalletPage() {
 
   if (isDisabled) {
     return (
-      <div className="flex flex-col h-screen overflow-hidden px-3">
+      <div data-testid="wallet-msg-access-removed" className="flex flex-col h-screen overflow-hidden px-3">
         <P2PAccessRemoved />
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-background px-0 md:ps-[16px]">
+    <div data-testid="wallet-container" className="min-h-screen bg-background px-0 md:ps-[16px]">
       <div className="w-full flex flex-col items-center">
         <div className="w-full mt-0">
           <WalletSummary
@@ -209,13 +209,13 @@ export default function WalletPage() {
           />
         </div>
         {tempBanUntil && !isMaintenanceActive && (
-          <div className="w-full px-4 md:px-0 mt-4">
+          <div data-testid="wallet-alert-temp-ban" className="w-full px-4 md:px-0 mt-4">
             <TemporaryBanAlert tempBanUntil={tempBanUntil} />
           </div>
         )}
         <div className="w-full mt-6 mx-4 md:mx-4 px-6 md:px-0">
           {isMaintenanceActive ? (
-            <EmptyState icon="/icons/no-active-orders.svg" title={t("wallet.noTransactions")} />
+            <div data-testid="wallet-empty-transactions"><EmptyState icon="/icons/no-active-orders.svg" title={t("wallet.noTransactions")} /></div>
           ) : displayBalances ? (
             <WalletBalances onBalanceClick={handleBalanceClick} balances={p2pBalances} isLoading={isBalanceLoading} />
           ) : (

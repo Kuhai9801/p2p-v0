@@ -172,7 +172,7 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
   const transactionType = getTransactionType(transaction)
 
   return (
-    <div>
+    <div data-testid="wallet-details-tx">
       <div>
         {/* Section 1: Status, ID, Type */}
         <div className="space-y-3">

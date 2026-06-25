@@ -202,6 +202,7 @@ export const PaymentConfirmationSidebar = ({
               onClick={handleSubmit}
               disabled={!selectedFile || isLoading || isUploadLoading}
               className="w-full md:w-auto"
+              data-testid="order-details-btn-confirm-payment"
             >
               {isLoading || isUploadLoading ? (
                 <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />

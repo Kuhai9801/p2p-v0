@@ -87,7 +87,7 @@ export function FeedbackDialog({ isOpen, onClose }: FeedbackDialogProps) {
   if (isMobile) {
     return (
       <Drawer open={isOpen} onOpenChange={(open) => { if (!open) onClose() }}>
-        <DrawerContent dir={dir} className="max-h-[90vh] rounded-t-2xl pb-safe">
+        <DrawerContent data-testid="feedback-dialog" dir={dir} className="max-h-[90vh] rounded-t-2xl pb-safe">
           <DrawerHeader className="pb-0 text-start">
             <DrawerTitle className="text-xl font-bold text-start">{title}</DrawerTitle>
           </DrawerHeader>
@@ -101,7 +101,7 @@ export function FeedbackDialog({ isOpen, onClose }: FeedbackDialogProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => { if (!open) onClose() }}>
-      <DialogContent dir={dir} className="sm:max-w-[580px] sm:rounded-[32px] p-0">
+      <DialogContent data-testid="feedback-dialog" dir={dir} className="sm:max-w-[580px] sm:rounded-[32px] p-0">
         <ModalHeaderRow
           asDialog
           title={title}
@@ -109,6 +109,7 @@ export function FeedbackDialog({ isOpen, onClose }: FeedbackDialogProps) {
           closeAriaLabel={t("common.close")}
           titleClassName="tracking-normal"
           className="px-8 pt-6 pb-0"
+          closeButtonTestId="feedback-btn-close"
         />
         <FeedbackDialogContent onClose={onClose} title="" />
       </DialogContent>

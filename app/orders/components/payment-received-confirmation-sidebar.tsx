@@ -207,7 +207,7 @@ export const PaymentReceivedConfirmationSidebar = ({
             </div>
 
             <div className="space-y-4">
-              <InputOTP maxLength={6} value={otpValue} onChange={handleOtpChange} disabled={isVerifying || isLoading || !!warning}>
+              <InputOTP maxLength={6} value={otpValue} onChange={handleOtpChange} disabled={isVerifying || isLoading || !!warning} data-testid="order-details-input-otp">
                 <InputOTPGroup className="gap-2">
                   <InputOTPSlot index={0} className={cn("w-12 h-12 text-lg bg-transparent rounded-lg data-[active=true]:ring-0 data-[active=true]:border-black", error && "border-error")} />
                   <InputOTPSlot index={1} className={cn("w-12 h-12 text-lg bg-transparent rounded-lg data-[active=true]:ring-0 data-[active=true]:border-black", error && "border-error")} />
@@ -218,7 +218,7 @@ export const PaymentReceivedConfirmationSidebar = ({
                 </InputOTPGroup>
               </InputOTP>
 
-              {error && <p className="text-error text-xs mx-4">{error}</p>}
+              {error && <p className="text-error text-xs mx-4" data-testid="order-details-error-otp">{error}</p>}
               {warning && <p className="text-grayscale-600 text-sm">{warning}</p>}
 
               {isVerifying && (

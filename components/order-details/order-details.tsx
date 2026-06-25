@@ -10,7 +10,7 @@ import type { OrderDetailItemProps } from "./types"
 import { cn } from "@/lib/utils"
 import { useTranslations } from "@/lib/i18n/use-translations"
 
-const OrderDetailItem = ({ hasCopy, label, value, testId, isBlockLayout }: OrderDetailItemProps) => {
+const OrderDetailItem = ({ hasCopy, label, value, testId, isBlockLayout, copyTestId }: OrderDetailItemProps) => {
   const { toast } = useToast()
   const { t } = useTranslations()
 
@@ -42,6 +42,7 @@ const OrderDetailItem = ({ hasCopy, label, value, testId, isBlockLayout }: Order
             variant="ghost"
             size="sm"
             className="p-0 h-auto"
+            data-testid={copyTestId}
           >
             <Image src="/icons/copy-icon.png" alt="Copy" width={24} height={24} className="text-slate-500" />
           </Button>
@@ -106,6 +107,7 @@ export const OrderDetails = ({ order, setShowChat }) => {
         testId="order-id-item"
         hasCopy={true}
         isBlockLayout={isBlockLayout}
+        copyTestId="order-details-btn-copy-id"
       />
 
       <OrderDetailItem
@@ -161,6 +163,7 @@ export const OrderDetails = ({ order, setShowChat }) => {
             className="text-slate-500 hover:text-slate-700"
             variant="ghost"
             size="sm"
+            data-testid="order-details-btn-chat-mobile"
           >
             <Image src="/icons/chat-icon.png" alt="Chat" width={20} height={20} />
           </Button>

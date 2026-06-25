@@ -62,11 +62,11 @@ export default function AdvertiserStats({ profile }: AdvertiserStatsProps) {
           <div className="grid grid-cols-2 md:grid-cols-4 items-center gap-8 flex-1">
             <div className="flex-shrink-0">
               {buyCompletionRate ? (
-                <div className="text-base font-bold">
+                <div data-testid="advertiser-text-completion-rate" className="text-base font-bold">
                   {buyCompletionRate}% ({buyCount})
                 </div>
               ) : (
-                <div className="text-base font-bold">-</div>
+                <div data-testid="advertiser-text-completion-rate" className="text-base font-bold">-</div>
               )}
               <div className="text-xs text-slate-500">{t("advertiser.buyCompletionRate30d")}</div>
             </div>
@@ -85,7 +85,7 @@ export default function AdvertiserStats({ profile }: AdvertiserStatsProps) {
               <div className="text-xs text-slate-500">{t("advertiser.totalTrades30d")}</div>
             </div>
             <div className="flex-shrink-0">
-              <div className="text-base font-bold">{totalAllTimeTrades}</div>
+              <div data-testid="advertiser-text-order-count" className="text-base font-bold">{totalAllTimeTrades}</div>
               <div className="text-xs text-slate-500">{t("advertiser.totalAllTimeTrades")}</div>
             </div>
           </div>

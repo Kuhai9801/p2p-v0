@@ -103,7 +103,7 @@ const PaymentSelectionContent = ({
   }
 
   return (
-    <div className="flex flex-col h-full overflow-y-auto">
+    <div data-testid="order-sidebar-modal-payment-methods" className="flex flex-col h-full overflow-y-auto">
       <div className="flex-1 space-y-4 overflow-y-auto md:max-h-[30vh]">
         {userPaymentMethods.length > 0 && <div className="text-[#000000B8]">{t("paymentMethod.selectUpTo3")}</div>}
         {userPaymentMethods.length === 0 ? (
@@ -159,6 +159,7 @@ const PaymentSelectionContent = ({
                   </div>
                 </div>
                 <Checkbox
+                  data-testid={`order-sidebar-checkbox-payment-${method.id}`}
                   checked={selectedPMs?.includes(method.id)}
                   onCheckedChange={() => handlePaymentMethodToggle(method.id)}
                   disabled={!selectedPMs?.includes(method.id) && selectedPMs?.length >= 3}
@@ -171,6 +172,7 @@ const PaymentSelectionContent = ({
 
         {userPaymentMethods.length > 0 && (
           <div
+            data-testid="order-sidebar-link-add-payment"
             className="border border-grayscale-200 rounded-lg p-4 cursor-pointer transition-colors"
             onClick={() => {
               handleAddPaymentMethodClick()
@@ -186,6 +188,7 @@ const PaymentSelectionContent = ({
         )}
       </div>
       <Button
+        data-testid="order-sidebar-btn-confirm-payment"
         className="w-full mt-12"
         disabled={selectedPMs.length === 0}
         onClick={() => {
@@ -638,7 +641,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
 
   return (
     <>
-      <div className="fixed inset-0 z-50 flex justify-end">
+      <div data-testid="order-sidebar-container" className="fixed inset-0 z-50 flex justify-end">
         <div
           className={`fixed inset-0 bg-black/30 transition-opacity duration-300 ${isOpen && isAnimating ? "opacity-100" : "opacity-0"
             }`}
@@ -651,7 +654,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
           {localAd && (
             <div className="flex flex-col h-full max-w-xl mx-auto">
               <div className="flex items-center justify-end px-4 py-3">
-                <Button onClick={handleClose} variant="ghost" size="sm" className="bg-grayscale-300 px-1">
+                <Button data-testid="order-sidebar-btn-close" onClick={handleClose} variant="ghost" size="sm" className="bg-grayscale-300 px-1">
                   <Image src="/icons/close-circle.png" alt={t("common.close")} width={24} height={24} />
                 </Button>
               </div>
@@ -674,6 +677,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
                 <div className="p-4">
                   <div className="mb-4">
                     <Input
+                      data-testid="order-sidebar-input-amount"
                       value={amount}
                       onChange={handleAmountChange}
                       type="number"
@@ -694,7 +698,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
                       label={t("order.amount")}
                     />
                   </div>
-                  {validationError && <p className="text-sm text-red-500 mb-2">{validationError}</p>}
+                  {validationError && <p data-testid="order-sidebar-error-amount" className="text-sm text-red-500 mb-2">{validationError}</p>}
                   <div className="flex items-center">
                     <span className="text-grayscale-text-muted">{youSendText}:&nbsp;</span>
                     <span className="text-slate-1200 font-bold">
@@ -710,13 +714,14 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
                 {isBuy && (
                   <div className="mx-4 mt-4 pb-6 border-b">
                     <div
+                      data-testid="order-sidebar-btn-select-payment"
                       className="border border-gray-200 rounded-lg px-4 cursor-pointer hover:bg-gray-50 transition-colors flex items-center h-[56px]"
                       onClick={handleShowPaymentSelection}
                     >
                       <div className="flex items-center justify-between flex-1">
                         <div className="flex flex-col gap-[1px]">
                           {selectedPaymentMethods.length > 0 && <span className="text-black/[0.72] text-xs font-normal">{t("order.receivePaymentTo")}</span>}
-                          <span className="text-black/[0.72] text-base font-normal">{getSelectedPaymentMethodsText()}</span>
+                          <span data-testid="order-sidebar-text-payment-method" className="text-black/[0.72] text-base font-normal">{getSelectedPaymentMethodsText()}</span>
                         </div>
                         <Image
                           src="/icons/chevron-down.png"
@@ -795,6 +800,7 @@ export default function OrderSidebar({ isOpen, onClose, onStartClose, ad, orderT
 
                 <div className="mt-auto p-4 flex justify-end">
                   <Button
+                    data-testid="order-sidebar-btn-place-order"
                     className="w-full md:w-auto"
                     variant="default"
                     onClick={handleSubmit}

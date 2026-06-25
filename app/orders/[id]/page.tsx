@@ -241,7 +241,7 @@ export default function OrderDetailsPage() {
           {val.value && <p className="text-xs text-slate-500 mb-1">{displayKey}</p>}
           {isCopyable ? (
             <div className="flex items-center justify-between">
-              <p className="text-sm">{val.value}</p>
+              <p className="text-sm" data-testid={`order-details-text-${key}`}>{val.value}</p>
               <Button
                 onClick={async () => {
                   const success = await copyToClipboard(String(val.value))
@@ -261,12 +261,13 @@ export default function OrderDetailsPage() {
                 variant="ghost"
                 size="sm"
                 className="p-0 h-auto"
+                data-testid={`order-details-btn-copy-${key}`}
               >
                 <Image src="/icons/copy-icon.png" alt={t("common.copy")} width={24} height={24} className="text-slate-500" />
               </Button>
             </div>
           ) : (
-            <p className="text-sm">{val.value}</p>
+            <p className="text-sm" data-testid={`order-details-text-${key}`}>{val.value}</p>
           )}
         </div>,
       )
@@ -341,6 +342,9 @@ export default function OrderDetailsPage() {
       description: t("orderDetails.dontCancelIfPaid"),
       confirmText: t("orderDetails.cancelOrder"),
       cancelText: t("orderDetails.keepOrder"),
+      testId: "order-details-alert-cancel",
+      confirmTestId: "order-details-btn-confirm-cancel",
+      cancelTestId: "order-details-btn-keep-order",
       onCancel: () => {
         track("ek_keep_order_order_cancel_sheet")
       },
@@ -561,6 +565,7 @@ export default function OrderDetailsPage() {
                         ? "justify-between"
                         : "justify-center",
                   )}
+                  data-testid="order-details-badge-status"
                 >
                   <div className="flex items-center">
                     <div className="flex items-center gap-1">
@@ -589,7 +594,7 @@ export default function OrderDetailsPage() {
                   {(order.status === "pending_payment" || order.status === "pending_release") && (
                     <div className={cn("flex items-center", order.status === "pending_release" && "text-sm")}>
                       <span>{t("orderDetails.timeLeft")}&nbsp;</span>
-                      <span className="font-bold">{timeLeft}</span>
+                      <span className="font-bold" data-testid="order-details-text-time-remaining">{timeLeft}</span>
                     </div>
                   )}
                 </div>
@@ -611,7 +616,7 @@ export default function OrderDetailsPage() {
                             {formatAmount(order.payment_amount)} {order?.payment_currency}
                           </p>
                         </div>
-                        <button className="flex items-center text-xs" onClick={showOrderDetails}>
+                        <button className="flex items-center text-xs" onClick={showOrderDetails} data-testid="order-details-btn-view-details">
                           {t("orderDetails.viewOrderDetails")}
                           <ChevronRight className="h-4 w-4 ms-1" />
                         </button>
@@ -667,6 +672,7 @@ export default function OrderDetailsPage() {
                             collapsible
                             className="w-full"
                             defaultValue={order.payment_method_details.length === 1 ? "payment-method-0" : undefined}
+                            data-testid="order-details-accordion-payment"
                           >
                             {order.payment_method_details.map((method, index) => (
                               <div key={index}>
@@ -696,10 +702,10 @@ export default function OrderDetailsPage() {
                 {((order.type === "buy" && order.status === "pending_payment" && order.user.id == userId) ||
                   (order.type === "sell" && order.status === "pending_payment" && order.advert.user.id == userId)) && (
                     <div className="py-8 flex flex-col-reverse md:flex-row gap-2 md:gap-4">
-                      <Button variant="outline" className="flex-1 bg-transparent" onClick={handleCancelOrder}>
+                      <Button variant="outline" className="flex-1 bg-transparent" onClick={handleCancelOrder} data-testid="order-details-btn-cancel">
                         {t("orderDetails.cancelOrder")}
                       </Button>
-                      <Button className="flex-1" onClick={handleShowPaymentConfirmation}>
+                      <Button className="flex-1" onClick={handleShowPaymentConfirmation} data-testid="order-details-btn-paid">
                         {t("orderDetails.ivePaid")}
                       </Button>
                     </div>
@@ -717,6 +723,7 @@ export default function OrderDetailsPage() {
                         className="flex-1"
                         onClick={handlePaymentReceived}
                         disabled={isConfirmLoading}
+                        data-testid="order-details-btn-received"
                       >
                         {isConfirmLoading ? (
                           <Image src="/icons/spinner.png" alt={t("common.loading")} width={20} height={20} className="animate-spin" />
@@ -746,6 +753,7 @@ export default function OrderDetailsPage() {
                           setShowRatingSidebar(true)
                         }}
                         className="flex-auto md:flex-none"
+                        data-testid="order-details-btn-rate"
                       >
                         {t("orderDetails.rateTransaction")}
                       </Button>
@@ -775,6 +783,7 @@ export default function OrderDetailsPage() {
                         setShowComplaintForm(true)
                       }}
                       className="flex-auto md:flex-1"
+                      data-testid="order-details-btn-complaint"
                     >
                       {t("orderDetails.complain")}
                     </Button>
@@ -819,25 +828,29 @@ export default function OrderDetailsPage() {
       {isMobile && (
         <OrderDetailsSidebar isOpen={showDetailsSidebar} onClose={() => setShowDetailsSidebar(false)} order={order} />
       )}
-      <PaymentConfirmationSidebar
-        isOpen={showPaymentConfirmation}
-        onClose={() => setShowPaymentConfirmation(false)}
-        onConfirm={handlePayOrder}
-        order={order}
-        isLoading={isPaymentLoading}
-      />
-      <PaymentReceivedConfirmationSidebar
-        isOpen={showPaymentReceivedConfirmation}
-        onClose={() => setShowPaymentReceivedConfirmation(false)}
-        onConfirm={() => {
-          fetchOrderDetails()
-          setShowPaymentReceivedConfirmation(false)
-        }}
-        orderId={orderId}
-        isLoading={isConfirmLoading}
-        otpRequested={otpRequested}
-        setOtpRequested={setOtpRequested}
-      />
+      <div data-testid="order-details-sheet-confirm-payment">
+        <PaymentConfirmationSidebar
+          isOpen={showPaymentConfirmation}
+          onClose={() => setShowPaymentConfirmation(false)}
+          onConfirm={handlePayOrder}
+          order={order}
+          isLoading={isPaymentLoading}
+        />
+      </div>
+      <div data-testid="order-details-sheet-confirm-received">
+        <PaymentReceivedConfirmationSidebar
+          isOpen={showPaymentReceivedConfirmation}
+          onClose={() => setShowPaymentReceivedConfirmation(false)}
+          onConfirm={() => {
+            fetchOrderDetails()
+            setShowPaymentReceivedConfirmation(false)
+          }}
+          orderId={orderId}
+          isLoading={isConfirmLoading}
+          otpRequested={otpRequested}
+          setOtpRequested={setOtpRequested}
+        />
+      </div>
     </div>
   )
 }

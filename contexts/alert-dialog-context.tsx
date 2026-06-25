@@ -112,7 +112,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
     }
 
     return (
-      <div className="px-8 py-6 overflow-y-auto">
+      <div className="px-8 py-6 overflow-y-auto" data-testid={config.testId}>
         <div className="flex justify-between items-center gap-4 mb-8">
           {config.title && <div className="flex-1 min-w-0 text-start font-bold text-2xl">{config.title}</div>}
           {!config.hideCloseButton && (
@@ -125,12 +125,12 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
         {(config.cancelText || config.type) && (
           <div className="flex flex-col gap-2 mt-6">
             {config.type && (
-              <Button onClick={handleConfirm} disabled={isSubmitting} variant="primary" className="w-full">
+              <Button onClick={handleConfirm} disabled={isSubmitting} variant="primary" className="w-full" data-testid={config.confirmTestId}>
                 {config.confirmText || "Continue"}
               </Button>
             )}
             {config.cancelText && (
-              <Button onClick={handleCancel} variant={config.type ? "outline" : "primary"} className="w-full">
+              <Button onClick={handleCancel} variant={config.type ? "outline" : "primary"} className="w-full" data-testid={config.cancelTestId}>
                 {config.cancelText}
               </Button>
             )}
@@ -178,17 +178,17 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
     }
 
     return (
-      <div className="p-6 overflow-y-auto">
+      <div className="p-6 overflow-y-auto" data-testid={config.testId}>
         {config.title && <div className="mb-8 text-start font-bold text-lg">{config.title}</div>}
         {config.description && <div className="text-grayscale-100">{config.description}</div>}
         {(config.cancelText || config.type) && (<div className="flex flex-col gap-2 mt-8">
           {config.type && (
-            <Button onClick={handleConfirm} disabled={isSubmitting} variant="primary" className="w-full">
+            <Button onClick={handleConfirm} disabled={isSubmitting} variant="primary" className="w-full" data-testid={config.confirmTestId}>
               {config.confirmText || "Continue"}
             </Button>
           )}
           {config.cancelText && (
-            <Button onClick={handleCancel} variant={config.type ? "outline" : "primary"} className="w-full">
+            <Button onClick={handleCancel} variant={config.type ? "outline" : "primary"} className="w-full" data-testid={config.cancelTestId}>
               {config.cancelText}
             </Button>
           )}
