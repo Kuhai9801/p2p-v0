@@ -828,17 +828,14 @@ export default function OrderDetailsPage() {
       {isMobile && (
         <OrderDetailsSidebar isOpen={showDetailsSidebar} onClose={() => setShowDetailsSidebar(false)} order={order} />
       )}
-      <div data-testid="order-details-sheet-confirm-payment">
-        <PaymentConfirmationSidebar
-          isOpen={showPaymentConfirmation}
-          onClose={() => setShowPaymentConfirmation(false)}
-          onConfirm={handlePayOrder}
-          order={order}
-          isLoading={isPaymentLoading}
-        />
-      </div>
-      <div data-testid="order-details-sheet-confirm-received">
-        <PaymentReceivedConfirmationSidebar
+      <PaymentConfirmationSidebar
+        isOpen={showPaymentConfirmation}
+        onClose={() => setShowPaymentConfirmation(false)}
+        onConfirm={handlePayOrder}
+        order={order}
+        isLoading={isPaymentLoading}
+      />
+      <PaymentReceivedConfirmationSidebar
           isOpen={showPaymentReceivedConfirmation}
           onClose={() => setShowPaymentReceivedConfirmation(false)}
           onConfirm={() => {
@@ -850,7 +847,6 @@ export default function OrderDetailsPage() {
           otpRequested={otpRequested}
           setOtpRequested={setOtpRequested}
         />
-      </div>
     </div>
   )
 }

@@ -185,7 +185,7 @@ export const PaymentReceivedConfirmationSidebar = ({
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent className="w-full p-0 sm:max-w-none" hideCloseButton>
+      <SheetContent data-testid="order-details-sheet-confirm-received" className="w-full p-0 sm:max-w-none" hideCloseButton>
         <div className="flex flex-col h-full sm:max-w-none md:max-w-xl md:mx-auto">
           <SheetHeader className="p-4">
             <div className="flex items-center justify-between">

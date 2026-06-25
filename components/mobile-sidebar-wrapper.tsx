@@ -6,7 +6,7 @@ import { usePathname, useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { useTranslations } from "@/lib/i18n/use-translations"
 
-export function MobileSidebarTrigger() {
+export function MobileSidebarTrigger({ "data-testid": testId }: { "data-testid"?: string } = {}) {
   const { t } = useTranslations()
   const pathname = usePathname()
   const router = useRouter()
@@ -27,6 +27,7 @@ export function MobileSidebarTrigger() {
         variant="ghost"
         size="icon"
         className="h-8 w-8 rounded-full bg-[#ffffff0a]"
+        data-testid={testId}
       >
         <Image src="/icons/arrow-back.svg" width={24} height={24} alt={t("common.back")} />
       </Button>
@@ -37,6 +38,7 @@ export function MobileSidebarTrigger() {
     <Link
       href="/profile"
       className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#ffffff0a]"
+      data-testid={testId}
     >
       <Image src="/icons/profile-icon-white.svg" width={24} height={24} alt={t("common.profile")} />
     </Link>

@@ -837,8 +837,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                         </h3>
                         <TooltipProvider>
                           <Tooltip>
-                            <TooltipTrigger asChild>
-                              <button type="button" data-testid="ad-form-tooltip-trade-band" className="flex items-center">
+                            <TooltipTrigger data-testid="ad-form-tooltip-time-limit">
                               <Image
                                 src="/icons/info-circle.svg"
                                 alt="Info"
@@ -846,7 +845,6 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                                 height={24}
                                 className="cursor-pointer"
                               />
-                              </button>
                             </TooltipTrigger>
                             <TooltipContent>
                               <p className="text-white text-start">{t("adForm.orderTimeLimitTooltip")}</p>
@@ -863,8 +861,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                         <h3 className="text-base font-normal text-start">{t("adForm.country")}</h3>
                         <TooltipProvider>
                           <Tooltip>
-                            <TooltipTrigger asChild>
-                              <button type="button" data-testid="ad-form-tooltip-countries" className="flex items-center">
+                            <TooltipTrigger data-testid="ad-form-tooltip-countries">
                               <Image
                                 src="/icons/info-circle.svg"
                                 alt="Info"
@@ -872,7 +869,6 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                                 height={24}
                                 className="cursor-pointer"
                               />
-                              </button>
                             </TooltipTrigger>
                             <TooltipContent>
                               <p className="text-white text-start">
@@ -902,8 +898,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                         </h3>
                         <TooltipProvider>
                           <Tooltip>
-                            <TooltipTrigger asChild>
-                              <button type="button" data-testid="ad-form-tooltip-joined-days" className="flex items-center">
+                            <TooltipTrigger data-testid="ad-form-tooltip-joined-days">
                               <Image
                                 src="/icons/info-circle.svg"
                                 alt="Info"
@@ -911,7 +906,6 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                                 height={24}
                                 className="cursor-pointer"
                               />
-                              </button>
                             </TooltipTrigger>
                             <TooltipContent>
                               <p className="text-white text-start">
@@ -956,8 +950,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                         </h3>
                         <TooltipProvider>
                           <Tooltip>
-                            <TooltipTrigger asChild>
-                              <button type="button" data-testid="ad-form-tooltip-completion-rate" className="flex items-center">
+                            <TooltipTrigger data-testid="ad-form-tooltip-completion-rate">
                               <Image
                                 src="/icons/info-circle.svg"
                                 alt="Info"
@@ -965,7 +958,6 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                                 height={24}
                                 className="cursor-pointer"
                               />
-                              </button>
                             </TooltipTrigger>
                             <TooltipContent>
                               <p className="text-white text-start">
@@ -1009,8 +1001,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                         </h3>
                         <TooltipProvider>
                           <Tooltip>
-                            <TooltipTrigger asChild>
-                              <button type="button" data-testid="ad-form-tooltip-visibility" className="flex items-center">
+                            <TooltipTrigger data-testid="ad-form-tooltip-visibility">
                               <Image
                                 src="/icons/info-circle.svg"
                                 alt="Info"
@@ -1018,7 +1009,6 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                                 height={24}
                                 className="cursor-pointer"
                               />
-                              </button>
                             </TooltipTrigger>
                             <TooltipContent>
                               <p className="text-white">{t("adForm.adVisibilityTooltip")}</p>

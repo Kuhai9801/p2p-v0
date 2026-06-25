@@ -66,9 +66,7 @@ export default function Header() {
     <>
       <header data-testid="header-container" className="relative z-20 flex justify-between items-center px-6 md:px-[24px] py-4 md:py-3 bg-slate-1200 -mb-px md:mb-0 h-14 md:h-auto">
         <div className="flex items-center md:hidden">
-          <div data-testid="header-btn-mobile-sidebar">
-            <MobileSidebarTrigger />
-          </div>
+          <MobileSidebarTrigger data-testid="header-btn-mobile-sidebar" />
         </div>
 
         <div className="hidden md:block">
