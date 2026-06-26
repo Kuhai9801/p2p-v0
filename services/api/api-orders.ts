@@ -36,6 +36,7 @@ export interface Order {
   is_reviewable: boolean
   rating: number
   counterparty_name?: string
+  disputed_at?: string
 }
 
 export interface OrderFilters {

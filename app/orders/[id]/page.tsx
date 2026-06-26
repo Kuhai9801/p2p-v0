@@ -598,7 +598,7 @@ export default function OrderDetailsPage() {
                     </div>
                   )}
                 </div>
-                {order.status === "timed_out" && !isBuyer && (
+                {(order.status === "timed_out" || (order.status === "refunded" && order.disputed_at)) && !isBuyer && (
                   <Alert variant="info" className="flex items-center gap-2 mb-[24px]">
                     <InfoCircleIcon className="h-6 w-6 flex-shrink-0 [&>path]:fill-current" aria-hidden="true" />
                     <AlertDescription>{t("orderDetails.fundsWillBeCredited")}</AlertDescription>
