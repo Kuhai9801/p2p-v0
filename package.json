@@ -7,7 +7,12 @@
     "postbuild": "next-on-pages",
     "dev": "next dev",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:debug": "playwright test --debug",
+    "test:e2e:report": "playwright show-report playwright/playwright-report"
   },
   "dependencies": {
     "@datadog/browser-logs": "7.0.0",
@@ -90,6 +95,7 @@
   },
   "devDependencies": {
     "@cloudflare/next-on-pages": "^1.13.14",
+    "@playwright/test": "1.55.0",
     "@svgr/webpack": "^8.1.0",
     "@types/node": "^22",
     "@types/react": "^19",
@@ -147,7 +153,8 @@
       "@babel/core@<=7.29.0": ">=7.29.6",
       "@opentelemetry/core@<2.8.0": ">=2.8.0",
       "undici@<7.28.0": ">=7.28.0",
-      "dompurify@<3.4.11": ">=3.4.11"
+      "dompurify@<3.4.11": ">=3.4.11",
+      "playwright@<1.55.1": ">=1.55.1"
     }
   }
 }
